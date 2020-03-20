@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite name="All_Tests">
+    <listeners>
+
+        <listener class-name="TestManager.SuiteListener"></listener>
+    </listeners>
+    <test name="User_Login">
+
+        <classes>
+            <class name="TestSpecs.SearchWO">
+                <methods>
+                    <include name="Search_WO_By_Number" />
+
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+</suite> <!-- Suite -->
