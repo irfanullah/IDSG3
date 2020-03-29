@@ -4,6 +4,8 @@ import Services.AppEnv;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 /**
  * This class will use to manage webdrivers routines
@@ -11,6 +13,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 
 public class BrowserManager {
     private ChromeDriver chromeDriver = null;
+    private FirefoxDriver firefoxDriver = null;
     private static BrowserManager browserManager = new BrowserManager();
     private static AppEnv appEnv = new AppEnv();
 
@@ -30,12 +33,19 @@ public class BrowserManager {
 
         if (appEnv.getBrowser().equalsIgnoreCase("Chrome")) {
             WebDriverManager.chromedriver().clearPreferences();
-            //WebDriverManager.chromedriver().version("2.46").setup();
             WebDriverManager.chromedriver().setup();
             ChromeOptions crOptions = new ChromeOptions();
             chromeDriver = new ChromeDriver(crOptions);
             chromeDriver.manage().window().maximize();
             appEnv.setDriver(chromeDriver);
+        } else
+            if (appEnv.getBrowser().equalsIgnoreCase("Firefox")) {
+            WebDriverManager.firefoxdriver().clearPreferences();
+            WebDriverManager.firefoxdriver().setup();
+            FirefoxOptions frOptions = new FirefoxOptions();
+            firefoxDriver = new FirefoxDriver(frOptions);
+            firefoxDriver.manage().window().maximize();
+            appEnv.setDriver(firefoxDriver);
         }
     }
 

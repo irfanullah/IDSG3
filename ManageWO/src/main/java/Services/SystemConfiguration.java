@@ -39,6 +39,10 @@ public class SystemConfiguration {
         }
         appEnv.setBrowser(prop.getProperty("Browser"));
         appEnv.setDomain(prop.getProperty("Domain"));
+        appEnv.setWorkOrderNumber(prop.getProperty("WorkOrderNumber"));
+        appEnv.setFirstName(prop.getProperty("FirstName"));
+        appEnv.setLastName(prop.getProperty("LastName"));
+        appEnv.setPhoneNumber(prop.getProperty("PhoneNumber"));
 
         return appEnv;
     }

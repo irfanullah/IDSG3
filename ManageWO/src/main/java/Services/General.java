@@ -88,6 +88,7 @@ public class General {
         return State;
 
     }
+
     /**
      * This method is for adding text to a field.
      *
@@ -178,7 +179,6 @@ public class General {
     public String Get_TimeStamp()
     {
         DateTime dt = new DateTime();
-        //String filename = dt.toString("SSSSssmmww" + "_AutomationReport.html");
         String filename = dt.toString("SSSSssmmww'_AutomationReport.html" );
         System.out.println(filename);
         return filename;
