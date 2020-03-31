@@ -43,6 +43,8 @@ public class SystemConfiguration {
         appEnv.setFirstName(prop.getProperty("FirstName"));
         appEnv.setLastName(prop.getProperty("LastName"));
         appEnv.setPhoneNumber(prop.getProperty("PhoneNumber"));
+        appEnv.setStockNumber(prop.getProperty("StockNumber"));
+        appEnv.setCustomerNumber(prop.getProperty("CustomerNumber"));
 
         return appEnv;
     }

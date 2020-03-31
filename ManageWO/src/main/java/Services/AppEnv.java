@@ -15,6 +15,8 @@ public class AppEnv {
     private String FirstName;
     private String LastName;
     private String PhoneNumber;
+    private String StockNumber;
+    private String CustomerNumber;
     private boolean IsTestPass;
     private boolean IsLogInReq;
     private ReportManager reportManager = null;
@@ -35,6 +37,24 @@ public class AppEnv {
      */
     public void setDomain(String domain) {
         Domain = domain;
+    }
+
+    /**
+     * This method is to set domain name
+     *
+     * @param stockNumber
+     */
+    public void setStockNumber(String stockNumber){
+        StockNumber = stockNumber;
+    }
+
+    /**
+     * This method is to set domain name
+     *
+     * @param customerNumber
+     */
+    public void setCustomerNumber(String customerNumber){
+        CustomerNumber = customerNumber;
     }
 
     /**
@@ -94,6 +114,23 @@ public class AppEnv {
     public String getWorkOrderNumber(){
      return WorkOrderNumber;
     }
+    /**
+     * This method will return Stock Number
+     *
+     * @return
+     */
+    public String getStockNumber(){
+        return StockNumber;
+    }
+    /**
+     * This method will return Customer Number
+     *
+     * @return
+     */
+    public String getCustomerNumber(){
+        return CustomerNumber;
+    }
+
     /**
      * This method will return WebDriver name ( Chrome or Firefox.)
      *

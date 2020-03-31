@@ -97,6 +97,7 @@ public class General {
      */
     public void SendText(WebElement SendText, String Text) {
         try {
+            SendText.clear();
             SendText.sendKeys(Text);
         } catch (Exception e) {
             System.out.println("Unable to Input Text in Given field");

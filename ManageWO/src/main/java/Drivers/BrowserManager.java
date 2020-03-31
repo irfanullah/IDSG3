@@ -6,6 +6,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.safari.SafariDriver;
 
 /**
  * This class will use to manage webdrivers routines
@@ -14,6 +15,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 public class BrowserManager {
     private ChromeDriver chromeDriver = null;
     private FirefoxDriver firefoxDriver = null;
+    private SafariDriver safariDriver = null;
     private static BrowserManager browserManager = new BrowserManager();
     private static AppEnv appEnv = new AppEnv();
 
