@@ -73,6 +73,21 @@ public class General {
         }
         return State;
     }
+
+  /*  public boolean Wait_For_Element_By_Xpath(String Xpath, long TimeInSec){
+        WebDriverWait(appEnv.getDriver(),10).
+        boolean State = true;
+        int Counter = 0;
+        while (State){
+            State = IsObjExist(Obj);
+            StaticWait(1000);
+            Counter++;
+            if(Counter > TimeInSec){
+                break;
+            }
+        }
+        return State;
+    }*/
     /**
      * This method will use to wait an element to display
      *

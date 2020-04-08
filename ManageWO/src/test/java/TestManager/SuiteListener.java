@@ -27,7 +27,6 @@ public class SuiteListener implements ITestListener, ISuiteListener, IInvokedMet
         appEnv = SysConfig.Read_Properties(appEnv);
         browserManager = BrowserManager.getInstance(appEnv);
         browserManager.Launch_Browser();
-        browserManager.GetURL();
         appEnv.setReportManager(ReportManager.getInstance(appEnv));
         appEnv.getReportManager().TestEnvironment();
     }
@@ -43,7 +42,7 @@ public class SuiteListener implements ITestListener, ISuiteListener, IInvokedMet
     public void beforeInvocation(IInvokedMethod iInvokedMethod, ITestResult iTestResult) {
         TestFiltration testFiltration = TestFiltration.getInstance(appEnv);
         testFiltration.Test_Assignment(iInvokedMethod);
-
+        browserManager.GetURL();
         appEnv.setTestPass(false);
         System.out.println(iInvokedMethod.getTestMethod().getMethodName() + " Started");
 

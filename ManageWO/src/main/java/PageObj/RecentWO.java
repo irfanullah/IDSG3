@@ -29,6 +29,7 @@ public class RecentWO {
     }
 
     public void Click_Search_Button(){
+        appEnv.getReportManager().LogStepInfo("Click Search button.");
         Locators.add("xpath");
         Values.add("//*[@data-test-id=\"searchButton\"]");
         Utils.ClickObj(fetch_elements.GetObj(Locators,Values));
@@ -36,6 +37,7 @@ public class RecentWO {
         Values.remove("//*[@data-test-id=\"searchButton\"]");
     }
     public void Click_Clear_Button(){
+        appEnv.getReportManager().LogStepInfo("Click Clear button.");
         Locators.add("xpath");
         Values.add("//*[@data-test-id=\"clearButton\"]");
         Utils.ClickObj(fetch_elements.GetObj(Locators,Values));
@@ -43,6 +45,7 @@ public class RecentWO {
         Values.remove("//*[@data-test-id=\"clearButton\"]");
     }
     public void Click_More_Filters_Button(){
+        appEnv.getReportManager().LogStepInfo("Click More Filters button.");
         Locators.add("xpath");
         Values.add("//*[@data-test-id=\"filtersButton-Collapsed\"]");
         Utils.ClickObj(fetch_elements.GetObj(Locators,Values));
@@ -51,6 +54,7 @@ public class RecentWO {
     }
 
     public void Click_Less_Filters_Button(){
+        appEnv.getReportManager().LogStepInfo("Click Less Filters button.");
         Locators.add("xpath");
         Values.add("//*[@data-test-id=\"filtersButton-Expanded\"]");
         Utils.ClickObj(fetch_elements.GetObj(Locators,Values));
@@ -60,6 +64,7 @@ public class RecentWO {
 
     public void Type_WO_Number(String WONumber)
     {
+        appEnv.getReportManager().LogStepInfo("Type Work Order Number " + WONumber);
         Locators.add("name");
         Values.add("workOrderNumber");
         Utils.SendText(fetch_elements.GetObj(Locators,Values),WONumber);
@@ -68,6 +73,7 @@ public class RecentWO {
     }
     public void Type_First_Name(String FirstName)
     {
+        appEnv.getReportManager().LogStepInfo("Type First Name  " + FirstName);
         Locators.add("name");
         Values.add("firstName");
         Utils.SendText(fetch_elements.GetObj(Locators,Values),FirstName);
@@ -76,6 +82,7 @@ public class RecentWO {
     }
     public void Type_Last_Name(String LastName)
     {
+        appEnv.getReportManager().LogStepInfo("Type Last Name " + LastName);
         Locators.add("name");
         Values.add("lastName");
         Utils.SendText(fetch_elements.GetObj(Locators,Values),LastName);
@@ -84,6 +91,7 @@ public class RecentWO {
     }
     public void Type_Phone_Number(String PhoneNumber)
     {
+        appEnv.getReportManager().LogStepInfo("Type Phone Number " + PhoneNumber);
         Locators.add("name");
         Values.add("phoneNumber");
         Utils.SendText(fetch_elements.GetObj(Locators,Values),PhoneNumber);
@@ -92,6 +100,7 @@ public class RecentWO {
     }
     public void Type_Customer_Number(String CustomerNumber)
     {
+        appEnv.getReportManager().LogStepInfo("Type Customer Number " + CustomerNumber);
         Locators.add("name");
         Values.add("customerNumber");
         Utils.SendText(fetch_elements.GetObj(Locators,Values),CustomerNumber);
@@ -101,6 +110,7 @@ public class RecentWO {
 
     public void Type_Stock_Number(String StockNumber)
     {
+        appEnv.getReportManager().LogStepInfo("Type Stock Number " + StockNumber);
         Locators.add("name");
         Values.add("stockNumber");
         Utils.SendText(fetch_elements.GetObj(Locators,Values),StockNumber);
@@ -110,6 +120,7 @@ public class RecentWO {
 
     public void Type_Completed_With_in_Days(String completedWithinDays)
     {
+        appEnv.getReportManager().LogStepInfo("Type Completed within Days " + completedWithinDays);
         Locators.add("name");
         Values.add("completedWithinDays");
         Utils.SendText(fetch_elements.GetObj(Locators,Values),completedWithinDays);
@@ -151,8 +162,7 @@ public class RecentWO {
     //This function will return number of rows in given table
     public int Count_Table_Rows(String xPath){
         List rows = appEnv.getDriver().findElementsByXPath(xPath);
-        int Row_count =  rows.size();
-        return Row_count;
+        return rows.size();
 
     }
 
@@ -217,6 +227,40 @@ public class RecentWO {
 
         }
 
+    }
+
+    public boolean Find_Customer(String Search_Item){
+        List  rows =  appEnv.getDriver().findElements(By.xpath("//*[@data-test-id=\"gridBodyRow\"]/*[@data-test-id=\"gridBodyCell\"][1]"));
+        int Row_count =  rows.size();
+        System.out.println("\n Number of rows loaded : " + Row_count);
+        if(Row_count > 0){
+            String first_part = "//*[@data-test-id=";
+            String second_part ="'gridBodyRow'";
+            String third_part = "][";
+            String four_part = "]/*[@data-test-id=";
+            String five_part = "'gridBodyCell'";
+            String six_part = "][";
+            String seven_part = "]";
+            for (int i=1; i<=Row_count; i++) {
+                    //Prepared final xpath of specific cell as per values of i and j.
+                    String final_xpath = first_part + second_part + third_part + i + four_part + five_part + six_part + "6" + seven_part;
+                    //Will retrieve value from located cell and print It.
+                System.out.println("\n Customer Column data : " + appEnv.getDriver().findElement(By.xpath(final_xpath)).getText());
+                    String Table_data = appEnv.getDriver().findElement(By.xpath(final_xpath)).getText();
+                    Table_data = Table_data.replaceAll("[\\[\\](){}]","");
+                    String []strArray=Table_data.split(" ");
+                    for(int j=0; j<strArray.length;j++) {
+                        System.out.println("\nCustomer Column Data is : " + strArray[j]);
+                        if (strArray[j].equalsIgnoreCase(Search_Item)) {
+                        return true;
+                    }
+                }
+
+            }
+
+
+        }
+        return false;
     }
 }
 
