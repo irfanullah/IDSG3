@@ -27,26 +27,26 @@ public class TestFiltration {
         ITestNGMethod methodName = iInvokedMethod.getTestMethod();
         String TestDescription = "";
         switch (methodName.getMethodName()) {
-            case "User_Login":
+            case "Login":
                 appEnv.setLogInReq(false);
                 TestDescription = "This test will log in the user";
                 break;
-            case "Incorrect_Credentials":
-                appEnv.setLogInReq(false);
-                TestDescription = "This test will log in the user with incorrect credentials";
+            case "Search_WO_By_WO_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders by Work Order Number";
                 break;
-            case "Empty_Credentials":
-                appEnv.setLogInReq(false);
-                TestDescription = "This test will log in the user with empty credentials";
+            case "Search_WO_By_Stock_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders by Stock Number";
                 break;
 
-            case "Navigate_To_Roles":
+            case "Search_WO_By_First_Name":
                 appEnv.setLogInReq(true);
-                TestDescription = "This test will navigate to the Roles page";
+                TestDescription = "This test will Search Work Orders by First Name";
                 break;
 
         default:
-            appEnv.setLogInReq(true);
+            appEnv.setLogInReq(false);
             break;
         }
         appEnv.getReportManager().InitReport(methodName.getMethodName() , TestDescription);

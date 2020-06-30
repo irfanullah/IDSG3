@@ -47,5 +47,28 @@ public class Fetch_Elements {
         }
         return webElement;
     }
+
+    public WebElement GetObj(String locator, String locatorValue) {
+        WebElement webElement = null;
+        RemoteWebDriver localDriver = appEnv.getDriver();
+        try {
+                if (locator.equalsIgnoreCase("id")) {
+                    webElement = localDriver.findElement(By.id(locatorValue));
+                }
+                if (locator.equalsIgnoreCase("xpath")) {
+                    webElement = localDriver.findElement(By.xpath(locatorValue));
+                }
+                if (locator.equalsIgnoreCase("css")) {
+                    webElement = localDriver.findElement(By.cssSelector(locatorValue));
+                }
+                if (locator.equalsIgnoreCase("name")) {
+                    webElement = localDriver.findElement(By.name(locatorValue));
+                }
+
+        } catch (Exception exh) {
+            System.out.println("Fetcher Exception: Element was not location against given parameter");
+        }
+        return webElement;
+    }
 }
 /*--------------------------------------------------------------------------------------------------------------------*/

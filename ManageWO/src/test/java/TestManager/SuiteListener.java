@@ -1,9 +1,10 @@
 package TestManager;
 
 import Drivers.BrowserManager;
-//import PageObj.LoginObj;
+import PageObj.LoginPage;
 import Services.AppEnv;
 import Services.ReportManager;
+import Services.RestManager;
 import Services.SystemConfiguration;
 import org.testng.*;
 
@@ -15,7 +16,6 @@ public class SuiteListener implements ITestListener, ISuiteListener, IInvokedMet
     private final SystemConfiguration SysConfig = SystemConfiguration.getInstance(appEnv);
     private BrowserManager browserManager = null;
     public static AppEnv appEnv = new AppEnv();
-
     public static ReportManager reportManager = null;
     public static ReportManager getReportManager(){
         return reportManager;
@@ -28,6 +28,7 @@ public class SuiteListener implements ITestListener, ISuiteListener, IInvokedMet
         browserManager = BrowserManager.getInstance(appEnv);
         browserManager.Launch_Browser();
         appEnv.setReportManager(ReportManager.getInstance(appEnv));
+        appEnv.setRestManager(RestManager.getInstance(appEnv));
         appEnv.getReportManager().TestEnvironment();
     }
 
@@ -45,7 +46,12 @@ public class SuiteListener implements ITestListener, ISuiteListener, IInvokedMet
         browserManager.GetURL();
         appEnv.setTestPass(false);
         System.out.println(iInvokedMethod.getTestMethod().getMethodName() + " Started");
-
+        /** Log In the session if required */
+        LoginPage loginPage = new LoginPage(appEnv);
+        if(appEnv.isLogInReq() && !(loginPage.IsSession_Logged_In())){
+            appEnv.getReportManager().LogStepInfo("Login Called from Before Invocation");
+            loginPage.LogIn(appEnv.getEmail(),appEnv.getPassword());
+        }
 
     }
 

@@ -45,6 +45,14 @@ public class SystemConfiguration {
         appEnv.setPhoneNumber(prop.getProperty("PhoneNumber"));
         appEnv.setStockNumber(prop.getProperty("StockNumber"));
         appEnv.setCustomerNumber(prop.getProperty("CustomerNumber"));
+        appEnv.setEmail(prop.getProperty("Email"));
+        appEnv.setPassword(prop.getProperty("Password"));
+        appEnv.setTotalOpenWO(prop.getProperty("TotalOpenWO"));
+        appEnv.setTotalOpenWOAgainstCustomerNumber(prop.getProperty("OpenWOAgainstCustomerNumber"));
+        appEnv.setTotalOpenWOAgainstCustomerNumberAndStockNumber(prop.getProperty("OpenWOAgainstCustomerAndStockNumber"));
+        appEnv.setTotalCompletedWO(prop.getProperty("TotalCompletedWO"));
+        appEnv.setToken(prop.getProperty("Token"));
+        appEnv.setLocation(prop.getProperty("Location"));
 
         return appEnv;
     }

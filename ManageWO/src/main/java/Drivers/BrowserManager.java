@@ -34,7 +34,7 @@ public class BrowserManager {
     public void Launch_Browser() {
 
         if (appEnv.getBrowser().equalsIgnoreCase("Chrome")) {
-            WebDriverManager.chromedriver().clearPreferences();
+           // WebDriverManager.chromedriver().clearPreferences();
             WebDriverManager.chromedriver().setup();
             ChromeOptions crOptions = new ChromeOptions();
             chromeDriver = new ChromeDriver(crOptions);
@@ -42,7 +42,7 @@ public class BrowserManager {
             appEnv.setDriver(chromeDriver);
         } else
             if (appEnv.getBrowser().equalsIgnoreCase("Firefox")) {
-            WebDriverManager.firefoxdriver().clearPreferences();
+            //WebDriverManager.firefoxdriver().clearPreferences();
             WebDriverManager.firefoxdriver().setup();
             FirefoxOptions frOptions = new FirefoxOptions();
             firefoxDriver = new FirefoxDriver(frOptions);

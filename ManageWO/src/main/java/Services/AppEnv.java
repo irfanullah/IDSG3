@@ -1,6 +1,6 @@
 package Services;
-
 import org.openqa.selenium.remote.RemoteWebDriver;
+
 
 /**
  * This class will use as a global class in our project
@@ -18,8 +18,29 @@ public class AppEnv {
     private String StockNumber;
     private String CustomerNumber;
     private boolean IsTestPass;
-    private boolean IsLogInReq;
+    private boolean IsLogInReq = false;
+    private String Email;
+    private String Password;
+    private String TotalOpenWO;
+    private String TotalCompletedWO;
+    private String TotalOpenWOAgainstCustomerNumber;
+    private String TotalOpenWOAgainstCustomerNumberAndStockNumber;
     private ReportManager reportManager = null;
+    private RestManager restManager = null;
+   // private InputDataStream inputDataStream = null;
+    private String Token;
+    private String Location;
+
+
+
+
+    public RestManager getRestManager() {
+        return restManager;
+    }
+
+    public void setRestManager(RestManager restManager) {
+        this.restManager = restManager;
+    }
 
     /**
      * This mehtod is get domain name
@@ -180,6 +201,58 @@ public class AppEnv {
 
     public void setReportManager(ReportManager reportManager) {
         this.reportManager = reportManager;
+    }
+    public String getEmail(){
+        return Email;
+    }
+    public void setEmail(String email){
+        Email=email;
+    }
+    public String getPassword(){
+        return Password;
+    }
+    public void setPassword(String password){
+        Password = password;
+    }
+    public void setTotalOpenWO(String totalOpenWO){
+        TotalOpenWO = totalOpenWO;
+    }
+    public String getTotalOpenWO(){
+        return TotalOpenWO;
+    }
+
+    public void setTotalCompletedWO(String totalCompletedWO){
+        TotalCompletedWO = totalCompletedWO;
+    }
+    public String getTotalCompletedWO(){
+        return TotalCompletedWO;
+    }
+    public void setTotalOpenWOAgainstCustomerNumber(String totalOpenWOAgainstCustomerNumber){
+        TotalOpenWOAgainstCustomerNumber= totalOpenWOAgainstCustomerNumber;
+    }
+    public String getTotalOpenWOAgainstCustomerNumber(){
+        return TotalOpenWOAgainstCustomerNumber;
+    }
+
+    public void setTotalOpenWOAgainstCustomerNumberAndStockNumber(String totalOpenWOAgainstCustomerNumberAndStockNumber){
+        TotalOpenWOAgainstCustomerNumberAndStockNumber = totalOpenWOAgainstCustomerNumberAndStockNumber;
+    }
+    public String getTotalOpenWOAgainstCustomerNumberAndStockNumber(){
+        return TotalOpenWOAgainstCustomerNumberAndStockNumber;
+    }
+    public void setToken(String token){
+        Token = token;
+    }
+
+    public String getToken(){
+        return Token;
+    }
+
+    public void setLocation(String location){
+        Location = location;
+    }
+    public String getLocation(){
+        return Location;
     }
 }
 
