@@ -22,31 +22,28 @@ public class RestManager {
     }
 
 
-    public void SetDataFromAPI( String jsonObject){
-        System.out.println(jsonObject);
-                Response response =
+    public int SetDataFromAPI( String jsonObject){
+             Response response =
                 given()
                         .header("Authorization", "Bearer "+ appEnv.getToken())
                         .header("Cache-Control","no-cache")
                         .header("Content-Type","application/json")
-                        .header("User-Agent","PostmanRuntime/7.25.0")
+                        .header("User-Agent","PostmanRuntime/7.26.1")
                         .header("Accept","*/*" )
                         .header("Accept-Encoding", "gzip, deflate, br")
                         .header("Connection","keep-alive")
                         .body(jsonObject)
                         .log().all()
-                        .post("https://g3qa559.integrateddealersystems.com/IDSG3WorkOrderApi/v1/WorkOrders/Search")
+                        .post("https://g3qa559.integrateddealersystems.com/IDSG3WorkOrderApi/Service/v1/WorkOrders/Search")
                         .then()
                         .assertThat()
                         .statusCode(200)
                         .extract()
                         .response();
                 String APIResponse = response.body().asString();
+                System.out.println(APIResponse);
                 JSONObject jsonObj = new JSONObject(APIResponse);
-                appEnv.setTotalOpenWOAgainstCustomerNumber(String.valueOf(jsonObj.get("ItemCount")));
-                System.out.println(jsonObj.get("ItemCount"));
+                return jsonObj.getInt("ItemCount");
 
     }
-
-
 }

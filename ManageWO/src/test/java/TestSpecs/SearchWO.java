@@ -2,12 +2,12 @@ package TestSpecs;
 
 import PageObj.LoginPage;
 import PageObj.RecentWO;
+import PageObj.WODetails;
 import Services.AppEnv;
 import Services.General;
 import Services.RestManager;
 import TestManager.InputDataStream;
 import TestManager.SuiteListener;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
@@ -20,6 +20,7 @@ public class SearchWO {
     private LoginPage loginPage;
     private RestManager restManager;
     private InputDataStream inputDataStream;
+    private WODetails woDetails;
 
     /**
      * This is constructor class
@@ -31,17 +32,13 @@ public class SearchWO {
         pgRecentWO = new RecentWO(appEnv);
         loginPage = new LoginPage(appEnv);
         inputDataStream = InputDataStream.getInstance(appEnv);
+        woDetails = WODetails.getInstance(appEnv);
 
 
     }
 
-    @BeforeMethod
-    public void BodyConfiguration(){
-
-    }
     @Test(priority = 0)
     public void Login(){
-        appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetWOAgainstStockNo());
         loginPage.LogIn(appEnv.getEmail(),appEnv.getPassword());
         appEnv.setLogInReq(false);
         appEnv.setTestPass(loginPage.IsSession_Logged_In());
@@ -49,7 +46,7 @@ public class SearchWO {
 
     }
    @Test(priority = 1)
-    public void Search_WO_By_WO_Number(){
+    public void Search_Open_WO_Against_WO_Number(){
         Utils.StaticWait(10000);
         loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
@@ -60,7 +57,8 @@ public class SearchWO {
         Utils.VerifyResult("Work Order Not Found", appEnv.isTestPass());
     }
    @Test(priority = 2)
-    public void Search_WO_By_Stock_Number(){
+    public void Search_Open_WO_Against_Stock_Number(){
+       appEnv.setTotalWOAgainstStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenWOAgainstStockNo()));
        Utils.StaticWait(10000);
        loginPage.Click_Work_Order_Button();
        Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
@@ -69,11 +67,15 @@ public class SearchWO {
        pgRecentWO.Type_Stock_Number(appEnv.getStockNumber());
        pgRecentWO.Click_Search_Button();
        Utils.StaticWait(10000);
-       appEnv.setTestPass(Utils.Search_Table_with_String(appEnv.getStockNumber()));
+       appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+
+       appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstStockNumber() &&
+               Utils.Search_Table_with_String(appEnv.getStockNumber()) );
        Utils.VerifyResult("No Work Order Found Against Given Stock Number", appEnv.isTestPass());
     }
     @Test(priority = 3)
-    public void Search_WO_By_First_Name(){
+    public void Search_WO_Against_First_Name(){
+        appEnv.setTotalWOAgainstFirstName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenWOAgainstFirstName()));
         Utils.StaticWait(10000);
         loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
@@ -81,12 +83,14 @@ public class SearchWO {
         pgRecentWO.Type_First_Name(appEnv.getFirstName());
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(10000);
-        appEnv.setTestPass(Utils.Find_Customer(appEnv.getFirstName()));
-        Utils.VerifyResult("No Work Order Found against the given First Name ", appEnv.isTestPass());
+        appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+        appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstFirstName() && Utils.Find_Customer(appEnv.getFirstName()));
+        Utils.VerifyResult("Work Orders Loaded in GUI Does Not Match with Number of Work Orders against the given First Name ", appEnv.isTestPass());
 
     }
     @Test(priority = 4)
-    public void Search_WO_By_Last_Name(){
+    public void Search_Open_WO_Against_Last_Name(){
+        appEnv.setTotalWOAgainstLastName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenWOAgainstLastName()));
         Utils.StaticWait(10000);
         loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
@@ -94,29 +98,35 @@ public class SearchWO {
         pgRecentWO.Type_Last_Name(appEnv.getLastName());
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(10000);
-        appEnv.setTestPass(Utils.Find_Customer(appEnv.getLastName()));
-        Utils.VerifyResult("No Work Order Found against the given Last Name ", appEnv.isTestPass());
+        appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+        appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstLastName() && Utils.Find_Customer(appEnv.getLastName()));
+        Utils.VerifyResult("Work Orders Loaded in GUI Does Not Match with Number of Work Orders against the given Last Name ", appEnv.isTestPass());
+
 
     }
 
     @Test(priority = 5)
-    public void Search_WO_By_Customer_Number(){
-        Utils.StaticWait(10000);
+    public void Search_Completed_WO_Against_Customer_Number(){
+        appEnv.setTotalWOAgainstCustomerNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCompletedWOWithinGivenDaysAgainstCustomerNumber()));
+        Utils.StaticWait(5000);
         loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
-        pgRecentWO.Click_Clear_Button();
-        Utils.StaticWait(10000);
         pgRecentWO.Click_More_Filters_Button();
+        pgRecentWO.Click_Include_Open_WO();
+        pgRecentWO.Type_Completed_With_in_Days(appEnv.getCompletedWithinDays());
         pgRecentWO.Type_Customer_Number(appEnv.getCustomerNumber());
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(10000);
-        appEnv.setTestPass(Utils.Find_Customer(appEnv.getCustomerNumber()));
-        Utils.VerifyResult("No Work Order Found against the given Customer Number ", appEnv.isTestPass());
+        appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+        appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstCustomerNumber() &&
+                Utils.Search_Table_with_String(appEnv.getStockNumber()) );
+        Utils.VerifyResult("Completed WO Loaded in GUI does not match with Completed WO in the system against Customer Number", appEnv.isTestPass());
 
     }
 
     @Test(priority = 6)
-    public void Search_Open_Work_Orders_Against_Customer_Number(){
+    public void Search_Open_WO_Against_Customer_Number(){
+        appEnv.setTotalWOAgainstCustomerNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenWOAgainstCustomerNo()));
         Utils.StaticWait(10000);
         loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
@@ -124,20 +134,15 @@ public class SearchWO {
         pgRecentWO.Type_Customer_Number(appEnv.getCustomerNumber());
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(10000);
-        if(Utils.Count_Table_Rows()>=Integer.parseInt(appEnv.getTotalOpenWOAgainstCustomerNumber())){
-            appEnv.getReportManager().LogStepInfo("Total Number of Open Work Orders against Customer # "
-                                                    + appEnv.getCustomerNumber() + " : " + Utils.Count_Table_Rows());
-            Utils.VerifyResult("Passed Open Work Orders against Customer Number", true);
-        }
-
-        else
-            Utils.VerifyResult("Total Number of Open Work Orders Found are : " + Utils.Count_Table_Rows() +
-                    "Total Number of open work orders in the system are : " + appEnv.getTotalOpenWO(), false);
-
+        appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+        appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstCustomerNumber()
+                && Utils.Find_Customer(appEnv.getCustomerNumber()));
+        Utils.VerifyResult("Work Orders loaded does not match with Work Orders in the system against given customer", appEnv.isTestPass());
     }
 
     @Test(priority = 7)
-    public void Search_Open_Work_Orders_Against_Customer_Number_And_Stock_Number(){
+    public void Search_Open_WO_Against_Customer_Number_And_Stock_Number(){
+        appEnv.setTotalWOAgainstCustomerNumberAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenWOAgainstWONumberAndStockNumber()));
         Utils.StaticWait(10000);
         loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
@@ -146,41 +151,54 @@ public class SearchWO {
         pgRecentWO.Type_Stock_Number(appEnv.getStockNumber());
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(10000);
-        if(Utils.Count_Table_Rows()==Integer.parseInt(appEnv.getTotalOpenWOAgainstCustomerNumberAndStockNumber())){
-            appEnv.getReportManager().LogStepInfo("Total Number of Open Work Orders against Customer # "
-                                                    + appEnv.getCustomerNumber() +
-                                                    " And Stock Number " + appEnv.getStockNumber() + " : "
-                                                    + Utils.Count_Table_Rows());
-            Utils.VerifyResult("Passed Open Work Orders against Customer Number and Stock Number", true);
-        }
-
-        else
-            Utils.VerifyResult("Total Number of Open Work Orders Found are : " + Utils.Count_Table_Rows() +
-                    "Total Number of open work orders in the system are : " + appEnv.getTotalOpenWO(), false);
-
+        appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+        appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstCustomerNumberAndStockNumber()
+                && Utils.Find_Customer(appEnv.getCustomerNumber()) && Utils.Search_Table_with_String(appEnv.getStockNumber()));
+        Utils.VerifyResult("Work Orders loaded does not match with Open Work Orders in the system against given customer and stock Number", appEnv.isTestPass());
     }
 
     @Test(priority = 8)
-    public void Search_Completed_Work_Orders_Within_Ten_Days(){
+    public void Search_Completed_Work_Orders_Within_Given_Days_Against_Stock_Number(){
+        appEnv.setTotalWOAgainstStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCompletedWOWithinGivenDaysAgainstStockNumber()));
         Utils.StaticWait(5000);
         loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_More_Filters_Button();
         pgRecentWO.Click_Include_Open_WO();
-        pgRecentWO.Type_Completed_With_in_Days("10");
+        pgRecentWO.Type_Completed_With_in_Days(appEnv.getCompletedWithinDays());
+        pgRecentWO.Type_Stock_Number(appEnv.getStockNumber());
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(10000);
-        if(Utils.Count_Table_Rows()>=Integer.parseInt(appEnv.getTotalCompletedWO()))
-            Utils.VerifyResult("Total Completed Work Orders Within Ten Days : " + Utils.Count_Table_Rows(), true);
-        else
-            Utils.VerifyResult("Total Completed Work Orders Within Ten Days Found are : " + Utils.Count_Table_Rows() +
-                    "Total Completed Work Orders Within Ten Days in the system are : " + appEnv.getTotalCompletedWO(), false);
+        appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+        appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstStockNumber() &&
+                Utils.Search_Table_with_String(appEnv.getStockNumber()) );
+        Utils.VerifyResult("Work Order Loaded in the GUI Does Not Match with Completed WO in the System Against Stock Number", appEnv.isTestPass());
+
+    }
+
+    @Test(priority = 9)
+    public void Search_Completed_Work_Orders_Within_Given_Days_Against_Customer_And_Stock_Number(){
+        appEnv.setTotalWOAgainstCustomerNumberAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCompletedWOWithinGivenDaysAgainstCustomerAndStockNumber()));
+        Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
+        Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
+        pgRecentWO.Click_More_Filters_Button();
+        pgRecentWO.Click_Include_Open_WO();
+        pgRecentWO.Type_Completed_With_in_Days(appEnv.getCompletedWithinDays());
+        pgRecentWO.Type_Customer_Number(appEnv.getCustomerNumber());
+        pgRecentWO.Type_Stock_Number(appEnv.getStockNumber());
+        pgRecentWO.Click_Search_Button();
+        Utils.StaticWait(10000);
+        appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+        appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstCustomerNumberAndStockNumber() &&
+                Utils.Search_Table_with_String(appEnv.getStockNumber()) && Utils.Find_Customer(appEnv.getCustomerNumber()) );
+        Utils.VerifyResult("Work Order Loaded in the GUI Does Not Match with Completed WO in the System Against Customer and Stock Number", appEnv.isTestPass());
 
     }
 
 
 
-    @Test(priority = 9)
+    @Test(priority = 10)
     public void Debug_Test_Cases_To_See_Table_Data_Loaded(){
         Utils.StaticWait(5000);
         loginPage.Click_Work_Order_Button();

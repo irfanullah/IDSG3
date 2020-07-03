@@ -35,15 +35,40 @@ public class TestFiltration {
                 appEnv.setLogInReq(true);
                 TestDescription = "This test will Search Work Orders by Work Order Number";
                 break;
-            case "Search_WO_By_Stock_Number":
+            case "Search_Open_WO_Against_Stock_Number":
                 appEnv.setLogInReq(true);
-                TestDescription = "This test will Search Work Orders by Stock Number";
+                TestDescription = "This test will Search Open Work Orders by Stock Number";
                 break;
 
-            case "Search_WO_By_First_Name":
+            case "Search_WO_Against_First_Name":
                 appEnv.setLogInReq(true);
                 TestDescription = "This test will Search Work Orders by First Name";
                 break;
+            case "Search_Open_WO_Against_Last_Name":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Open Work Orders by Last Name";
+                break;
+            case "Search_Completed_WO_Against_Customer_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Completed Search Work Orders by Customer Number";
+                break;
+            case "Search_Open_WO_Against_Customer_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders by First Name";
+                break;
+            case "Search_Open_WO_Against_Customer_Number_And_Stock_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders by First Name";
+                break;
+            case "Search_Completed_Work_Orders_Within_Given_Days_Against_Stock_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders by First Name";
+                break;
+            case "Search_Completed_Work_Orders_Within_Given_Days_Against_Customer_And_Stock_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders by First Name";
+                break;
+
 
         default:
             appEnv.setLogInReq(false);

@@ -23,8 +23,13 @@ public class AppEnv {
     private String Password;
     private String TotalOpenWO;
     private String TotalCompletedWO;
-    private String TotalOpenWOAgainstCustomerNumber;
-    private String TotalOpenWOAgainstCustomerNumberAndStockNumber;
+    private int TotalWOAgainstCustomerNumber;
+    private int TotalWOAgainstCustomerNumberAndStockNumber;
+    private int TotalWOAgainstStockNumber;
+    private int TotalWOAgainstFirstName;
+    private int TotalWOAgainstLastName;
+    private int TotalWOAgainstPhoneNumber;
+    private String CompletedWithinDays;
     private ReportManager reportManager = null;
     private RestManager restManager = null;
    // private InputDataStream inputDataStream = null;
@@ -32,7 +37,61 @@ public class AppEnv {
     private String Location;
 
 
+    public int getTotalWOAgainstCustomerNumber() {
+        return TotalWOAgainstCustomerNumber;
+    }
 
+    public void setTotalWOAgainstCustomerNumber(int totalWOAgainstCustomerNumber) {
+        TotalWOAgainstCustomerNumber = totalWOAgainstCustomerNumber;
+    }
+
+    public int getTotalWOAgainstCustomerNumberAndStockNumber() {
+        return TotalWOAgainstCustomerNumberAndStockNumber;
+    }
+
+    public void setTotalWOAgainstCustomerNumberAndStockNumber(int totalWOAgainstCustomerNumberAndStockNumber) {
+        TotalWOAgainstCustomerNumberAndStockNumber = totalWOAgainstCustomerNumberAndStockNumber;
+    }
+
+    public String getCompletedWithinDays() {
+        return CompletedWithinDays;
+    }
+
+    public void setCompletedWithinDays(String completedWithinDays) {
+        CompletedWithinDays = completedWithinDays;
+    }
+
+    public int getTotalWOAgainstLastName() {
+        return TotalWOAgainstLastName;
+    }
+
+    public void setTotalWOAgainstLastName(int totalWOAgainstLastName) {
+        TotalWOAgainstLastName = totalWOAgainstLastName;
+    }
+
+    public int getTotalWOAgainstPhoneNumber() {
+        return TotalWOAgainstPhoneNumber;
+    }
+
+    public void setTotalWOAgainstPhoneNumber(int totalWOAgainstPhoneNumber) {
+        TotalWOAgainstPhoneNumber = totalWOAgainstPhoneNumber;
+    }
+
+    public int getTotalWOAgainstFirstName() {
+        return TotalWOAgainstFirstName;
+    }
+
+    public void setTotalWOAgainstFirstName(int totalWOAgainstFirstName) {
+        TotalWOAgainstFirstName = totalWOAgainstFirstName;
+    }
+
+    public int getTotalWOAgainstStockNumber() {
+        return TotalWOAgainstStockNumber;
+    }
+
+    public void setTotalWOAgainstStockNumber(int totalWOAgainstStockNumber) {
+        TotalWOAgainstStockNumber = totalWOAgainstStockNumber;
+    }
 
     public RestManager getRestManager() {
         return restManager;
@@ -227,19 +286,7 @@ public class AppEnv {
     public String getTotalCompletedWO(){
         return TotalCompletedWO;
     }
-    public void setTotalOpenWOAgainstCustomerNumber(String totalOpenWOAgainstCustomerNumber){
-        TotalOpenWOAgainstCustomerNumber= totalOpenWOAgainstCustomerNumber;
-    }
-    public String getTotalOpenWOAgainstCustomerNumber(){
-        return TotalOpenWOAgainstCustomerNumber;
-    }
 
-    public void setTotalOpenWOAgainstCustomerNumberAndStockNumber(String totalOpenWOAgainstCustomerNumberAndStockNumber){
-        TotalOpenWOAgainstCustomerNumberAndStockNumber = totalOpenWOAgainstCustomerNumberAndStockNumber;
-    }
-    public String getTotalOpenWOAgainstCustomerNumberAndStockNumber(){
-        return TotalOpenWOAgainstCustomerNumberAndStockNumber;
-    }
     public void setToken(String token){
         Token = token;
     }

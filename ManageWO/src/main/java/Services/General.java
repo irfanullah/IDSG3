@@ -45,6 +45,19 @@ public class General {
         return State;
     }
 
+  /*
+   This method will return given item text
+   */
+  public String GetText(WebElement WebItem){
+        String ElementText = null;
+        try {
+            ElementText= WebItem.getText();
+        }catch (Exception e) {
+            System.out.println("Unable to Retreive Object Text");
+        }
+        return ElementText;
+    }
+
     /**
      * This is general method to wait for a moment in MS
      * @param TimeInMS In milli second
@@ -248,7 +261,7 @@ public class General {
 
     }
 
-    //This function will return ture if given element exit in the table otherwise false
+    //This function will return true if given element exit in the table otherwise false
     public boolean Search_Table_with_String(String Search_Item){
 
         List  rows =  appEnv.getDriver().findElements(By.xpath("//*[@data-test-id=\"gridBodyRow\"]/*[@data-test-id=\"gridBodyCell\"][1]"));

@@ -47,12 +47,9 @@ public class SystemConfiguration {
         appEnv.setCustomerNumber(prop.getProperty("CustomerNumber"));
         appEnv.setEmail(prop.getProperty("Email"));
         appEnv.setPassword(prop.getProperty("Password"));
-        appEnv.setTotalOpenWO(prop.getProperty("TotalOpenWO"));
-        appEnv.setTotalOpenWOAgainstCustomerNumber(prop.getProperty("OpenWOAgainstCustomerNumber"));
-        appEnv.setTotalOpenWOAgainstCustomerNumberAndStockNumber(prop.getProperty("OpenWOAgainstCustomerAndStockNumber"));
-        appEnv.setTotalCompletedWO(prop.getProperty("TotalCompletedWO"));
         appEnv.setToken(prop.getProperty("Token"));
         appEnv.setLocation(prop.getProperty("Location"));
+        appEnv.setCompletedWithinDays(prop.getProperty("CompletedWithinDays"));
 
         return appEnv;
     }
