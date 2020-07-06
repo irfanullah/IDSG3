@@ -30,12 +30,29 @@ public class AppEnv {
     private int TotalWOAgainstLastName;
     private int TotalWOAgainstPhoneNumber;
     private String CompletedWithinDays;
+    private String APIAddress;
+    private String UserID;
     private ReportManager reportManager = null;
     private RestManager restManager = null;
    // private InputDataStream inputDataStream = null;
     private String Token;
     private String Location;
 
+    public String getAPIAddress() {
+        return APIAddress;
+    }
+
+    public void setAPIAddress(String APIAddress) {
+        this.APIAddress = APIAddress;
+    }
+
+    public String getUserID() {
+        return UserID;
+    }
+
+    public void setUserID(String userID) {
+        UserID = userID;
+    }
 
     public int getTotalWOAgainstCustomerNumber() {
         return TotalWOAgainstCustomerNumber;

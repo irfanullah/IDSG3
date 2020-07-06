@@ -5,7 +5,7 @@
         <classes>
             <class name="TestSpecs.SearchWO">
                 <methods>
-                    <exclude name="Search_WO_By_WO_Number" />
+                    <exclude name="Debug_Test_Cases_To_See_Table_Data_Loaded" />
 
                 </methods>
             </class>

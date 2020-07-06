@@ -27,7 +27,7 @@ public class TestFiltration {
         ITestNGMethod methodName = iInvokedMethod.getTestMethod();
         String TestDescription = "";
         switch (methodName.getMethodName()) {
-            case "Login":
+            case "Login_With_EmailAddress":
                 appEnv.setLogInReq(false);
                 TestDescription = "This test will log in the user";
                 break;
@@ -54,19 +54,19 @@ public class TestFiltration {
                 break;
             case "Search_Open_WO_Against_Customer_Number":
                 appEnv.setLogInReq(true);
-                TestDescription = "This test will Search Work Orders by First Name";
+                TestDescription = "This test will Search Work Orders ";
                 break;
             case "Search_Open_WO_Against_Customer_Number_And_Stock_Number":
                 appEnv.setLogInReq(true);
-                TestDescription = "This test will Search Work Orders by First Name";
+                TestDescription = "This test will Search Work Orders";
                 break;
             case "Search_Completed_Work_Orders_Within_Given_Days_Against_Stock_Number":
                 appEnv.setLogInReq(true);
-                TestDescription = "This test will Search Work Orders by First Name";
+                TestDescription = "This test will Search Work Orders ";
                 break;
             case "Search_Completed_Work_Orders_Within_Given_Days_Against_Customer_And_Stock_Number":
                 appEnv.setLogInReq(true);
-                TestDescription = "This test will Search Work Orders by First Name";
+                TestDescription = "This test will Search Work Orders";
                 break;
 
 

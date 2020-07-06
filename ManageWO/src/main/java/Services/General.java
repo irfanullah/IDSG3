@@ -1,5 +1,6 @@
 package Services;
 
+import PageObj.WODetails;
 import org.joda.time.DateTime;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -18,6 +19,7 @@ public class General {
 
     private static General general = new General();
     private static AppEnv appEnv = new AppEnv();
+    private static WODetails woDetails;
 
     private General() {
     }
@@ -25,6 +27,7 @@ public class General {
     /* Static 'instance' method */
     public static General getInstance(AppEnv appEnv) {
         General.appEnv = appEnv;
+       // woDetails = WODetails.getInstance(appEnv);
         return general;
     }
 
@@ -95,6 +98,11 @@ public class General {
     public void waitTillXpathPresent(String xpath, int waitTimeSec) {
         WebDriverWait wait = new WebDriverWait(appEnv.getDriver(), waitTimeSec);
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(xpath)));
+    }
+
+    public void waitTillNamePresent(String name, int waitTimeSec) {
+        WebDriverWait wait = new WebDriverWait(appEnv.getDriver(), waitTimeSec);
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.name(name)));
     }
   /*  public boolean Wait_For_Element_By_Xpath(String Xpath, long TimeInSec){
         WebDriverWait(appEnv.getDriver(),10).

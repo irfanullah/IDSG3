@@ -26,7 +26,7 @@ public class SystemConfiguration {
      */
     public AppEnv Read_Properties(AppEnv appEnv) {
         Properties prop = new Properties();
-        File file = new File("./src/main/resources/SysConfig/SysConfig.properties");
+        File file = new File("./src/main/resources/SysConfig/QAVM94.properties");
 
         FileInputStream fileInput;
 
@@ -50,6 +50,8 @@ public class SystemConfiguration {
         appEnv.setToken(prop.getProperty("Token"));
         appEnv.setLocation(prop.getProperty("Location"));
         appEnv.setCompletedWithinDays(prop.getProperty("CompletedWithinDays"));
+        appEnv.setUserID(prop.getProperty("UserID"));
+        appEnv.setAPIAddress(prop.getProperty("APIAddress"));
 
         return appEnv;
     }

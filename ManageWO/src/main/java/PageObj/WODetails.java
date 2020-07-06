@@ -23,7 +23,7 @@ public class WODetails {
 
     public String GetWODate(){
         Utils.waitTillXpathPresent("//*[@id=\"root\"]//div[starts-with(@class,'Card_container')][1]//div[starts-with(@class,'CardLineItem_container')][1]//div[2]", 30);
-        return  Utils.GetText(fetch_elements.GetObj("xpath","//*[@id=\"root\"]//div[starts-with(@class,'Card_container')][1]//div[starts-with(@class,'CardLineItem_container')][1]//div[2]"));
+        return  Utils.GetText(fetch_elements.GetObj("xpath","//*[@id=\"root\"]//div[starts-with(@class,'WorkOrderHeader_container')]//div[@class=\"col-12\"][1]//div[starts-with(@class,'Card_container')][1]//div[starts-with(@class,'Card_dataCol')][1]//div[starts-with(@class,'CardLineItem_container')][1]//div[2]"));
     }
 
 
