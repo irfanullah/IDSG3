@@ -27,8 +27,10 @@ public class LoginPage
      * @param Email
      */
     public void Type_Email_Address(String Email) {
-        appEnv.getReportManager().LogStepInfo("Type Email or UserID Address :  " + Email);
-        Utils.SendText(fetch_elements.GetObj("name", "userId"), Email);
+        if (Utils.IsObjExist(fetch_elements.GetObj("name", "userId"))) {
+            Utils.SendText(fetch_elements.GetObj("name", "userId"), Email);
+            appEnv.getReportManager().LogStepInfo("Type Email or UserID Address :  " + Email);
+        }
     }
 
     /**
@@ -57,14 +59,14 @@ public class LoginPage
     /**
      * This method will Click Go to Work Order button on Welcome Page.
      */
-    public void Click_Work_Order_Button() {
+    /*public void Click_Work_Order_Button() {
 
         Utils.waitTillXpathPresent("//*[@id=\"root\"]//button[@type= 'button']", 30);
         if (Utils.IsObjExist(fetch_elements.GetObj("xpath", "//*[@id=\"root\"]//button[@type= 'button']"))) {
             Utils.ClickObj(fetch_elements.GetObj("xpath", "//*[@id=\"root\"]//button[@type= 'button']"));
-            appEnv.getReportManager().LogStepInfo("Click Work Order Button");
+            //appEnv.getReportManager().LogStepInfo("Click Work Order Button");
         }
-    }
+    }*/
 
 
         /**
@@ -73,7 +75,7 @@ public class LoginPage
          */
     public boolean IsSession_Logged_In()
     {
-        return (Utils.IsObjExist(fetch_elements.GetObj("xpath", "//*[@id=\"root\"]//div[starts-with(@class, 'Avatar')]"))|| Utils.IsObjExist(fetch_elements.GetObj("xpath", "//*[@id=\"root\"]//button[@type= 'button']")));
+        return (Utils.IsObjExist(fetch_elements.GetObj("xpath", "//*[@id=\"root\"]//div[starts-with(@class, 'Avatar')]")));
     }
 
         /**
@@ -84,12 +86,10 @@ public class LoginPage
          */
     public boolean LogIn(String Email, String Password){
         Utils.waitTillNamePresent("userId",30);
-       // Utils.waitTillXpathPresent("//*[@id=\"root\"]//button[@type= 'submit']", 30);
         Type_Email_Address(Email);
         Type_Password(Password);
         Click_Sign_in_Button();
         Utils.waitTillXpathPresent("//*[@id=\"root\"]//button[@type= 'button']", 30);
-        Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@id=\"root\"]//div[starts-with(@class, 'Avatar')]", 30);
         return IsSession_Logged_In();
     }
@@ -103,6 +103,7 @@ public class LoginPage
             Utils.ClickObj(fetch_elements.GetObj("xpath", "//*[@id=\"root\"]//div[starts-with(@class, 'Avatar')]"));
         Utils.waitTillXpathPresent("//*[@id=\"root\"]//button[starts-with(@class, 'UserMenu')]", 30);
         Utils.ClickObj(fetch_elements.GetObj("xpath", "//*[@id=\"root\"]//button[starts-with(@class, 'UserMenu')]"));
+        appEnv.getReportManager().LogStepInfo("Click Sign Out  button.");
         Utils.waitTillNamePresent("userId",30);
     }
 

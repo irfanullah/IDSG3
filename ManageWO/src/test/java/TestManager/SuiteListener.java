@@ -50,7 +50,7 @@ public class SuiteListener implements ITestListener, ISuiteListener, IInvokedMet
         LoginPage loginPage = new LoginPage(appEnv);
         if(appEnv.isLogInReq() && !(loginPage.IsSession_Logged_In())){
             appEnv.getReportManager().LogStepInfo("Login Called from Before Invocation for " + iInvokedMethod.getTestMethod().getMethodName() + "Test");
-            loginPage.LogIn(appEnv.getEmail(),appEnv.getPassword());
+            loginPage.LogIn(appEnv.getUserID(),appEnv.getPassword());
         }
 
     }

@@ -40,7 +40,7 @@ public class TestFiltration {
                 TestDescription = "This test will Search Open Work Orders by Stock Number";
                 break;
 
-            case "Search_WO_Against_First_Name":
+            case "Search_Open_WO_Against_First_Name":
                 appEnv.setLogInReq(true);
                 TestDescription = "This test will Search Work Orders by First Name";
                 break;
@@ -60,14 +60,163 @@ public class TestFiltration {
                 appEnv.setLogInReq(true);
                 TestDescription = "This test will Search Work Orders";
                 break;
-            case "Search_Completed_Work_Orders_Within_Given_Days_Against_Stock_Number":
+            case "Search_Completed_WO_Against_Stock_Number":
                 appEnv.setLogInReq(true);
                 TestDescription = "This test will Search Work Orders ";
                 break;
-            case "Search_Completed_Work_Orders_Within_Given_Days_Against_Customer_And_Stock_Number":
+            case "Search_Completed_WO_Against_Customer_And_Stock_Number":
                 appEnv.setLogInReq(true);
                 TestDescription = "This test will Search Work Orders";
                 break;
+            case "Search_Completed_WO_Days_Against_First_Name":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Completed_WO_Against_Last_Name":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Completed_WO_Against_First_Name_And_Last_Name":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Completed_WO_Against_First_Name_Last_Name_And_Stock_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Completed_WO_Days_Against_First_Name_Last_Name_Customer_Number_And_Stock_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Completed_WO_Against_First_Name_Last_Name_And_Customer_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Open_WO_Against_First_Name_And_Last_Name":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Open_WO_Against_First_Name_Last_Name_And_Customer_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Open_WO_Against_First_Name_Last_Name_Customer_Number_And_Stock_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Open_WO_Against_First_Name_Last_Name_And_Stock_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Completed_WO_Against_WO_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Cancelled_WO_Against_WO_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Cancelled_WO_Against_First_Name":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Cancelled_WO_Against_Last_Name":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Cancelled_WO_Against_Stock_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Cancelled_WO_Against_Customer_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Cancelled_WO_Against_First_Name_And_Last_Name":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Cancelled_WO_Against_First_Name_Last_Name_And_Stock_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Cancelled_WO_Against_First_Name_Last_Name_Customer_Number_And_Stock_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Cancelled_WO_Against_First_Name_Last_Name_And_Customer_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Cancelled_WO_Against_Customer_And_Stock_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Open_And_Completed_WO_Against_WO_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Open_And_Completed_WO_Against_First_Name":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Open_And_Completed_WO_Against_Last_Name":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Open_And_Completed_WO_Against_Stock_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Open_And_Completed_WO_Against_Customer_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Open_And_Completed_WO_Against_First_Name_And_Last_Name":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Open_And_Completed_WO_Against_First_Name_Last_Name_And_Stock_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Open_And_Completed_WO_Against_First_Name_Last_Name_Customer_Number_And_Stock_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Open_And_Completed_WO_Against_First_Name_Last_Name_And_Customer_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Search_Open_And_Completed_WO_Against_Customer_And_Stock_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         default:
