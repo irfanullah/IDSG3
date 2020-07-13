@@ -33,9 +33,12 @@ public class ReportManager {
      */
     public void TestEnvironment()
     {
+        extentReports.setSystemInfo("Server : ", appEnv.getEnvironment());
+        extentReports.setSystemInfo("Browser : ", appEnv.getBrowser());
         extentReports.setSystemInfo("User : ", System.getProperty("user.name"));
         extentReports.setSystemInfo("OS : ", System.getProperty("os.name"));
         extentReports.setSystemInfo("JDK : ", System.getProperty("java.version"));
+
     }
     public void InitReport(String strTestName, String strTestDescription)
     {

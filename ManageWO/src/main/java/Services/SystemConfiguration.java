@@ -52,6 +52,7 @@ public class SystemConfiguration {
         appEnv.setCompletedWithinDays(prop.getProperty("CompletedWithinDays"));
         appEnv.setUserID(prop.getProperty("UserID"));
         appEnv.setAPIAddress(prop.getProperty("APIAddress"));
+        appEnv.setEnvironment(prop.getProperty("Environment"));
 
         return appEnv;
     }

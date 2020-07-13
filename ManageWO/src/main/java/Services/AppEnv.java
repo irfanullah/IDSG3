@@ -39,7 +39,17 @@ public class AppEnv {
     private RestManager restManager = null;
     private String Token;
     private String Location;
+    private String Environment;
 
+
+
+    public String getEnvironment() {
+        return Environment;
+    }
+
+    public void setEnvironment(String environment) {
+        Environment = environment;
+    }
 
     public int getTotalWOAgainstWONumber() {
         return TotalWOAgainstWONumber;
