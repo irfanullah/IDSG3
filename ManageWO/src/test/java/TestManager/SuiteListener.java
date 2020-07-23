@@ -2,10 +2,7 @@ package TestManager;
 
 import Drivers.BrowserManager;
 import PageObj.LoginPage;
-import Services.AppEnv;
-import Services.ReportManager;
-import Services.RestManager;
-import Services.SystemConfiguration;
+import Services.*;
 import org.testng.*;
 
 /**
@@ -15,7 +12,9 @@ import org.testng.*;
 public class SuiteListener implements ITestListener, ISuiteListener, IInvokedMethodListener {
     private final SystemConfiguration SysConfig = SystemConfiguration.getInstance(appEnv);
     private BrowserManager browserManager = null;
+  //  private SendMailSSLWithAttachment sendMailSSLWithAttachment = SendMailSSLWithAttachment.getInstance(appEnv);
     public static AppEnv appEnv = new AppEnv();
+    public static EmailAdopter emailAdopter = null;
     public static ReportManager reportManager = null;
     public static ReportManager getReportManager(){
         return reportManager;
@@ -26,6 +25,7 @@ public class SuiteListener implements ITestListener, ISuiteListener, IInvokedMet
     public void onStart(ISuite iSuite) {
         appEnv = SysConfig.Read_Properties(appEnv);
         browserManager = BrowserManager.getInstance(appEnv);
+        emailAdopter = EmailAdopter.getInstance(appEnv);
         browserManager.Launch_Browser();
         appEnv.setReportManager(ReportManager.getInstance(appEnv));
         appEnv.setRestManager(RestManager.getInstance(appEnv));
@@ -36,6 +36,10 @@ public class SuiteListener implements ITestListener, ISuiteListener, IInvokedMet
     public void onFinish(ISuite iSuite) {
         appEnv.getReportManager().EndReport();
         browserManager.Kill_Driver();
+        if(appEnv.getSendReportEmail().equalsIgnoreCase("true")) {
+            appEnv.getReportManager().vAttach_Image_With_Email();
+            emailAdopter.Email_Report();
+        }
     }
 
 
@@ -96,4 +100,5 @@ public class SuiteListener implements ITestListener, ISuiteListener, IInvokedMet
 
 
     }
+
 }

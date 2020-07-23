@@ -3,7 +3,10 @@ package Services;
 import PageObj.WODetails;
 import org.joda.time.DateTime;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -21,8 +24,7 @@ public class General {
     private static AppEnv appEnv = new AppEnv();
     private static WODetails woDetails;
 
-    private General() {
-    }
+
 
     /* Static 'instance' method */
     public static General getInstance(AppEnv appEnv) {
@@ -232,10 +234,18 @@ public class General {
         return filename;
     }
 
+    public void setToken(String token) {
+        Token = token;
+    }
+
+    String Token = null;
+
+    private General() {
+    }
 
     //This methods locates table, counts number of rows and columsn and displays data of table
     public void Dislay_Row_Elements() {
-        List  rows =  appEnv.getDriver().findElements(By.xpath("//*[@data-test-id=\"gridBodyRow\"]/*[@data-test-id=\"gridBodyCell\"][1]"));
+        List  rows =  appEnv.getDriver().findElements(By.xpath("//*[starts-with(@data-test-id,'gridBodyRow')]/*[@data-test-id=\"gridBodyCell\"][1]"));
         int Row_count =  rows.size();
         List Columns = appEnv.getDriver().findElements(By.xpath("//*[@data-test-id=\"gridBodyRow\"][1]/*[@data-test-id=\"gridBodyCell\"]"));
         int Col_count = Columns.size();
@@ -266,7 +276,7 @@ public class General {
 
     //This function will return number of rows in given table
     public int Count_Table_Rows(){
-        List  rows =  appEnv.getDriver().findElements(By.xpath("//*[@data-test-id=\"gridBodyRow\"]/*[@data-test-id=\"gridBodyCell\"][1]"));
+        List  rows =  appEnv.getDriver().findElements(By.xpath("//*[starts-with(@data-test-id,'gridBodyRow')]/*[@data-test-id=\"gridBodyCell\"][1]"));
         return rows.size();
 
     }
@@ -274,12 +284,12 @@ public class General {
     //This function will return true if given element exit in the table otherwise false
     public boolean Search_Table_with_String(String Search_Item){
 
-        List  rows =  appEnv.getDriver().findElements(By.xpath("//*[@data-test-id=\"gridBodyRow\"]/*[@data-test-id=\"gridBodyCell\"][1]"));
+        List  rows =  appEnv.getDriver().findElements(By.xpath("//*[starts-with(@data-test-id,'gridBodyRow')]/*[@data-test-id=\"gridBodyCell\"][1]"));
         int Row_count =  rows.size();
-        List Columns = appEnv.getDriver().findElements(By.xpath("//*[@data-test-id=\"gridBodyRow\"][1]/*[@data-test-id=\"gridBodyCell\"]"));
+        List Columns = appEnv.getDriver().findElements(By.xpath("//*[@data-test-id=\'gridBodyRow0\'][1]/*[@data-test-id=\'gridBodyCell\']"));
         int Col_count = Columns.size();
         String first_part = "//*[@data-test-id=";
-        String second_part ="'gridBodyRow'";
+        String second_part ="'gridBodyRow0'";
         String third_part = "][";
         String four_part = "]/*[@data-test-id=";
         String five_part = "'gridBodyCell'";
@@ -304,14 +314,14 @@ public class General {
     }
 
     //This function will print coordinates of given element.
-    public void Display_Element_Coordinates(String Search_Items){
+    public void Display_Element_Coordinates(){
 
-        List  rows =  appEnv.getDriver().findElements(By.xpath("//*[@data-test-id=\"gridBodyRow\"]/*[@data-test-id=\"gridBodyCell\"][1]"));
+        List  rows =  appEnv.getDriver().findElements(By.xpath("//*[starts-with(@data-test-id,'gridBodyRow')]/*[@data-test-id=\"gridBodyCell\"][1]"));
         int Row_count =  rows.size();
-        List Columns = appEnv.getDriver().findElements(By.xpath("//*[@data-test-id=\"gridBodyRow\"][1]/*[@data-test-id=\"gridBodyCell\"]"));
+        List Columns = appEnv.getDriver().findElements(By.xpath("//*[@data-test-id=\"gridBodyRow0\"]/*[@data-test-id=\"gridBodyCell\"]"));
         int Col_count = Columns.size();
         String first_part = "//*[@data-test-id=";
-        String second_part ="'gridBodyRow'";
+        String second_part ="'gridBodyRow0'";
         String third_part = "][";
         String four_part = "]/*[@data-test-id=";
         String five_part = "'gridBodyCell'";
@@ -325,22 +335,20 @@ public class General {
                 String final_xpath = first_part + second_part + third_part + i + four_part + five_part + six_part + j + seven_part;
                 //Will retrieve value from located cell and print It.
                 String Table_data = appEnv.getDriver().findElement(By.xpath(final_xpath)).getText();
-                if (Table_data.equalsIgnoreCase(Search_Items)) {
-                    System.out.print("Item found at following coordinates [" + i + "]" + "[" + j + "]" + Table_data + "  ");
+                                   System.out.print("Item found at following coordinates [" + i + "]" + "[" + j + "]" + Table_data + "  ");
                 }
-            }
 
         }
 
     }
 
     public boolean Find_Customer(String Search_Item){
-        List rows =  appEnv.getDriver().findElements(By.xpath("//*[@data-test-id=\"gridBodyRow\"]/*[@data-test-id=\"gridBodyCell\"][1]"));
+        List rows =  appEnv.getDriver().findElements(By.xpath("//*[starts-with(@data-test-id,'gridBodyRow')]/*[@data-test-id=\"gridBodyCell\"][1]"));
         int Row_count =  rows.size();
         System.out.println("\n Number of rows loaded : " + Row_count);
         if(Row_count > 0) {
             String first_part = "//*[@data-test-id=";
-            String second_part = "'gridBodyRow'";
+            String second_part = "'gridBodyRow0'";
             String third_part = "][";
             String four_part = "]/*[@data-test-id=";
             String five_part = "'gridBodyCell'";
@@ -370,22 +378,17 @@ public class General {
 
     public boolean Find_First_Name(String Search_Item){
 
-        List Rows =  appEnv.getDriver().findElements(By.xpath("//*[@data-test-id=\"gridBodyRow\"]/*[@data-test-id=\"gridBodyCell\"][1]"));
-        int Row_count =  Rows.size();
+        List Rows =  appEnv.getDriver().findElements(By.xpath("//*[starts-with(@data-test-id,'gridBodyRow')]/*[@data-test-id=\"gridBodyCell\"][1]"));
+        int Row_count =  Count_Table_Rows();
         int Matching_Record_Found = 0;
         int Non_Matching_Record_Found = 0;
         System.out.println("\n Number of rows loaded : " + Row_count);
         if(Row_count > 0) {
-            String first_part = "//*[@data-test-id=";
-            String second_part = "'gridBodyRow'";
-            String third_part = "][";
-            String four_part = "]/*[@data-test-id=";
-            String five_part = "'gridBodyCell'";
-            String six_part = "][";
-            String seven_part = "]";
-            for (int i = 1; i <= Row_count; i++) {
+            String first_part = "//*[starts-with(@data-test-id,'gridBodyRow";
+            String second_part = "')]/*[@data-test-id=\'gridBodyCell\'][6]";
+            for (int i = 0; i < Row_count; i++) {
                 //Prepared final xpath of specific cell as per values of i and j.
-                String final_xpath = first_part + second_part + third_part + i + four_part + five_part + six_part + "6" + seven_part;
+                String final_xpath = first_part  + i + second_part;
                 //Will retrieve value from located cell and print It.
                 System.out.println(final_xpath);
                 System.out.println("Customer Data Loaded  : " + appEnv.getDriver().findElement(By.xpath(final_xpath)).getText());
@@ -406,15 +409,14 @@ public class General {
     }
     public boolean Find_Last_Name(String Search_Item){
 
-        List Rows =  appEnv.getDriver().findElements(By.xpath("//*[@data-test-id=\"gridBodyRow\"]/*[@data-test-id=\"gridBodyCell\"][1]"));
-        int Row_count =  Rows.size();
+        int Row_count =  Count_Table_Rows();
         int Matching_Record_Found = 0;
         int Non_Matching_Record_Found = 0;
         System.out.println("\n Number of rows loaded : " + Row_count);
         if(Row_count > 0) {
-            String first_part = "//*[@data-test-id=\'gridBodyRow\'][";
-            String second_part = "]/*[@data-test-id=\'gridBodyCell\'][6]";
-            for (int i = 1; i <= Row_count; i++) {
+            String first_part = "//*[starts-with(@data-test-id,'gridBodyRow";
+            String second_part = "')]/*[@data-test-id=\'gridBodyCell\'][6]";
+            for (int i = 0; i < Row_count; i++) {
                 //Prepared final xpath of specific cell as per values of i and j.
                 String final_xpath = first_part + i + second_part;
                 //Will retrieve value from located cell and print It.
@@ -436,15 +438,15 @@ public class General {
     }
     public boolean Find_Customer_Number(String Search_Item){
 
-        List Rows =  appEnv.getDriver().findElements(By.xpath("//*[@data-test-id=\"gridBodyRow\"]/*[@data-test-id=\"gridBodyCell\"][1]"));
-        int Row_count =  Rows.size();
+        List Rows =  appEnv.getDriver().findElements(By.xpath("//*[starts-with(@data-test-id,'gridBodyRow')]/*[@data-test-id=\"gridBodyCell\"][1]"));
+        int Row_count =  Count_Table_Rows();
         int Matching_Record_Found = 0;
         int Non_Matching_Record_Found = 0;
         System.out.println("\n Number of rows loaded : " + Row_count);
         if(Row_count > 0) {
-            String first_part = "//*[@data-test-id=\'gridBodyRow\'][";
-            String second_part = "]/*[@data-test-id=\'gridBodyCell\'][6]";
-            for (int i = 1; i <= Row_count; i++) {
+            String first_part = "//*[starts-with(@data-test-id,'gridBodyRow";
+            String second_part = "')]/*[@data-test-id=\'gridBodyCell\'][6]";
+            for (int i = 0; i < Row_count; i++) {
                 //Prepared final xpath of specific cell as per values of i and j.
                 String final_xpath = first_part + i + second_part;
                 //Will retrieve value from located cell and print It.
@@ -467,15 +469,14 @@ public class General {
 
     public boolean Find_Stock_Number(String Search_Item){
 
-        List Rows =  appEnv.getDriver().findElements(By.xpath("//*[@data-test-id=\"gridBodyRow\"]/*[@data-test-id=\"gridBodyCell\"][1]"));
-        int Row_count =  Rows.size();
+        int Row_count =  Count_Table_Rows();
         int Matching_Record_Found = 0;
         int Non_Matching_Record_Found = 0;
         System.out.println("\n Number of rows loaded : " + Row_count);
         if(Row_count > 0) {
-            String first_part = "//*[@data-test-id=\'gridBodyRow\'][";
-            String second_part = "]/*[@data-test-id=\'gridBodyCell\'][7]";
-            for (int i = 1; i <= Row_count; i++) {
+            String first_part = "//*[starts-with(@data-test-id,'gridBodyRow";
+            String second_part = "')]/*[@data-test-id=\'gridBodyCell\'][7]";
+            for (int i = 0; i < Row_count; i++) {
                 //Prepared final xpath of specific cell as per values of i and j.
                 String final_xpath = first_part + i + second_part;
                 //Will retrieve value from located cell and print It.
@@ -492,6 +493,48 @@ public class General {
         else
             return false;
     }
+
+    public boolean Find_WO_Number(String Search_Item){
+
+        List Rows =  appEnv.getDriver().findElements(By.xpath("//*[starts-with(@data-test-id,'gridBodyRow')]/*[@data-test-id=\"gridBodyCell\"][1]"));
+        int Row_count =  Count_Table_Rows();
+        int Matching_Record_Found = 0;
+        int Non_Matching_Record_Found = 0;
+        System.out.println("\n Number of rows loaded : " + Row_count);
+        if(Row_count > 0) {
+            String first_part = "//*[starts-with(@data-test-id,'gridBodyRow";
+            String second_part = "')]/*[@data-test-id=\'gridBodyCell\'][1]";
+            for (int i = 0; i < Row_count; i++) {
+                //Prepared final xpath of specific cell as per values of i and j.
+                String final_xpath = first_part + i + second_part;
+                //Will retrieve value from located cell and print It.
+                System.out.println(" Number Loaded  : " + appEnv.getDriver().findElement(By.xpath(final_xpath)).getText());
+                String Table_data = appEnv.getDriver().findElement(By.xpath(final_xpath)).getText();
+                if (Table_data.equalsIgnoreCase(Search_Item))
+                    Matching_Record_Found++;
+                else
+                    Non_Matching_Record_Found++;
+            }
+        }
+        if(Non_Matching_Record_Found == 0)
+            return true;
+        else
+            return false;
+    }
+
+    public void Scroll_Down_To_Bottom(){
+        JavascriptExecutor js = (JavascriptExecutor) appEnv.getDriver();
+        //This will scroll the web page till end.
+        js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+
+        Actions actions = new Actions(appEnv.getDriver());
+
+        // Scroll Down using Actions class
+        actions.keyDown(Keys.CONTROL).sendKeys(Keys.END).perform();
+    }
+
+
+
 
 }
 

@@ -29,9 +29,9 @@ public class RecentWO {
         }
     }
     public void Click_Clear_Button(){
-        if(Utils.IsObjExist(fetch_elements.GetObj("xpath","//*[@data-test-id=\"clearButton\"]"))) {
-            Utils.ClickObj(fetch_elements.GetObj("xpath", "//*[@data-test-id=\"clearButton\"]"));
-            appEnv.getReportManager().LogStepInfo("Click Clear button.");
+        if(Utils.IsObjExist(fetch_elements.GetObj("xpath","//*[@data-test-id=\"resetButton\"]"))) {
+            Utils.ClickObj(fetch_elements.GetObj("xpath", "//*[@data-test-id=\"resetButton\"]"));
+            appEnv.getReportManager().LogStepInfo("Click Reset button.");
         }
     }
     public void Click_More_Filters_Button(){
@@ -59,6 +59,10 @@ public class RecentWO {
             Utils.waitTillXpathPresent("//*[@id=\"root\"]//div[starts-with(@class, 'Login')]", 30);
             appEnv.getReportManager().LogStepInfo("Successfully Signed Out");
         }
+    }
+    public boolean No_Work_Order_Found()
+    {
+        return (Utils.IsObjExist(fetch_elements.GetObj("xpath","//div[starts-with(@data-test-id,'emptyMessage')]")));
     }
 
     public void Type_WO_Number(String WONumber)

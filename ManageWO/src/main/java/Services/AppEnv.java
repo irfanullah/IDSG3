@@ -31,6 +31,7 @@ public class AppEnv {
     private int TotalWOAgainstFirstNameAndLastName;
     private int TotalWOAgainstFirstNameLastNameAndStockNumber;
     private int TotalWOAgainstFirstNameLastNameCustomerNumhberAndStockNumber;
+    private int TotalWOAgainstWOFirstNameLastNameCustomerNumhberAndStockNumber;
     private int TotalWOAgainstFirstNameLastNameAndCustomerNumber;
     private String CompletedWithinDays;
     private String APIAddress;
@@ -40,8 +41,51 @@ public class AppEnv {
     private String Token;
     private String Location;
     private String Environment;
+    private String ReportName;
+    private String SendReportEmail;
+    private String ToEmailAddress;
+    private String CCEmailAddress;
 
 
+    public String getToEmailAddress() {
+        return ToEmailAddress;
+    }
+
+    public void setToEmailAddress(String toEmailAddress) {
+        ToEmailAddress = toEmailAddress;
+    }
+
+    public String getCCEmailAddress() {
+        return CCEmailAddress;
+    }
+
+    public void setCCEmailAddress(String CCEmailAddress) {
+        this.CCEmailAddress = CCEmailAddress;
+    }
+
+    public String getSendReportEmail() {
+        return SendReportEmail;
+    }
+
+    public void setSendReportEmail(String sendReportEmail) {
+        SendReportEmail = sendReportEmail;
+    }
+
+    public String getReportName() {
+        return ReportName;
+    }
+
+    public void setReportName(String reportName) {
+        ReportName = reportName;
+    }
+
+    public int getTotalWOAgainstWOFirstNameLastNameCustomerNumhberAndStockNumber() {
+        return TotalWOAgainstWOFirstNameLastNameCustomerNumhberAndStockNumber;
+    }
+
+    public void setTotalWOAgainstWOFirstNameLastNameCustomerNumhberAndStockNumber(int totalWOAgainstWOFirstNameLastNameCustomerNumhberAndStockNumber) {
+        TotalWOAgainstWOFirstNameLastNameCustomerNumhberAndStockNumber = totalWOAgainstWOFirstNameLastNameCustomerNumhberAndStockNumber;
+    }
 
     public String getEnvironment() {
         return Environment;

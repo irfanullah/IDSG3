@@ -53,6 +53,14 @@ public class LoginPage
         if (Utils.IsObjExist(fetch_elements.GetObj("xpath", "//*[@id=\"root\"]//button[@type= 'submit']"))) {
             Utils.ClickObj(fetch_elements.GetObj("xpath", "//*[@id=\"root\"]//button[@type= 'submit']"));
             appEnv.getReportManager().LogStepInfo("Click Sign in  button.");
+            if (Utils.IsObjExist(fetch_elements.GetObj("xpath", "//div[starts-with(@class,'Popup_modalBody')]")))
+            {
+                Utils.ClickObj(fetch_elements.GetObj("xpath", "//button[starts-with(@class,'Popup_button')]"));
+                Utils.ClickObj(fetch_elements.GetObj("xpath", "//button[starts-with(@class,'Popup_button')]"));
+                appEnv.getReportManager().LogStepInfo("Click OK on Try Again Message");
+                Utils.ClickObj(fetch_elements.GetObj("xpath", "//*[@id=\"root\"]//button[@type= 'submit']"));
+            }
+
         }
     }
 
@@ -92,6 +100,19 @@ public class LoginPage
         Utils.waitTillXpathPresent("//*[@id=\"root\"]//button[@type= 'button']", 30);
         Utils.waitTillXpathPresent("//*[@id=\"root\"]//div[starts-with(@class, 'Avatar')]", 30);
         return IsSession_Logged_In();
+    }
+
+    public boolean Incorrect_Credentials(String UserName, String Password){
+            Utils.waitTillNamePresent("userId",30);
+            Type_Email_Address(UserName);
+            Type_Password(Password);
+            Click_Sign_in_Button();
+            Utils.waitTillXpathPresent("//div[starts-with(@class,'Alert_container')]", 30);
+            Utils.StaticWait(1000);
+            if(Utils.IsObjExist(fetch_elements.GetObj("xpath", "//div[starts-with(@class,'Alert_container')]")))
+                return true;
+            else
+                return false;
     }
 
 

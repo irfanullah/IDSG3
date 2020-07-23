@@ -42,7 +42,6 @@ public class BrowserManager {
             appEnv.setDriver(chromeDriver);
         } else
             if (appEnv.getBrowser().equalsIgnoreCase("Firefox")) {
-            //WebDriverManager.firefoxdriver().clearPreferences();
             WebDriverManager.firefoxdriver().setup();
             FirefoxOptions frOptions = new FirefoxOptions();
             firefoxDriver = new FirefoxDriver(frOptions);

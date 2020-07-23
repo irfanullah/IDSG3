@@ -144,6 +144,25 @@ public class InputDataStream {
         clone.put("Location",appEnv.getLocation());
         return clone.toString();
     }
+
+    public  String SetOpenCompletedAndCancelledWOWithinGivenDaysAgainstStockNumber(){
+        JSONObject clone = new JSONObject(jsonObject.toString());
+        clone.getJSONObject("Filters").put("IncludeCompleted","true");
+        clone.getJSONObject("Filters").put("IncludeCompletedWithinDays",appEnv.getCompletedWithinDays());
+        clone.getJSONObject("Filters").put("IncludeCancelled","true");
+        clone.getJSONObject("Filters").put("IncludeCancelledWithinDays",appEnv.getCompletedWithinDays());
+        clone.getJSONObject("Filters").put("StockNo",appEnv.getStockNumber());
+        clone.put("Location",appEnv.getLocation());
+        return clone.toString();
+    }
+    public  String SetWOAgainstCustomerNumber(){
+        JSONObject clone = new JSONObject(jsonObject.toString());
+        clone.getJSONObject("Filters").put("IncludeOpen","false");
+        clone.getJSONObject("Filters").put("IncludeOpenedSinceDays","0");
+        clone.getJSONObject("Filters").put("CustomerNo",appEnv.getCustomerNumber());
+        clone.put("Location",appEnv.getLocation());
+        return clone.toString();
+    }
     public  String SetCompletedWOWithinGivenDaysAgainstStockNumber(){
         JSONObject clone = new JSONObject(jsonObject.toString());
         clone.getJSONObject("Filters").put("IncludeCompleted","true");
@@ -181,12 +200,10 @@ public class InputDataStream {
         clone.put("Location",appEnv.getLocation());
         return clone.toString();
     }
-    public  String SetOpenCompletedAndCancelledWOWithinGivenDaysAgainstStockNumber(){
+    public  String SetWOAgainstStockNumber(){
         JSONObject clone = new JSONObject(jsonObject.toString());
-        clone.getJSONObject("Filters").put("IncludeCompleted","true");
-        clone.getJSONObject("Filters").put("IncludeCompletedWithinDays",appEnv.getCompletedWithinDays());
-        clone.getJSONObject("Filters").put("IncludeCancelled","true");
-        clone.getJSONObject("Filters").put("IncludeCancelledWithinDays",appEnv.getCompletedWithinDays());
+        clone.getJSONObject("Filters").put("IncludeOpen","false");
+        clone.getJSONObject("Filters").put("IncludeOpenedSinceDays","0");
         clone.getJSONObject("Filters").put("StockNo",appEnv.getStockNumber());
         clone.put("Location",appEnv.getLocation());
         return clone.toString();
@@ -243,6 +260,16 @@ public class InputDataStream {
         clone.put("Location",appEnv.getLocation());
         return clone.toString();
     }
+
+    public  String SetWOAgainstCustomerAndStockNumber(){
+        JSONObject clone = new JSONObject(jsonObject.toString());
+        clone.getJSONObject("Filters").put("IncludeOpen","false");
+        clone.getJSONObject("Filters").put("IncludeOpenedSinceDays","0");
+        clone.getJSONObject("Filters").put("StockNo",appEnv.getStockNumber());
+        clone.getJSONObject("Filters").put("CustomerNo",appEnv.getCustomerNumber());
+        clone.put("Location",appEnv.getLocation());
+        return clone.toString();
+    }
     public  String SetCompletedWOWithinGivenDaysAgainstFirstName(){
         JSONObject clone = new JSONObject(jsonObject.toString());
         clone.getJSONObject("Filters").put("IncludeCompleted","true");
@@ -285,6 +312,14 @@ public class InputDataStream {
         clone.getJSONObject("Filters").put("IncludeCompletedWithinDays",appEnv.getCompletedWithinDays());
         clone.getJSONObject("Filters").put("IncludeCancelled","true");
         clone.getJSONObject("Filters").put("IncludeCancelledWithinDays",appEnv.getCompletedWithinDays());
+        clone.getJSONObject("Filters").put("FirstName",appEnv.getFirstName());
+        clone.put("Location",appEnv.getLocation());
+        return clone.toString();
+    }
+    public  String SetWOAgainstFirstName(){
+        JSONObject clone = new JSONObject(jsonObject.toString());
+        clone.getJSONObject("Filters").put("IncludeOpen","false");
+        clone.getJSONObject("Filters").put("IncludeOpenedSinceDays","0");
         clone.getJSONObject("Filters").put("FirstName",appEnv.getFirstName());
         clone.put("Location",appEnv.getLocation());
         return clone.toString();
@@ -336,7 +371,14 @@ public class InputDataStream {
         clone.put("Location",appEnv.getLocation());
         return clone.toString();
     }
-
+    public  String SetWOAgainstLastName(){
+        JSONObject clone = new JSONObject(jsonObject.toString());
+        clone.getJSONObject("Filters").put("IncludeOpen","false");
+        clone.getJSONObject("Filters").put("IncludeOpenedSinceDays","0");
+        clone.getJSONObject("Filters").put("LastName",appEnv.getLastName());
+        clone.put("Location",appEnv.getLocation());
+        return clone.toString();
+    }
     public  String SetCompletedWOWithinGivenDaysAgainstFirstNameAndLastName(){
         JSONObject clone = new JSONObject(jsonObject.toString());
         clone.getJSONObject("Filters").put("IncludeCompleted","true");
@@ -383,6 +425,16 @@ public class InputDataStream {
         clone.getJSONObject("Filters").put("IncludeCompletedWithinDays",appEnv.getCompletedWithinDays());
         clone.getJSONObject("Filters").put("IncludeCancelled","true");
         clone.getJSONObject("Filters").put("IncludeCancelledWithinDays",appEnv.getCompletedWithinDays());
+        clone.getJSONObject("Filters").put("LastName",appEnv.getLastName());
+        clone.getJSONObject("Filters").put("FirstName",appEnv.getFirstName());
+        clone.put("Location",appEnv.getLocation());
+        return clone.toString();
+    }
+
+    public  String SetWOAgainstFirstNameAndLastName(){
+        JSONObject clone = new JSONObject(jsonObject.toString());
+        clone.getJSONObject("Filters").put("IncludeOpen","false");
+        clone.getJSONObject("Filters").put("IncludeOpenedSinceDays","0");
         clone.getJSONObject("Filters").put("LastName",appEnv.getLastName());
         clone.getJSONObject("Filters").put("FirstName",appEnv.getFirstName());
         clone.put("Location",appEnv.getLocation());
@@ -436,6 +488,15 @@ public class InputDataStream {
         clone.put("Location",appEnv.getLocation());
         return clone.toString();
     }
+    public  String SetWOAgainstWONumber(){
+        JSONObject clone = new JSONObject(jsonObject.toString());
+        clone.getJSONObject("Filters").put("IncludeOpen","false");
+        clone.getJSONObject("Filters").put("IncludeOpenedSinceDays","0");
+        clone.getJSONObject("Filters").put("WorkOrderNo",appEnv.getWorkOrderNumber());
+        clone.put("Location",appEnv.getLocation());
+        return clone.toString();
+    }
+
     public  String SetCompletedWOWithinGivenDaysAgainstFirstNameLastNameAndStockNumber(){
         JSONObject clone = new JSONObject(jsonObject.toString());
         clone.getJSONObject("Filters").put("IncludeCompleted","true");
@@ -486,6 +547,17 @@ public class InputDataStream {
         clone.getJSONObject("Filters").put("IncludeCompletedWithinDays",appEnv.getCompletedWithinDays());
         clone.getJSONObject("Filters").put("IncludeCancelled","true");
         clone.getJSONObject("Filters").put("IncludeCancelledWithinDays",appEnv.getCompletedWithinDays());
+        clone.getJSONObject("Filters").put("LastName",appEnv.getLastName());
+        clone.getJSONObject("Filters").put("FirstName",appEnv.getFirstName());
+        clone.getJSONObject("Filters").put("StockNo",appEnv.getStockNumber());
+        clone.put("Location",appEnv.getLocation());
+        return clone.toString();
+    }
+
+    public  String SetWOAgainstFirstNameLastNameAndStockNumber(){
+        JSONObject clone = new JSONObject(jsonObject.toString());
+        clone.getJSONObject("Filters").put("IncludeOpen","false");
+        clone.getJSONObject("Filters").put("IncludeOpenedSinceDays","0");
         clone.getJSONObject("Filters").put("LastName",appEnv.getLastName());
         clone.getJSONObject("Filters").put("FirstName",appEnv.getFirstName());
         clone.getJSONObject("Filters").put("StockNo",appEnv.getStockNumber());
@@ -564,6 +636,31 @@ public class InputDataStream {
         clone.put("Location",appEnv.getLocation());
         return clone.toString();
     }
+    public  String SetWOAgainstFirstNameLastNameCustomerNumberAndStockNumber(){
+        JSONObject clone = new JSONObject(jsonObject.toString());
+        clone.getJSONObject("Filters").put("IncludeOpen","false");
+        clone.getJSONObject("Filters").put("IncludeOpenedSinceDays","0");
+        clone.getJSONObject("Filters").put("LastName",appEnv.getLastName());
+        clone.getJSONObject("Filters").put("FirstName",appEnv.getFirstName());
+        clone.getJSONObject("Filters").put("StockNo",appEnv.getStockNumber());
+        clone.getJSONObject("Filters").put("CustomerNo",appEnv.getCustomerNumber());
+        clone.put("Location",appEnv.getLocation());
+        return clone.toString();
+    }
+    public  String SetWOAgainstWOFirstNameLastNameCustomerNumberAndStockNumber(){
+        JSONObject clone = new JSONObject(jsonObject.toString());
+        clone.getJSONObject("Filters").put("IncludeOpen","false");
+        clone.getJSONObject("Filters").put("IncludeOpenedSinceDays","0");
+        clone.getJSONObject("Filters").put("WorkOrderNo",appEnv.getWorkOrderNumber());
+        clone.getJSONObject("Filters").put("LastName",appEnv.getLastName());
+        clone.getJSONObject("Filters").put("FirstName",appEnv.getFirstName());
+        clone.getJSONObject("Filters").put("StockNo",appEnv.getStockNumber());
+        clone.getJSONObject("Filters").put("CustomerNo",appEnv.getCustomerNumber());
+        clone.put("Location",appEnv.getLocation());
+        return clone.toString();
+    }
+
+
 
     public  String SetCompletedWOWithinGivenDaysAgainstFirstNameLastNameAndCustomerNumber(){
         JSONObject clone = new JSONObject(jsonObject.toString());
@@ -615,6 +712,17 @@ public class InputDataStream {
         clone.getJSONObject("Filters").put("IncludeCompletedWithinDays",appEnv.getCompletedWithinDays());
         clone.getJSONObject("Filters").put("IncludeCancelled","true");
         clone.getJSONObject("Filters").put("IncludeCancelledWithinDays",appEnv.getCompletedWithinDays());
+        clone.getJSONObject("Filters").put("LastName",appEnv.getLastName());
+        clone.getJSONObject("Filters").put("FirstName",appEnv.getFirstName());
+        clone.getJSONObject("Filters").put("CustomerNo",appEnv.getCustomerNumber());
+        clone.put("Location",appEnv.getLocation());
+        return clone.toString();
+    }
+
+    public  String SetWOAgainstFirstNameLastNameAndCustomerNumber(){
+        JSONObject clone = new JSONObject(jsonObject.toString());
+        clone.getJSONObject("Filters").put("IncludeOpen","false");
+        clone.getJSONObject("Filters").put("IncludeOpenedSinceDays","0");
         clone.getJSONObject("Filters").put("LastName",appEnv.getLastName());
         clone.getJSONObject("Filters").put("FirstName",appEnv.getFirstName());
         clone.getJSONObject("Filters").put("CustomerNo",appEnv.getCustomerNumber());

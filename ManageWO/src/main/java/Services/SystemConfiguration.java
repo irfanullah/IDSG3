@@ -35,7 +35,7 @@ public class SystemConfiguration {
             fileInput = new FileInputStream(file);
             prop.load(fileInput);
         } catch (IOException exh) {
-            System.out.println("IO Exception");
+            System.out.println("IO Execption : Unable to Load/Read Properties file");
         }
         appEnv.setBrowser(prop.getProperty("Browser"));
         appEnv.setDomain(prop.getProperty("Domain"));
@@ -49,10 +49,13 @@ public class SystemConfiguration {
         appEnv.setPassword(prop.getProperty("Password"));
         appEnv.setToken(prop.getProperty("Token"));
         appEnv.setLocation(prop.getProperty("Location"));
-        appEnv.setCompletedWithinDays(prop.getProperty("CompletedWithinDays"));
+        appEnv.setSendReportEmail(prop.getProperty("SendReportEmail"));
         appEnv.setUserID(prop.getProperty("UserID"));
         appEnv.setAPIAddress(prop.getProperty("APIAddress"));
         appEnv.setEnvironment(prop.getProperty("Environment"));
+        appEnv.setCompletedWithinDays(prop.getProperty("CompletedWithinDays"));
+        appEnv.setToEmailAddress(prop.getProperty("ToEmailAddress"));
+        appEnv.setCCEmailAddress(prop.getProperty("CCEmailAddress"));
 
         return appEnv;
     }
