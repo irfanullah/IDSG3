@@ -26,7 +26,7 @@ public class SystemConfiguration {
      */
     public AppEnv Read_Properties(AppEnv appEnv) {
         Properties prop = new Properties();
-        File file = new File("./src/main/resources/SysConfig/QAVM94.properties");
+        File file = new File("./src/main/resources/SysConfig/DEVVM50.properties");
 
         FileInputStream fileInput;
 
