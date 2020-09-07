@@ -8,7 +8,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import java.util.List;
 
 /**
- * This class will manage the Selenium libraries use to get elements
+ * This class will manage the Selenium libraries used to get elements
  */
 public class Fetch_Elements {
     private static Fetch_Elements fetch_elements = new Fetch_Elements();
@@ -66,7 +66,7 @@ public class Fetch_Elements {
                 }
 
         } catch (Exception exh) {
-            System.out.println("Fetcher Exception: Element was not location against given parameter");
+            System.out.println("Fetcher Exception: Element was not located against given parameter");
         }
         return webElement;
     }

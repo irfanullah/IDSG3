@@ -47,7 +47,7 @@ public class SystemConfiguration {
         appEnv.setCustomerNumber(prop.getProperty("CustomerNumber"));
         appEnv.setEmail(prop.getProperty("Email"));
         appEnv.setPassword(prop.getProperty("Password"));
-        appEnv.setToken(prop.getProperty("Token"));
+        appEnv.setAPIBaseURL(prop.getProperty("APIBaseURL"));
         appEnv.setLocation(prop.getProperty("Location"));
         appEnv.setSendReportEmail(prop.getProperty("SendReportEmail"));
         appEnv.setUserID(prop.getProperty("UserID"));
@@ -56,6 +56,7 @@ public class SystemConfiguration {
         appEnv.setCompletedWithinDays(prop.getProperty("CompletedWithinDays"));
         appEnv.setToEmailAddress(prop.getProperty("ToEmailAddress"));
         appEnv.setCCEmailAddress(prop.getProperty("CCEmailAddress"));
+        appEnv.setEncryptedPassword(prop.getProperty("EncryptedPassword"));
 
         return appEnv;
     }

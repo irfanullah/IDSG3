@@ -40,8 +40,9 @@ public class EmailAdopter {
         final String cc1 = appEnv.getCCEmailAddress(); //change to cc email address
       //  final String cc2 = "cristiana.gosman@ids-astra.com";
         // final String bcc = "raiirfan@gmail.ocm"; //change to bcc email address
-        final String subject = "G3 Work Orders : Test Cases Execution Report - " + dt.toString(DateTimeFormat.longDate()); //change to your subject
-        final String msg = "Hi, Please find attached G3 Work Order on Web Test Cases Execution Report. Happy Testing"; //change to your message
+        final String subject = "G3 Work Orders : Test Cases Execution on "+ appEnv.getBrowser() + " Report - " + dt.toString(DateTimeFormat.longDate()); //change to your subject
+       // final String msg = "Hi, Please find attached G3 Work Order on Web Test Cases Execution Report.\n"; //change to your message
+        final String msg = "G3 Work Orders Header is not Automated.\n"; //change to your message
 
         Properties props = new Properties();
         props.put("mail.smtp.auth", true);
@@ -60,16 +61,16 @@ public class EmailAdopter {
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(from));
-            message.setRecipients(Message.RecipientType.TO,
-                    InternetAddress.parse(to));
+
+            String toaddress = appEnv.getToEmailAddress();
+            InternetAddress[] toAdressArray = InternetAddress.parse(toaddress);
+            message.setRecipients(Message.RecipientType.TO, toAdressArray);
+            //message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(to));
             String address = appEnv.getCCEmailAddress();
             InternetAddress[] iAdressArray = InternetAddress.parse(address);
             message.setRecipients(Message.RecipientType.CC, iAdressArray);
-            //below code only requires if your want cc email address
-            //message.setRecipients(Message.RecipientType.CC,InternetAddress.parse(cc1));
-            //message.setRecipients(Message.RecipientType.CC,InternetAddress.parse(cc2));
+
             message.setSubject(subject);
-            //message.setText(msg);
             String imagePath = "./src/main/resources/Reports/emailable-extent.png";
             String fileName = imagePath.substring(imagePath.lastIndexOf('/') + 1);
             String htmlText = "<html><body>"+msg+"<img src=\"cid:img1\"></body></html>";

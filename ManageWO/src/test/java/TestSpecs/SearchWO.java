@@ -3,7 +3,6 @@ package TestSpecs;
 import Drivers.Fetch_Elements;
 import PageObj.LoginPage;
 import PageObj.RecentWO;
-import PageObj.WODetails;
 import Services.AppEnv;
 import Services.General;
 import Services.ReTry;
@@ -23,7 +22,6 @@ public class SearchWO {
     private LoginPage loginPage;
     private RestManager restManager;
     private InputDataStream inputDataStream;
-    private WODetails woDetails;
     private Fetch_Elements fetch_elements;
 
 
@@ -36,7 +34,6 @@ public class SearchWO {
         pgRecentWO = new RecentWO(appEnv);
         loginPage = new LoginPage(appEnv);
         inputDataStream = InputDataStream.getInstance(appEnv);
-        woDetails = WODetails.getInstance(appEnv);
         fetch_elements = Fetch_Elements.getInstance(appEnv);
 
 
@@ -83,9 +80,10 @@ public class SearchWO {
 
 
     @Test(priority = 10, retryAnalyzer = ReTry.class)
-        public void Search_Open_WO_Against_WO_Number(){
+        public void Search_Open_WO_Against_WO_Number() {
         appEnv.setTotalWOAgainstWONumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenWOAgainstWONumber()));
-        Utils.StaticWait(10000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -102,7 +100,8 @@ public class SearchWO {
     @Test(priority = 11, retryAnalyzer = ReTry.class)
         public void Search_Open_WO_Against_First_Name(){
         appEnv.setTotalWOAgainstFirstName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenWOAgainstFirstName()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -121,7 +120,8 @@ public class SearchWO {
     @Test(priority = 12, retryAnalyzer = ReTry.class)
         public void Search_Open_WO_Against_Last_Name(){
         appEnv.setTotalWOAgainstLastName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenWOAgainstLastName()));
-        Utils.StaticWait(10000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -140,7 +140,8 @@ public class SearchWO {
     @Test(priority = 13, retryAnalyzer = ReTry.class)
         public void Search_Open_WO_Against_Stock_Number(){
         appEnv.setTotalWOAgainstStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenWOAgainstStockNo()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -159,7 +160,8 @@ public class SearchWO {
     @Test(priority = 14, retryAnalyzer = ReTry.class)
         public void Search_Open_WO_Against_Customer_Number(){
         appEnv.setTotalWOAgainstCustomerNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenWOAgainstCustomerNo()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -178,8 +180,8 @@ public class SearchWO {
     @Test(priority = 15, retryAnalyzer = ReTry.class)
         public void Search_Open_WO_Against_Customer_Number_And_Stock_Number(){
         appEnv.setTotalWOAgainstCustomerNumberAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenWOAgainstCustomerNumberAndStockNumber()));
-        Utils.StaticWait(10000);
-    //    loginPage.Click_Work_Order_Button();
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -189,14 +191,18 @@ public class SearchWO {
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(10000);
         appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+        if(appEnv.getTotalWOAgainstCustomerNumberAndStockNumber()== 0 && Utils.Count_Table_Rows()==0)
+            appEnv.setTestPass(true);
+        else
         appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstCustomerNumberAndStockNumber()
-                && Utils.Find_Customer(appEnv.getCustomerNumber()) && Utils.Search_Table_with_String(appEnv.getStockNumber()));
+                && Utils.Find_Customer_Number(appEnv.getCustomerNumber()) && Utils.Find_Stock_Number(appEnv.getStockNumber()));
         Utils.VerifyResult("Work Orders loaded does not match with Open Work Orders in the system against given customer and stock Number", appEnv.isTestPass());
     }
     @Test(priority = 16, retryAnalyzer = ReTry.class)
         public void Search_Open_WO_Against_First_Name_And_Last_Name(){
         appEnv.setTotalWOAgainstFirstNameAndLastName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenWOAgainstFirstNameAndLastName()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -215,7 +221,8 @@ public class SearchWO {
     @Test( priority = 7,retryAnalyzer = ReTry.class)
         public void Search_Open_WO_Against_First_Name_Last_Name_And_Customer_Number(){
         appEnv.setTotalWOAgainstFirstNameLastNameAndCustomerNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenWOAgainstFirstNameLastNameAndCustomerNumber()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -237,7 +244,8 @@ public class SearchWO {
     @Test(priority = 18, retryAnalyzer = ReTry.class)
         public void Search_Open_WO_Against_First_Name_Last_Name_And_Stock_Number(){
         appEnv.setTotalWOAgainstFirstNameLastNameAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenWOAgainstFirstNameLastNameAndStockNumber()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -259,7 +267,8 @@ public class SearchWO {
     @Test(priority = 19, retryAnalyzer = ReTry.class)
         public void Search_Open_WO_Against_First_Name_Last_Name_Customer_Number_And_Stock_Number(){
         appEnv.setTotalWOAgainstFirstNameLastNameCustomerNumhberAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenWOAgainstFirstNameLastNameCustomerNumberAndStockNumber()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -286,7 +295,8 @@ public class SearchWO {
     @Test(priority = 30, retryAnalyzer = ReTry.class)
         public void Search_Completed_WO_Against_WO_Number(){
         appEnv.setTotalWOAgainstWONumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCompletedWOWithinGivenDaysAgainstWONumber()));
-        Utils.StaticWait(10000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Type_WO_Number(appEnv.getWorkOrderNumber());
         pgRecentWO.Click_More_Filters_Button();
@@ -302,7 +312,8 @@ public class SearchWO {
     @Test(priority = 30, retryAnalyzer = ReTry.class)
         public void Search_Completed_WO_Against_First_Name(){
         appEnv.setTotalWOAgainstFirstName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCompletedWOWithinGivenDaysAgainstFirstName()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -322,7 +333,8 @@ public class SearchWO {
     @Test(priority = 31, retryAnalyzer = ReTry.class)
         public void Search_Completed_WO_Against_Last_Name(){
         appEnv.setTotalWOAgainstLastName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCompletedWOWithinGivenDaysAgainstLastName()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -342,7 +354,8 @@ public class SearchWO {
     @Test(priority = 32, retryAnalyzer = ReTry.class)
         public void Search_Completed_WO_Against_Stock_Number(){
         appEnv.setTotalWOAgainstStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCompletedWOWithinGivenDaysAgainstStockNumber()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -352,14 +365,19 @@ public class SearchWO {
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(10000);
         appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+        if(appEnv.getTotalWOAgainstStockNumber()== 0 && Utils.Count_Table_Rows()==0)
+            appEnv.setTestPass(true);
+        else
         appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstStockNumber() &&
-                Utils.Search_Table_with_String(appEnv.getStockNumber()) );
+                Utils.Find_Stock_Number(appEnv.getStockNumber()) );
         Utils.VerifyResult("Work Order Loaded in the GUI Does Not Match with Completed WO in the System Against Stock Number", appEnv.isTestPass());
 
     }
     @Test(priority = 33, retryAnalyzer = ReTry.class)
         public void Search_Completed_WO_Against_Customer_Number(){
         appEnv.setTotalWOAgainstCustomerNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCompletedWOWithinGivenDaysAgainstCustomerNumber()));
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -369,6 +387,9 @@ public class SearchWO {
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(10000);
         appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+        if(appEnv.getTotalWOAgainstCustomerNumber()== 0 && Utils.Count_Table_Rows()==0)
+            appEnv.setTestPass(true);
+        else
         appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstCustomerNumber() &&
                 Utils.Search_Table_with_String(appEnv.getStockNumber()) );
         Utils.VerifyResult("Completed WO Loaded in GUI does not match with Completed WO in the system against Customer Number", appEnv.isTestPass());
@@ -377,7 +398,8 @@ public class SearchWO {
     @Test(priority = 34, retryAnalyzer = ReTry.class)
         public void Search_Completed_WO_Against_First_Name_And_Last_Name(){
         appEnv.setTotalWOAgainstFirstNameAndLastName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCompletedWOWithinGivenDaysAgainstFirstNameAndLastName()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -398,7 +420,8 @@ public class SearchWO {
     @Test(priority = 35, retryAnalyzer = ReTry.class)
         public void Search_Completed_WO_Against_First_Name_Last_Name_And_Stock_Number(){
         appEnv.setTotalWOAgainstFirstNameLastNameAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCompletedWOWithinGivenDaysAgainstFirstNameLastNameAndStockNumber()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -421,7 +444,8 @@ public class SearchWO {
     @Test(priority = 36, retryAnalyzer = ReTry.class)
         public void Search_Completed_WO_Against_First_Name_Last_Name_Customer_Number_And_Stock_Number(){
         appEnv.setTotalWOAgainstFirstNameLastNameCustomerNumhberAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCompletedWOWithinGivenDaysAgainstFirstNameLastNameCustomerNumberAndStockNumber()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -445,7 +469,8 @@ public class SearchWO {
     @Test( priority = 37,retryAnalyzer = ReTry.class)
         public void Search_Completed_WO_Against_First_Name_Last_Name_And_Customer_Number(){
         appEnv.setTotalWOAgainstFirstNameLastNameAndCustomerNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCompletedWOWithinGivenDaysAgainstFirstNameLastNameAndCustomerNumber()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -468,7 +493,8 @@ public class SearchWO {
     @Test(priority = 38,retryAnalyzer = ReTry.class)
         public void Search_Completed_WO_Against_Customer_And_Stock_Number(){
         appEnv.setTotalWOAgainstCustomerNumberAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCompletedWOWithinGivenDaysAgainstCustomerAndStockNumber()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -479,8 +505,11 @@ public class SearchWO {
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(10000);
         appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+        if(appEnv.getTotalWOAgainstCustomerNumberAndStockNumber()== 0 && Utils.Count_Table_Rows()==0)
+            appEnv.setTestPass(true);
+        else
         appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstCustomerNumberAndStockNumber() &&
-                Utils.Search_Table_with_String(appEnv.getStockNumber()) && Utils.Find_Customer(appEnv.getCustomerNumber()) );
+                Utils.Find_Stock_Number(appEnv.getStockNumber()) && Utils.Find_Customer(appEnv.getCustomerNumber()) );
         Utils.VerifyResult("Work Order Loaded in the GUI Does Not Match with Completed WO in the System Against Customer and Stock Number", appEnv.isTestPass());
 
     }
@@ -489,7 +518,8 @@ public class SearchWO {
     @Test(priority = 70, retryAnalyzer = ReTry.class)
         public void Search_Cancelled_WO_Against_WO_Number(){
         appEnv.setTotalWOAgainstWONumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCancelledWOWithinGivenDaysAgainstWONumber()));
-        Utils.StaticWait(10000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Type_WO_Number(appEnv.getWorkOrderNumber());
         pgRecentWO.Click_More_Filters_Button();
@@ -505,7 +535,8 @@ public class SearchWO {
     @Test(priority = 71, retryAnalyzer = ReTry.class)
         public void Search_Cancelled_WO_Against_First_Name(){
         appEnv.setTotalWOAgainstFirstName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCancelledWOWithinGivenDaysAgainstFirstName()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -525,7 +556,8 @@ public class SearchWO {
     @Test(priority = 72, retryAnalyzer = ReTry.class)
         public void Search_Cancelled_WO_Against_Last_Name(){
         appEnv.setTotalWOAgainstLastName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCancelledWOWithinGivenDaysAgainstLastName()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -545,7 +577,8 @@ public class SearchWO {
     @Test(priority = 73, retryAnalyzer = ReTry.class)
         public void Search_Cancelled_WO_Against_Stock_Number(){
         appEnv.setTotalWOAgainstStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCancelledWOWithinGivenDaysAgainstStockNumber()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -555,14 +588,19 @@ public class SearchWO {
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(10000);
         appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+        if(appEnv.getTotalWOAgainstStockNumber()== 0 && Utils.Count_Table_Rows()==0)
+            appEnv.setTestPass(true);
+        else
         appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstStockNumber() &&
-                Utils.Search_Table_with_String(appEnv.getStockNumber()) );
+                Utils.Find_Stock_Number(appEnv.getStockNumber()) );
         Utils.VerifyResult("Work Order Loaded in the GUI Does Not Match with Cancelled WO in the System Against Stock Number", appEnv.isTestPass());
 
     }
     @Test(priority = 74, retryAnalyzer = ReTry.class)
         public void Search_Cancelled_WO_Against_Customer_Number(){
         appEnv.setTotalWOAgainstCustomerNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCancelledWOWithinGivenDaysAgainstCustomerNumber()));
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -572,15 +610,19 @@ public class SearchWO {
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(10000);
         appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+        if(appEnv.getTotalWOAgainstCustomerNumber()== 0 && Utils.Count_Table_Rows()==0)
+            appEnv.setTestPass(true);
+        else
         appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstCustomerNumber() &&
-                Utils.Search_Table_with_String(appEnv.getStockNumber()) );
+                Utils.Find_Stock_Number(appEnv.getStockNumber()) );
         Utils.VerifyResult("Completed WO Loaded in GUI does not match with Cancelled WO in the system against Customer Number", appEnv.isTestPass());
 
     }
     @Test(priority = 75, retryAnalyzer = ReTry.class)
         public void Search_Cancelled_WO_Against_First_Name_And_Last_Name(){
         appEnv.setTotalWOAgainstFirstNameAndLastName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCancelledWOWithinGivenDaysAgainstFirstNameAndLastName()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -601,7 +643,8 @@ public class SearchWO {
     @Test(priority = 76, retryAnalyzer = ReTry.class)
         public void Search_Cancelled_WO_Against_First_Name_Last_Name_And_Stock_Number(){
         appEnv.setTotalWOAgainstFirstNameLastNameAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCancelledWOWithinGivenDaysAgainstFirstNameLastNameAndStockNumber()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -624,7 +667,8 @@ public class SearchWO {
     @Test(priority = 77, retryAnalyzer = ReTry.class)
         public void Search_Cancelled_WO_Against_First_Name_Last_Name_Customer_Number_And_Stock_Number(){
         appEnv.setTotalWOAgainstFirstNameLastNameCustomerNumhberAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCancelledWOWithinGivenDaysAgainstFirstNameLastNameCustomerNumberAndStockNumber()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -648,7 +692,8 @@ public class SearchWO {
     @Test( priority = 78,retryAnalyzer = ReTry.class)
         public void Search_Cancelled_WO_Against_First_Name_Last_Name_And_Customer_Number(){
         appEnv.setTotalWOAgainstFirstNameLastNameAndCustomerNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCancelledWOWithinGivenDaysAgainstFirstNameLastNameAndCustomerNumber()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -671,7 +716,8 @@ public class SearchWO {
     @Test(priority = 79,retryAnalyzer = ReTry.class)
         public void Search_Cancelled_WO_Against_Customer_And_Stock_Number(){
         appEnv.setTotalWOAgainstCustomerNumberAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetCancelledWOWithinGivenDaysAgainstCustomerAndStockNumber()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -682,8 +728,11 @@ public class SearchWO {
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(10000);
         appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+        if(appEnv.getTotalWOAgainstCustomerNumberAndStockNumber()== 0 && Utils.Count_Table_Rows()==0)
+            appEnv.setTestPass(true);
+        else
         appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstCustomerNumberAndStockNumber() &&
-                Utils.Search_Table_with_String(appEnv.getStockNumber()) && Utils.Find_Customer(appEnv.getCustomerNumber()) );
+                Utils.Find_Stock_Number(appEnv.getStockNumber()) && Utils.Find_Customer_Number(appEnv.getCustomerNumber()) );
         Utils.VerifyResult("Work Order Loaded in the GUI Does Not Match with Cancelled WO in the System Against Customer and Stock Number", appEnv.isTestPass());
 
     }
@@ -692,7 +741,8 @@ public class SearchWO {
     @Test(priority = 100, retryAnalyzer = ReTry.class)
     public void Search_Open_And_Completed_WO_Against_WO_Number(){
         appEnv.setTotalWOAgainstWONumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenAndCompletedWOWithinGivenDaysAgainstWONumber()));
-        Utils.StaticWait(10000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         pgRecentWO.Type_WO_Number(appEnv.getWorkOrderNumber());
@@ -709,7 +759,8 @@ public class SearchWO {
     @Test(priority = 101, retryAnalyzer = ReTry.class)
         public void Search_Open_And_Completed_WO_Against_First_Name(){
         appEnv.setTotalWOAgainstFirstName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenAndCompletedWOWithinGivenDaysAgainstFirstName()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -729,7 +780,8 @@ public class SearchWO {
     @Test(priority = 102, retryAnalyzer = ReTry.class)
         public void Search_Open_And_Completed_WO_Against_Last_Name(){
         appEnv.setTotalWOAgainstLastName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenAndCompletedWOWithinGivenDaysAgainstLastName()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -749,7 +801,8 @@ public class SearchWO {
     @Test(priority = 103, retryAnalyzer = ReTry.class)
         public void Search_Open_And_Completed_WO_Against_Stock_Number(){
         appEnv.setTotalWOAgainstStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenAndCompletedWOWithinGivenDaysAgainstStockNumber()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -759,14 +812,19 @@ public class SearchWO {
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(10000);
         appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+        if(appEnv.getTotalWOAgainstStockNumber()== 0 && Utils.Count_Table_Rows()==0)
+            appEnv.setTestPass(true);
+        else
         appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstStockNumber() &&
-                Utils.Search_Table_with_String(appEnv.getStockNumber()) );
+                Utils.Find_Stock_Number(appEnv.getStockNumber()) );
         Utils.VerifyResult("Work Order Loaded in the GUI Does Not Match with Open And Completed WO in the System Against Stock Number", appEnv.isTestPass());
 
     }
     @Test(priority = 104, retryAnalyzer = ReTry.class)
     public void Search_Open_And_Completed_WO_Against_Customer_Number(){
         appEnv.setTotalWOAgainstCustomerNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenAndCompletedWOWithinGivenDaysAgainstCustomerNumber()));
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -776,15 +834,19 @@ public class SearchWO {
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(10000);
         appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+        if(appEnv.getTotalWOAgainstCustomerNumber()== 0 && Utils.Count_Table_Rows()==0)
+            appEnv.setTestPass(true);
+        else
         appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstCustomerNumber() &&
-                Utils.Search_Table_with_String(appEnv.getStockNumber()) );
+                Utils.Find_Stock_Number(appEnv.getStockNumber()) );
         Utils.VerifyResult("Completed WO Loaded in GUI does not match with Open And Completed WO in the system against Customer Number", appEnv.isTestPass());
 
     }
     @Test(priority = 105, retryAnalyzer = ReTry.class)
         public void Search_Open_And_Completed_WO_Against_First_Name_And_Last_Name(){
         appEnv.setTotalWOAgainstFirstNameAndLastName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenAndCompletedWOWithinGivenDaysAgainstFirstNameAndLastName()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -805,7 +867,8 @@ public class SearchWO {
     @Test(priority = 106, retryAnalyzer = ReTry.class)
         public void Search_Open_And_Completed_WO_Against_First_Name_Last_Name_And_Stock_Number(){
         appEnv.setTotalWOAgainstFirstNameLastNameAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenAndCompletedWOWithinGivenDaysAgainstFirstNameLastNameAndStockNumber()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -828,7 +891,8 @@ public class SearchWO {
     @Test(priority = 106, retryAnalyzer = ReTry.class)
         public void Search_Open_And_Completed_WO_Against_First_Name_Last_Name_Customer_Number_And_Stock_Number(){
         appEnv.setTotalWOAgainstFirstNameLastNameCustomerNumhberAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenAndCompletedWOWithinGivenDaysAgainstFirstNameLastNameCustomerNumberAndStockNumber()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -852,7 +916,8 @@ public class SearchWO {
     @Test( priority = 107,retryAnalyzer = ReTry.class)
         public void Search_Open_And_Completed_WO_Against_First_Name_Last_Name_And_Customer_Number(){
         appEnv.setTotalWOAgainstFirstNameLastNameAndCustomerNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenAndCompletedWOWithinGivenDaysAgainstFirstNameLastNameAndCustomerNumber()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -875,7 +940,8 @@ public class SearchWO {
     @Test(priority = 108,retryAnalyzer = ReTry.class)
         public void Search_Open_And_Completed_WO_Against_Customer_And_Stock_Number(){
         appEnv.setTotalWOAgainstCustomerNumberAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenAndCompletedWOWithinGivenDaysAgainstCustomerAndStockNumber()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -886,8 +952,11 @@ public class SearchWO {
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(10000);
         appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+        if(appEnv.getTotalWOAgainstCustomerNumberAndStockNumber()== 0 && Utils.Count_Table_Rows()==0)
+            appEnv.setTestPass(true);
+        else
         appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstCustomerNumberAndStockNumber() &&
-                Utils.Search_Table_with_String(appEnv.getStockNumber()) && Utils.Find_Customer_Number(appEnv.getCustomerNumber()) );
+                Utils.Find_Stock_Number(appEnv.getStockNumber()) && Utils.Find_Customer_Number(appEnv.getCustomerNumber()) );
         Utils.VerifyResult("Work Order Loaded in the GUI Does Not Match with Open And Completed WO in the System Against Customer and Stock Number", appEnv.isTestPass());
 
     }
@@ -896,7 +965,8 @@ public class SearchWO {
     @Test(priority = 130, retryAnalyzer = ReTry.class)
         public void Search_Open_And_Cancelled_WO_Against_WO_Number(){
         appEnv.setTotalWOAgainstWONumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenAndCancelledWOWithinGivenDaysAgainstWONumber()));
-        Utils.StaticWait(10000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -914,7 +984,8 @@ public class SearchWO {
     @Test(priority = 131, retryAnalyzer = ReTry.class)
         public void Search_Open_And_Cancelled_WO_Against_First_Name(){
         appEnv.setTotalWOAgainstFirstName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenAndCancelledWOWithinGivenDaysAgainstFirstName()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -934,7 +1005,8 @@ public class SearchWO {
     @Test(priority = 132, retryAnalyzer = ReTry.class)
         public void Search_Open_And_Cancelled_WO_Against_Last_Name(){
         appEnv.setTotalWOAgainstLastName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenAndCancelledWOWithinGivenDaysAgainstLastName()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -954,7 +1026,8 @@ public class SearchWO {
     @Test(priority = 133, retryAnalyzer = ReTry.class)
         public void Search_Open_And_Cancelled_WO_Against_Stock_Number(){
         appEnv.setTotalWOAgainstStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenAndCancelledWOWithinGivenDaysAgainstStockNumber()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -964,14 +1037,19 @@ public class SearchWO {
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(10000);
         appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+        if(appEnv.getTotalWOAgainstStockNumber()== 0 && Utils.Count_Table_Rows()==0)
+            appEnv.setTestPass(true);
+        else
         appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstStockNumber() &&
-                Utils.Search_Table_with_String(appEnv.getStockNumber()) );
+                Utils.Find_Stock_Number(appEnv.getStockNumber()) );
         Utils.VerifyResult("Work Order Loaded in the GUI Does Not Match with Open And Cancelled WO in the System Against Stock Number", appEnv.isTestPass());
 
     }
     @Test(priority = 134, retryAnalyzer = ReTry.class)
         public void Search_Open_And_Cancelled_WO_Against_Customer_Number(){
         appEnv.setTotalWOAgainstCustomerNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenAndCancelledWOWithinGivenDaysAgainstCustomerNumber()));
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -981,15 +1059,19 @@ public class SearchWO {
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(10000);
         appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+        if(appEnv.getTotalWOAgainstCustomerNumber()== 0 && Utils.Count_Table_Rows()==0)
+            appEnv.setTestPass(true);
+        else
         appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstCustomerNumber() &&
-                Utils.Search_Table_with_String(appEnv.getStockNumber()) );
+                Utils.Find_Stock_Number(appEnv.getStockNumber()) );
         Utils.VerifyResult("Completed WO Loaded in GUI does not match with Open And Cancelled WO in the system against Customer Number", appEnv.isTestPass());
 
     }
     @Test(priority = 135, retryAnalyzer = ReTry.class)
         public void Search_Open_And_Cancelled_WO_Against_First_Name_And_Last_Name(){
         appEnv.setTotalWOAgainstFirstNameAndLastName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenAndCancelledWOWithinGivenDaysAgainstFirstNameAndLastName()));
-        Utils.StaticWait(5000);
+        Utils.StaticWait(1000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1011,6 +1093,7 @@ public class SearchWO {
         public void Search_Open_And_Cancelled_WO_Against_First_Name_Last_Name_And_Stock_Number(){
         appEnv.setTotalWOAgainstFirstNameLastNameAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenAndCancelledWOWithinGivenDaysAgainstFirstNameLastNameAndStockNumber()));
         Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1034,6 +1117,7 @@ public class SearchWO {
         public void Search_Open_And_Cancelled_WO_Against_First_Name_Last_Name_Customer_Number_And_Stock_Number(){
         appEnv.setTotalWOAgainstFirstNameLastNameCustomerNumhberAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenAndCancelledWOWithinGivenDaysAgainstFirstNameLastNameCustomerNumberAndStockNumber()));
         Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1058,6 +1142,7 @@ public class SearchWO {
     public void Search_Open_And_Cancelled_WO_Against_First_Name_Last_Name_And_Customer_Number(){
         appEnv.setTotalWOAgainstFirstNameLastNameAndCustomerNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenAndCancelledWOWithinGivenDaysAgainstFirstNameLastNameAndCustomerNumber()));
         Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1081,6 +1166,7 @@ public class SearchWO {
         public void Search_Open_And_Cancelled_WO_Against_Customer_And_Stock_Number(){
         appEnv.setTotalWOAgainstCustomerNumberAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenAndCancelledWOWithinGivenDaysAgainstCustomerAndStockNumber()));
         Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1091,8 +1177,11 @@ public class SearchWO {
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(10000);
         appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+        if(appEnv.getTotalWOAgainstCustomerNumberAndStockNumber()== 0 && Utils.Count_Table_Rows()==0)
+            appEnv.setTestPass(true);
+        else
         appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstCustomerNumberAndStockNumber() &&
-                Utils.Search_Table_with_String(appEnv.getStockNumber()) && Utils.Find_Customer(appEnv.getCustomerNumber()) );
+                Utils.Find_Stock_Number(appEnv.getStockNumber()) && Utils.Find_Customer_Number(appEnv.getCustomerNumber()) );
         Utils.VerifyResult("Work Order Loaded in the GUI Does Not Match with Open And Cancelled WO in the System Against Customer and Stock Number", appEnv.isTestPass());
 
     }
@@ -1100,7 +1189,8 @@ public class SearchWO {
     @Test(priority = 160, retryAnalyzer = ReTry.class)
         public void Search_Open_Completed_And_Cancelled_WO_Against_WO_Number(){
         appEnv.setTotalWOAgainstWONumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenCompletedAndCancelledWOWithinGivenDaysAgainstWONumber()));
-        Utils.StaticWait(10000);
+        Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1120,6 +1210,7 @@ public class SearchWO {
     public void Search_Open_Completed_And_Cancelled_WO_Against_First_Name(){
         appEnv.setTotalWOAgainstFirstName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenCompletedAndCancelledWOWithinGivenDaysAgainstFirstName()));
         Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1141,6 +1232,7 @@ public class SearchWO {
     public void Search_Open_Completed_And_Cancelled_WO_Against_Last_Name(){
         appEnv.setTotalWOAgainstLastName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenCompletedAndCancelledWOWithinGivenDaysAgainstLastName()));
         Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1162,6 +1254,7 @@ public class SearchWO {
         public void Search_Open_Completed_And_Cancelled_WO_Against_Stock_Number(){
         appEnv.setTotalWOAgainstStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenCompletedAndCancelledWOWithinGivenDaysAgainstStockNumber()));
         Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1183,6 +1276,7 @@ public class SearchWO {
     @Test(priority = 164, retryAnalyzer = ReTry.class)
         public void Search_Open_Completed_And_Cancelled_WO_Against_Customer_Number(){
         appEnv.setTotalWOAgainstCustomerNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenCompletedAndCancelledWOWithinGivenDaysAgainstCustomerNumber()));
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1193,8 +1287,11 @@ public class SearchWO {
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(10000);
         appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+        if(appEnv.getTotalWOAgainstCustomerNumber()== 0 && Utils.Count_Table_Rows()==0)
+            appEnv.setTestPass(true);
+        else
         appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstCustomerNumber() &&
-                Utils.Search_Table_with_String(appEnv.getStockNumber()) );
+                Utils.Find_Stock_Number(appEnv.getStockNumber()) );
         Utils.VerifyResult("Completed WO Loaded in GUI does not match with Open Completed And Cancelled WO in the system against Customer Number", appEnv.isTestPass());
 
     }
@@ -1202,6 +1299,7 @@ public class SearchWO {
         public void Search_Open_Completed_And_Cancelled_WO_Against_First_Name_And_Last_Name(){
         appEnv.setTotalWOAgainstFirstNameAndLastName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenCompletedAndCancelledWOWithinGivenDaysAgainstFirstNameAndLastName()));
         Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1224,6 +1322,7 @@ public class SearchWO {
         public void Search_Open_Completed_And_Cancelled_WO_Against_First_Name_Last_Name_And_Stock_Number(){
         appEnv.setTotalWOAgainstFirstNameLastNameAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenCompletedAndCancelledWOWithinGivenDaysAgainstFirstNameLastNameAndStockNumber()));
         Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1248,6 +1347,7 @@ public class SearchWO {
         public void Search_Open_Completed_And_Cancelled_WO_Against_First_Name_Last_Name_Customer_Number_And_Stock_Number(){
         appEnv.setTotalWOAgainstFirstNameLastNameCustomerNumhberAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenCompletedAndCancelledWOWithinGivenDaysAgainstFirstNameLastNameCustomerNumberAndStockNumber()));
         Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1273,6 +1373,7 @@ public class SearchWO {
         public void Search_Open_Completed_And_Cancelled_WO_Against_First_Name_Last_Name_And_Customer_Number(){
         appEnv.setTotalWOAgainstFirstNameLastNameAndCustomerNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenCompletedAndCancelledWOWithinGivenDaysAgainstFirstNameLastNameAndCustomerNumber()));
         Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1297,6 +1398,7 @@ public class SearchWO {
         public void Search_Open_Completed_And_Cancelled_WO_Against_Customer_And_Stock_Number(){
         appEnv.setTotalWOAgainstCustomerNumberAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenCompletedAndCancelledWOWithinGivenDaysAgainstCustomerAndStockNumber()));
         Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1308,8 +1410,11 @@ public class SearchWO {
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(10000);
         appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
-        appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstCustomerNumberAndStockNumber() &&
-                Utils.Find_Stock_Number(appEnv.getStockNumber()) && Utils.Find_Customer(appEnv.getCustomerNumber()) );
+        if(appEnv.getTotalWOAgainstCustomerNumberAndStockNumber()== 0 && Utils.Count_Table_Rows()==0)
+            appEnv.setTestPass(true);
+        else
+            appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstCustomerNumberAndStockNumber() &&
+                Utils.Find_Stock_Number(appEnv.getStockNumber()) && Utils.Find_Customer_Number(appEnv.getCustomerNumber()) );
         Utils.VerifyResult("Work Order Loaded in the GUI Does Not Match with Open Completed And Cancelled WO in the System Against Customer and Stock Number", appEnv.isTestPass());
 
     }
@@ -1320,6 +1425,7 @@ public class SearchWO {
     public void Search_WO_Against_WO_Number(){
         appEnv.setTotalWOAgainstWONumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetWOAgainstWONumber()));
         Utils.StaticWait(10000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1338,6 +1444,7 @@ public class SearchWO {
     public void Search_WO_Against_First_Name(){
         appEnv.setTotalWOAgainstFirstName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetWOAgainstFirstName()));
         Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1358,6 +1465,7 @@ public class SearchWO {
     public void Search_WO_Against_Last_Name(){
         appEnv.setTotalWOAgainstLastName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetWOAgainstLastName()));
         Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1378,6 +1486,7 @@ public class SearchWO {
     public void Search_WO_Against_Stock_Number(){
         appEnv.setTotalWOAgainstStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetWOAgainstStockNumber()));
         Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1395,6 +1504,7 @@ public class SearchWO {
     @Test(priority = 204, retryAnalyzer = ReTry.class)
     public void Search_WO_Against_Customer_Number(){
         appEnv.setTotalWOAgainstCustomerNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetWOAgainstCustomerNumber()));
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1416,6 +1526,7 @@ public class SearchWO {
     public void Search_WO_Against_First_Name_And_Last_Name(){
         appEnv.setTotalWOAgainstFirstNameAndLastName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetWOAgainstFirstNameAndLastName()));
         Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1437,6 +1548,7 @@ public class SearchWO {
     public void Search_WO_Against_First_Name_Last_Name_And_Stock_Number(){
         appEnv.setTotalWOAgainstFirstNameLastNameAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetWOAgainstFirstNameLastNameAndStockNumber()));
         Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1465,6 +1577,7 @@ public class SearchWO {
     public void Search_WO_Against_First_Name_Last_Name_Customer_Number_And_Stock_Number(){
         appEnv.setTotalWOAgainstFirstNameLastNameCustomerNumhberAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetWOAgainstFirstNameLastNameCustomerNumberAndStockNumber()));
         Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1489,6 +1602,7 @@ public class SearchWO {
     public void Search_WO_Against_First_Name_Last_Name_And_Customer_Number(){
         appEnv.setTotalWOAgainstFirstNameLastNameAndCustomerNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetWOAgainstFirstNameLastNameAndCustomerNumber()));
         Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1512,6 +1626,7 @@ public class SearchWO {
     public void Search_WO_Against_Customer_And_Stock_Number(){
         appEnv.setTotalWOAgainstCustomerNumberAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetWOAgainstCustomerAndStockNumber()));
         Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
@@ -1522,8 +1637,11 @@ public class SearchWO {
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(10000);
         appEnv.getReportManager().LogStepInfo("Work Orders Found : " + Utils.Count_Table_Rows());
+        if(appEnv.getTotalWOAgainstCustomerNumberAndStockNumber()== 0 && Utils.Count_Table_Rows()==0)
+            appEnv.setTestPass(true);
+        else
         appEnv.setTestPass(Utils.Count_Table_Rows()==appEnv.getTotalWOAgainstCustomerNumberAndStockNumber() &&
-                Utils.Find_Stock_Number(appEnv.getStockNumber()) && Utils.Find_Customer(appEnv.getCustomerNumber()) );
+                Utils.Find_Stock_Number(appEnv.getStockNumber()) && Utils.Find_Customer_Number(appEnv.getCustomerNumber()) );
         Utils.VerifyResult("Work Order Loaded in the GUI Does Not Match with Open Completed And Cancelled WO in the System Against Customer and Stock Number", appEnv.isTestPass());
 
     }
@@ -1531,6 +1649,7 @@ public class SearchWO {
     public void Search_WO_Against_WO_First_Name_Last_Name_Customer_Number_And_Stock_Number(){
         appEnv.setTotalWOAgainstWOFirstNameLastNameCustomerNumhberAndStockNumber(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetWOAgainstWOFirstNameLastNameCustomerNumberAndStockNumber()));
         Utils.StaticWait(5000);
+        loginPage.Click_Work_Order_Button();
         Utils.waitTillXpathPresent("//*[@data-test-id='workOrderListPage']", 30);
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);

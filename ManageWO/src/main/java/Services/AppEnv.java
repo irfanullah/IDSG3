@@ -1,5 +1,11 @@
 package Services;
+
 import org.openqa.selenium.remote.RemoteWebDriver;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 
 /**
@@ -45,7 +51,25 @@ public class AppEnv {
     private String SendReportEmail;
     private String ToEmailAddress;
     private String CCEmailAddress;
+    private String EncryptedPassword;
 
+    public String getAPIBaseURL() {
+        return APIBaseURL;
+    }
+
+    public void setAPIBaseURL(String APIBaseURL) {
+        this.APIBaseURL = APIBaseURL;
+    }
+
+    private String APIBaseURL;
+
+    public String getEncryptedPassword() {
+        return EncryptedPassword;
+    }
+
+    public void setEncryptedPassword(String encryptedPassword) {
+        EncryptedPassword = encryptedPassword;
+    }
 
     public String getToEmailAddress() {
         return ToEmailAddress;
@@ -393,8 +417,29 @@ public class AppEnv {
     }
 
     public String getToken(){
+
+        BufferedReader br;
+        try {
+            br = new BufferedReader(new FileReader("./src/main/resources/DataSecure/Token.csv"));
+            try {
+                String x;
+                while ( (x = br.readLine()) != null ) {
+                    // Printing out each line in the file
+                    Token = x;
+
+                }
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        catch (FileNotFoundException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        }
         return Token;
     }
+
 
     public void setLocation(String location){
         Location = location;

@@ -4,6 +4,10 @@ import Drivers.Fetch_Elements;
 import Services.AppEnv;
 import Services.General;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+
 /**
  * This class will list have all the objects from Login Screen.
  */
@@ -67,14 +71,14 @@ public class LoginPage
     /**
      * This method will Click Go to Work Order button on Welcome Page.
      */
-    /*public void Click_Work_Order_Button() {
+    public void Click_Work_Order_Button() {
 
-        Utils.waitTillXpathPresent("//*[@id=\"root\"]//button[@type= 'button']", 30);
-        if (Utils.IsObjExist(fetch_elements.GetObj("xpath", "//*[@id=\"root\"]//button[@type= 'button']"))) {
-            Utils.ClickObj(fetch_elements.GetObj("xpath", "//*[@id=\"root\"]//button[@type= 'button']"));
-            //appEnv.getReportManager().LogStepInfo("Click Work Order Button");
+        Utils.waitTillXpathPresent("/html/body/div/div/div/div[2]/div/a[1]/div/div", 30);
+        if (Utils.IsObjExist(fetch_elements.GetObj("xpath", "/html/body/div/div/div/div[2]/div/a[1]/div/div"))) {
+            Utils.ClickObj(fetch_elements.GetObj("xpath", "/html/body/div/div/div/div[2]/div/a[1]/div/div"));
+            appEnv.getReportManager().LogStepInfo("Click Work Order Button");
         }
-    }*/
+    }
 
 
         /**
@@ -83,7 +87,7 @@ public class LoginPage
          */
     public boolean IsSession_Logged_In()
     {
-        return (Utils.IsObjExist(fetch_elements.GetObj("xpath", "//*[@id=\"root\"]//div[starts-with(@class, 'Avatar')]")));
+        return (Utils.IsObjExist(fetch_elements.GetObj("xpath", "//*[starts-with(@class, 'Header_title')]")));
     }
 
         /**
@@ -93,12 +97,33 @@ public class LoginPage
          * @return
          */
     public boolean LogIn(String Email, String Password){
+        String Path = "./src/main/resources/DataSecure/Token.csv";
+        System.out.println("Status Code Received : " +  appEnv.getRestManager().GetStatusCode());
+        if(!(appEnv.getRestManager().GetStatusCode()==200)) {
+            try{
+                System.out.println("New Token Generated and Saved");
+                File file = new File(Path);
+                if(!file.exists()){
+                    file.createNewFile();
+                    System.out.println("New File Created");
+                }
+                FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                bufferedWriter.write(appEnv.getRestManager().GetAccessToken());
+                System.out.println("New Token Added to File");
+                bufferedWriter.close();
+            }catch(Exception e){
+                System.out.println(e);
+            }
+            appEnv.setToken(appEnv.getRestManager().GetAccessToken());
+
+        }
+
         Utils.waitTillNamePresent("userId",30);
         Type_Email_Address(Email);
         Type_Password(Password);
         Click_Sign_in_Button();
-        Utils.waitTillXpathPresent("//*[@id=\"root\"]//button[@type= 'button']", 30);
-        Utils.waitTillXpathPresent("//*[@id=\"root\"]//div[starts-with(@class, 'Avatar')]", 30);
+        Utils.waitTillXpathPresent("//*[starts-with(@class, 'Header_title')]", 30);
         return IsSession_Logged_In();
     }
 
