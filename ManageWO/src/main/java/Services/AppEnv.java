@@ -1,6 +1,11 @@
 package Services;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+
 
 /**
  * This class will use as a global class in our project
@@ -46,6 +51,43 @@ public class AppEnv {
     private String ToEmailAddress;
     private String CCEmailAddress;
 
+    private String u2RestApiBaseUrl;
+    private String u2RestApiToken;
+    private String EncryptedPassword;
+
+    private String APIBaseURL;
+
+    public String getEncryptedPassword() {
+        return EncryptedPassword;
+    }
+
+    public void setEncryptedPassword(String encryptedPassword) {
+        EncryptedPassword = encryptedPassword;
+    }
+
+    public String getU2RestApiBaseUrl() {
+        return u2RestApiBaseUrl;
+    }
+
+    public void setU2RestApiBaseUrl(String u2RestApiBaseUrl) {
+        this.u2RestApiBaseUrl = u2RestApiBaseUrl;
+    }
+
+    public String getU2RestApiToken() {
+        return u2RestApiToken;
+    }
+
+    public void setU2RestApiToken(String u2RestApiToken) {
+        this.u2RestApiToken = u2RestApiToken;
+    }
+
+    public String getAPIBaseURL() {
+        return APIBaseURL;
+    }
+
+    public void setAPIBaseURL(String APIBaseURL) {
+        this.APIBaseURL = APIBaseURL;
+    }
 
     public String getToEmailAddress() {
         return ToEmailAddress;
@@ -393,6 +435,26 @@ public class AppEnv {
     }
 
     public String getToken(){
+
+        BufferedReader br;
+        try {
+            br = new BufferedReader(new FileReader("./src/main/resources/DataSecure/Token.csv"));
+            try {
+                String x;
+                while ( (x = br.readLine()) != null ) {
+                    // Printing out each line in the file
+                    Token = x;
+
+                }
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        catch (FileNotFoundException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        }
         return Token;
     }
 

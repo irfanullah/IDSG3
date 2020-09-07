@@ -26,9 +26,7 @@ public class SearchWO {
     private WODetails woDetails;
     private Fetch_Elements fetch_elements;
 
-
     /* This is constructor class*/
-
 
     public SearchWO() {
         appEnv = SuiteListener.appEnv;
@@ -38,11 +36,7 @@ public class SearchWO {
         inputDataStream = InputDataStream.getInstance(appEnv);
         woDetails = WODetails.getInstance(appEnv);
         fetch_elements = Fetch_Elements.getInstance(appEnv);
-
-
     }
-
-
 
     @Test(priority = 0, retryAnalyzer = ReTry.class)
     public void Login_With_Incorrect_UserID(){

@@ -229,9 +229,9 @@ public class TestFiltration {
                 TestDescription = "This test will Search Work Orders";
                 break;
             case "Search_Open_And_Cancelled_WO_Against_Customer_And_Stock_Number":
-                    appEnv.setLogInReq(true);
-                    TestDescription = "This test will Search Work Orders";
-                    break;
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
             case "Search_Open_Completed_And_Cancelled_WO_Against_WO_Number":
                 appEnv.setLogInReq(true);
                 TestDescription = "This test will Search Work Orders";
@@ -321,9 +321,107 @@ public class TestFiltration {
                 TestDescription = "This test will Search Work Orders";
                 break;
 
-        default:
-            appEnv.setLogInReq(false);
-            break;
+            case "Load_Work_Order_Date":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Load_Work_Order_Author":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Load_Work_Order_Status":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Load_Work_Order_Location":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Load_Work_Order_SalesID":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Load_Work_Order_Customer_Name":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Load_Work_Order_Customer_Email":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Load_Work_Order_Customer_Home_Phone":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Load_Work_Order_In_Service_Date":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Load_Work_Order_Customer_Address":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Load_Work_Order_Schedule_Priority":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+
+            case "Load_Work_Order_Appointment_Date":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+
+            case "Load_Work_Order_Expected_Promised_Date":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+
+            case "Load_Work_Order_Warranty_Date":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+
+            case "Load_WO_Stock_Chasis_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+
+            case "Load_Work_Order_Stock_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+
+            case "Load_WO_Stock_Serial_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+
+            case "Load_WO_Stock_Meter_In_Reading":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Load_WO_Stock_Meter_Out_Reading":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+
+            case "Load_Work_Order_Tag_Number":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Load_Work_Order_Category":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+
+            case "Load_Parts_Discount_Percentage":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+
+            default:
+                appEnv.setLogInReq(false);
+                break;
         }
         appEnv.getReportManager().InitReport(methodName.getMethodName() , TestDescription);
     }

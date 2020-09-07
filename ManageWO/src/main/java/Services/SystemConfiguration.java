@@ -56,7 +56,10 @@ public class SystemConfiguration {
         appEnv.setCompletedWithinDays(prop.getProperty("CompletedWithinDays"));
         appEnv.setToEmailAddress(prop.getProperty("ToEmailAddress"));
         appEnv.setCCEmailAddress(prop.getProperty("CCEmailAddress"));
-
+        appEnv.setU2RestApiBaseUrl(prop.getProperty("U2RestApiBaseUrl"));
+        appEnv.setU2RestApiToken(prop.getProperty("U2RestApiToken"));
+        appEnv.setAPIBaseURL(prop.getProperty("APIBaseURL"));
+        appEnv.setEncryptedPassword(prop.getProperty("EncryptedPassword"));
         return appEnv;
     }
 }

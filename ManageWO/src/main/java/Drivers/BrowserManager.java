@@ -60,7 +60,9 @@ public class BrowserManager {
      */
 
     public void Kill_Driver() {
-        appEnv.getDriver().close();
+        // https://stackoverflow.com/questions/15067107/difference-between-webdriver-dispose-close-and-quit#:~:text=close()%20is%20a%20webdriver,which%20is%20currently%20in%20focus.&text=The%20following%20code%20can%20be,and%20terminates%20the%20WebDriver%20session.
+        // Here we only need quit call.
+        // appEnv.getDriver().close();
         appEnv.getDriver().quit();
     }
 }
