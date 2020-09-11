@@ -3,45 +3,45 @@
 <suite name="All_Tests">
     <test name="User_Login">
         <classes>
-        <class name="TestSpecs.SearchWO">
-                <methods>
-                    <exclude name="Debug_Test_Cases_To_See_Table_Data_Loaded" />
- <!--                   <include name="Login_With_UserID_And_Logout" />
-                    <include name="Login_With_EmailAddress" />
-                   <include name="Search_Open_Completed_And_Cancelled_WO_Against_WO_Number" />
-                        <include name="Search_Open_Completed_And_Cancelled_WO_Against_First_Name" />
-                        <include name="Search_Open_Completed_And_Cancelled_WO_Against_Stock_Number" />
-                        <include name="Search_Open_Completed_And_Cancelled_WO_Against_Customer_Number" />
-                        <include name="Search_Open_Completed_And_Cancelled_WO_Against_First_Name_And_Last_Name" />
-                        <include name="Search_Open_Completed_And_Cancelled_WO_Against_First_Name_Last_Name_And_Stock_Number" />
-                        <include name="Search_Open_Completed_And_Cancelled_WO_Against_First_Name_Last_Name_Customer_Number_And_Stock_Number" />
-                        <include name="Search_Open_Completed_And_Cancelled_WO_Against_First_Name_Last_Name_And_Customer_Number" />
-                        <include name="Search_Open_Completed_And_Cancelled_WO_Against_Customer_And_Stock_Number" />
-                        <include name="Search_Open_Completed_And_Cancelled_WO_Against_Last_Name" />
-                        <include name="Search_Open_And_Cancelled_WO_Against_WO_Number" />
-                        <include name="Search_Open_And_Cancelled_WO_Against_First_Name" />
-                        <include name="Search_Open_And_Cancelled_WO_Against_Stock_Number" />
-                        <include name="Search_Open_And_Cancelled_WO_Against_Customer_Number" />
-                        <include name="Search_Open_And_Cancelled_WO_Against_First_Name_And_Last_Name" />
-                        <include name="Search_Open_And_Cancelled_WO_Against_First_Name_Last_Name_And_Stock_Number" />
-                        <include name="Search_Open_And_Cancelled_WO_Against_First_Name_Last_Name_Customer_Number_And_Stock_Number" />
-                        <include name="Search_Open_And_Cancelled_WO_Against_First_Name_Last_Name_And_Customer_Number" />
-                        <include name="Search_Open_And_Cancelled_WO_Against_Customer_And_Stock_Number" />
-                        <include name="Search_Open_And_Cancelled_WO_Against_Last_Name" />
-                    <include name="Login_With_UserID_And_Logout" />
-                    <include name="Login_With_EmailAddress" />
-                    <include name=  "Search_WO_Against_WO_Number"/>
-                    <include name= "Search_WO_Against_First_Name"/>
-                    <include name= "Search_WO_Against_Last_Name"/>
-                    <include name= "Search_WO_Against_Stock_Number"/>
-                    <include name= "Search_WO_Against_Customer_Number"/>
-                    <include name= "Search_WO_Against_First_Name_And_Last_Name"/>
-                    <include name= "Search_WO_Against_First_Name_Last_Name_And_Stock_Number"/>
-                    <include name= "Search_WO_Against_First_Name_Last_Name_Customer_Number_And_Stock_Number"/>
-                    <include name= "Search_WO_Against_First_Name_Last_Name_And_Customer_Number"/>
-                    <include name= "Search_WO_Against_Customer_And_Stock_Number"/>-->
+            <!--   <class name="TestSpecs.SearchWO">
+                     <methods>
+                         <exclude name="Debug_Test_Cases_To_See_Table_Data_Loaded" />
+                       <include name="Login_With_UserID_And_Logout" />
+                         <include name="Login_With_EmailAddress" />
+                        <include name="Search_Open_Completed_And_Cancelled_WO_Against_WO_Number" />
+                             <include name="Search_Open_Completed_And_Cancelled_WO_Against_First_Name" />
+                             <include name="Search_Open_Completed_And_Cancelled_WO_Against_Stock_Number" />
+                             <include name="Search_Open_Completed_And_Cancelled_WO_Against_Customer_Number" />
+                             <include name="Search_Open_Completed_And_Cancelled_WO_Against_First_Name_And_Last_Name" />
+                             <include name="Search_Open_Completed_And_Cancelled_WO_Against_First_Name_Last_Name_And_Stock_Number" />
+                             <include name="Search_Open_Completed_And_Cancelled_WO_Against_First_Name_Last_Name_Customer_Number_And_Stock_Number" />
+                             <include name="Search_Open_Completed_And_Cancelled_WO_Against_First_Name_Last_Name_And_Customer_Number" />
+                             <include name="Search_Open_Completed_And_Cancelled_WO_Against_Customer_And_Stock_Number" />
+                             <include name="Search_Open_Completed_And_Cancelled_WO_Against_Last_Name" />
+                             <include name="Search_Open_And_Cancelled_WO_Against_WO_Number" />
+                             <include name="Search_Open_And_Cancelled_WO_Against_First_Name" />
+                             <include name="Search_Open_And_Cancelled_WO_Against_Stock_Number" />
+                             <include name="Search_Open_And_Cancelled_WO_Against_Customer_Number" />
+                             <include name="Search_Open_And_Cancelled_WO_Against_First_Name_And_Last_Name" />
+                             <include name="Search_Open_And_Cancelled_WO_Against_First_Name_Last_Name_And_Stock_Number" />
+                             <include name="Search_Open_And_Cancelled_WO_Against_First_Name_Last_Name_Customer_Number_And_Stock_Number" />
+                             <include name="Search_Open_And_Cancelled_WO_Against_First_Name_Last_Name_And_Customer_Number" />
+                             <include name="Search_Open_And_Cancelled_WO_Against_Customer_And_Stock_Number" />
+                             <include name="Search_Open_And_Cancelled_WO_Against_Last_Name" />
+                         <include name="Login_With_UserID_And_Logout" />
+                         <include name="Login_With_EmailAddress" />
+                         <include name=  "Search_WO_Against_WO_Number"/>
+                         <include name= "Search_WO_Against_First_Name"/>
+                         <include name= "Search_WO_Against_Last_Name"/>
+                         <include name= "Search_WO_Against_Stock_Number"/>
+                         <include name= "Search_WO_Against_Customer_Number"/>
+                         <include name= "Search_WO_Against_First_Name_And_Last_Name"/>
+                         <include name= "Search_WO_Against_First_Name_Last_Name_And_Stock_Number"/>
+                         <include name= "Search_WO_Against_First_Name_Last_Name_Customer_Number_And_Stock_Number"/>
+                         <include name= "Search_WO_Against_First_Name_Last_Name_And_Customer_Number"/>
+                         <include name= "Search_WO_Against_Customer_And_Stock_Number"/>
                 </methods>
-            </class>
+            </class>-->
             <class name="TestSpecs.DetailedWO">
                 <methods>
 

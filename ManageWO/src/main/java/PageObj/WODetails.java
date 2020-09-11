@@ -3,6 +3,7 @@ package PageObj;
 import Drivers.Fetch_Elements;
 import Services.AppEnv;
 import Services.General;
+import org.json.JSONArray;
 
 public class WODetails {
 
@@ -155,6 +156,15 @@ public class WODetails {
     public String GetWOPartsDiscountPercentage(){
         Utils.waitTillXpathPresent("//div[@data-test-id='woHeaderMisc']/div[2]/div[5]/div[1]/div[2]", 30);
         return  Utils.GetText(fetch_elements.GetObj("xpath","//div[@data-test-id='woHeaderMisc']/div[2]/div[5]/div[1]/div[2]"));
+    }
+    public String GetStringFromJobs(JSONArray jsonArray, String Title)
+    {
+        String Expected_Result =null;
+        for(int i =0; i<jsonArray.length(); i++)
+            Expected_Result= jsonArray.getJSONObject(i).getString(Title);
+        return Expected_Result;
+
+
     }
 
 }

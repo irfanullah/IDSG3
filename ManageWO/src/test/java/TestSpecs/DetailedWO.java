@@ -24,6 +24,7 @@ public class DetailedWO {
     private InputDataStream inputDataStream;
     private Fetch_Elements fetch_elements;
     private RecentWO pgRecentWO;
+  //  private JSONArray JobsInfo;
 
 
     public DetailedWO() {
@@ -34,6 +35,9 @@ public class DetailedWO {
         loginPage = new LoginPage(appEnv);
         inputDataStream = InputDataStream.getInstance(appEnv);
         fetch_elements = Fetch_Elements.getInstance(appEnv);
+        restManager = RestManager.getInstance(appEnv);
+     //  JobsInfo = new JSONArray();
+      //  JobsInfo.put(appEnv.getRestManager().GetInfoFromAPI("Jobs"));
 
     }
 
@@ -44,6 +48,15 @@ public class DetailedWO {
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
         String GUIValue = woDetails.GetWODate();
         String APIValue = appEnv.getRestManager().GetDateFromWOAPI("WorkOrder","WorkOrderDate");
+        System.out.println("Data Received from JSON ARRAY is : " + woDetails.GetStringFromJobs(appEnv.getRestManager().GetInfoFromAPI("Jobs"), "JobNo"));
+/*        System.out.println(woDetails.GetStringFromJobs(JobsInfo, "Complaint"));
+        System.out.println(woDetails.GetStringFromJobs(JobsInfo, "BillTypeCode"));
+        System.out.println(woDetails.GetStringFromJobs(JobsInfo, "BillTypeDesc"));
+        System.out.println(woDetails.GetStringFromJobs(JobsInfo, "BillTo"));
+        System.out.println(woDetails.GetStringFromJobs(JobsInfo, "BillToDesc"));*/
+
+
+
         System.out.println("Work Order Date is : " + GUIValue);
         appEnv.setTestPass(APIValue.equalsIgnoreCase(GUIValue));
         appEnv.getReportManager().LogStepInfo("WO Date is : " + GUIValue);
@@ -149,7 +162,7 @@ public class DetailedWO {
 
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
         System.out.println("Work Order Appointment Date is : " + woDetails.GetWOAppointmentDate());
-        appEnv.setTestPass(appEnv.getRestManager().GetDateFromWOAPI("WorkOrder","AppointmentDateTime").equalsIgnoreCase(woDetails.GetWOAppointmentDate()));
+        appEnv.setTestPass(appEnv.getRestManager().GetDateTimeFromWOAPI("WorkOrder","AppointmentDate", "AppointmentTime").equalsIgnoreCase(woDetails.GetWOAppointmentDate()));
         appEnv.getReportManager().LogStepInfo("WO Appointment Date is : " + woDetails.GetWOAppointmentDate());
         Utils.VerifyResult("Can not Load Work Order Appointment Date ", appEnv.isTestPass());
     }
@@ -157,8 +170,11 @@ public class DetailedWO {
     @Test(priority = 511, retryAnalyzer = ReTry.class)
     public void Load_Work_Order_Expected_Promised_Date(){
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
-        System.out.println("Work Order Expected/Promised Date is : " + woDetails.GetWOExpectedDate());
-        appEnv.setTestPass(appEnv.getRestManager().GetDateFromWOAPI("WorkOrder","PromiseDateTime").equalsIgnoreCase(woDetails.GetWOExpectedDate()));
+        String GUIExpectedDate = woDetails.GetWOExpectedDate();
+        String APIExpectedDate = appEnv.getRestManager().GetDateTimeFromWOAPI("WorkOrder","PromiseDate", "PromiseTime");
+        System.out.println("Work Order GUI Expected/Promised Date is : " + GUIExpectedDate);
+        System.out.println("Work Order API Expected/Promised Date is : " + APIExpectedDate);
+        appEnv.setTestPass(APIExpectedDate.equalsIgnoreCase(GUIExpectedDate));
         appEnv.getReportManager().LogStepInfo("WO Expected/Promised Date is : " + woDetails.GetWOExpectedDate());
         Utils.VerifyResult("Can not Load Work Order Expected/Promised Date ", appEnv.isTestPass());
     }
@@ -200,8 +216,8 @@ public class DetailedWO {
         if(GUIValue.isEmpty())
             appEnv.setTestPass(true);
         else {
-            String APIValue = appEnv.getRestManager().GetStringInfoFromWOAPI("Inventory", "ChasisNo");
-            System.out.println("WO Stock Chasis Number is   : " + GUIValue);
+            String APIValue = appEnv.getRestManager().GetStringInfoFromWOAPI("Inventory", "ChassisNo");
+            System.out.println("WO Stock GUI Chasis Number is   : " + GUIValue);
             appEnv.setTestPass(APIValue.equalsIgnoreCase(GUIValue));
         }
         appEnv.getReportManager().LogStepInfo("WO Stock Chasis Number is : " + GUIValue);
@@ -328,7 +344,7 @@ public class DetailedWO {
     @Test(priority = 521, retryAnalyzer = ReTry.class)
     public void Load_Parts_Discount_Percentage(){
 
-        System.out.println(appEnv.getRestManager().GetWOCustomerInfoFromAPI("Customer"));
+       // System.out.println(appEnv.getRestManager().GetWOCustomerInfoFromAPI("Customer"));
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
         String GUIValue = woDetails.GetWOPartsDiscountPercentage();
         if(GUIValue.isEmpty())

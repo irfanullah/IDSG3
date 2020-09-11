@@ -99,6 +99,7 @@ public class SearchWO {
     }
     @Test(priority = 11, retryAnalyzer = ReTry.class)
         public void Search_Open_WO_Against_First_Name(){
+        System.out.println(appEnv.getRestManager().GetInfoFromAPI("Jobs"));
         appEnv.setTotalWOAgainstFirstName(appEnv.getRestManager().SetDataFromAPI(inputDataStream.SetOpenWOAgainstFirstName()));
         Utils.StaticWait(1000);
         loginPage.Click_Work_Order_Button();
