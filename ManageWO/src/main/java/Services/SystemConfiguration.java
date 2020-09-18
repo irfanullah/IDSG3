@@ -26,7 +26,7 @@ public class SystemConfiguration {
      */
     public AppEnv Read_Properties(AppEnv appEnv) {
         Properties prop = new Properties();
-        File file = new File("./src/main/resources/SysConfig/DEVVM50.properties");
+        File file = new File("./src/main/resources/SysConfig/QAVM94.properties");
 
         FileInputStream fileInput;
 
@@ -60,6 +60,7 @@ public class SystemConfiguration {
         appEnv.setU2RestApiToken(prop.getProperty("U2RestApiToken"));
         appEnv.setAPIBaseURL(prop.getProperty("APIBaseURL"));
         appEnv.setEncryptedPassword(prop.getProperty("EncryptedPassword"));
+        appEnv.setAccoutID(Integer.parseInt(prop.getProperty("AccountID")));
         return appEnv;
     }
 }

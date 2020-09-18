@@ -419,6 +419,14 @@ public class TestFiltration {
                 TestDescription = "This test will Search Work Orders";
                 break;
 
+            case "Load_Work_Order_Customer_Mobile_Phone":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
+            case "Load_Work_Orders_Job_List":
+                appEnv.setLogInReq(true);
+                TestDescription = "This test will Search Work Orders";
+                break;
             default:
                 appEnv.setLogInReq(false);
                 break;

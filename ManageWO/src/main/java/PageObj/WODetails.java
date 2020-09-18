@@ -3,6 +3,9 @@ package PageObj;
 import Drivers.Fetch_Elements;
 import Services.AppEnv;
 import Services.General;
+import org.openqa.selenium.By;
+
+import java.util.List;
 
 public class WODetails {
 
@@ -40,6 +43,32 @@ public class WODetails {
         appEnv.getReportManager().LogStepInfo("Click to Open Work Order Number  : " + WONumber);
 
     }
+
+    public boolean MatchMilageUnit(String U2MileageUnitDesc, String MilageUnitDesc ) {
+
+        boolean MatchMilageUnit = false;
+        switch (U2MileageUnitDesc) {
+            case "Hours": {
+                if (MilageUnitDesc.equalsIgnoreCase("hrs"))
+                    MatchMilageUnit = true;
+            }
+            break;
+            case "Kilometers": {
+                if (MilageUnitDesc.equalsIgnoreCase("km"))
+                    MatchMilageUnit = true;
+            }
+            break;
+            case "Miles": {
+                if (MilageUnitDesc.equalsIgnoreCase("miles"))
+                    MatchMilageUnit = true;
+            }
+            break;
+            default:
+                MatchMilageUnit = false;
+        }
+        return MatchMilageUnit;
+    }
+
     public String GetWODate(){
         Utils.waitTillXpathPresent("//div[@data-test-id='woHeaderGeneral']/div[2]/div[1]/div[1]/div[2]", 30);
         return  Utils.GetText(fetch_elements.GetObj("xpath","//div[@data-test-id='woHeaderGeneral']/div[2]/div[1]/div[1]/div[2]"));
@@ -155,6 +184,11 @@ public class WODetails {
     public String GetWOPartsDiscountPercentage(){
         Utils.waitTillXpathPresent("//div[@data-test-id='woHeaderMisc']/div[2]/div[5]/div[1]/div[2]", 30);
         return  Utils.GetText(fetch_elements.GetObj("xpath","//div[@data-test-id='woHeaderMisc']/div[2]/div[5]/div[1]/div[2]"));
+    }
+
+    public int GetNumberofRows(String xpath){
+        List rows = appEnv.getDriver().findElements(By.xpath(xpath));
+        return rows.size();
     }
 
 }

@@ -54,8 +54,16 @@ public class AppEnv {
     private String u2RestApiBaseUrl;
     private String u2RestApiToken;
     private String EncryptedPassword;
-
+    private int AccoutID;
     private String APIBaseURL;
+
+    public int getAccoutID() {
+        return AccoutID;
+    }
+
+    public void setAccoutID(int accoutID) {
+        AccoutID = accoutID;
+    }
 
     public String getEncryptedPassword() {
         return EncryptedPassword;

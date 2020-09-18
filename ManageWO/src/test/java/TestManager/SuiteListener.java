@@ -16,6 +16,7 @@ public class SuiteListener implements ITestListener, ISuiteListener, IInvokedMet
     public static AppEnv appEnv = new AppEnv();
     public static EmailAdopter emailAdopter = null;
     public static ReportManager reportManager = null;
+    public static General Utils = null;
     public static ReportManager getReportManager(){
         return reportManager;
     }
@@ -30,6 +31,9 @@ public class SuiteListener implements ITestListener, ISuiteListener, IInvokedMet
         appEnv.setReportManager(ReportManager.getInstance(appEnv));
         appEnv.setRestManager(RestManager.getInstance(appEnv));
         appEnv.getReportManager().TestEnvironment();
+        Utils = General.getInstance(appEnv);
+        Utils.UpdateToken();
+
     }
 
     @Override

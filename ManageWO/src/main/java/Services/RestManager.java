@@ -214,7 +214,7 @@ public class RestManager {
 
 
 
-    public JSONObject GetWOCustomerInfoFromAPI(String Title){
+    public G3WOResponse GetWOInfoFromAPI(){
         Response response =
                 given()
                         .relaxedHTTPSValidation()
@@ -226,7 +226,7 @@ public class RestManager {
                         .header("Accept-Encoding", "gzip, deflate, br")
                         .header("Connection","keep-alive")
                         .log().all()
-                        .get(""+appEnv.getAPIBaseURL()+"/Service/v1/WorkOrder/"+appEnv.getLocation()+"/" +appEnv.getWorkOrderNumber()+ "?invalidateCache=false")
+                        .get(""+appEnv.getAPIBaseURL()+"/Service/v1/WorkOrder/"+appEnv.getLocation()+"/" +appEnv.getWorkOrderNumber()+ "?invalidateCache=true")
                         .then()
                         .assertThat()
                         .statusCode(200)
@@ -234,18 +234,9 @@ public class RestManager {
                         .response();
         String APIResponse = response.body().asString();
         System.out.println(APIResponse);
-        JSONObject jsonObj = new JSONObject(APIResponse);
-        return jsonObj.getJSONObject(Title);
+        Gson gson = new Gson();
+        return gson.fromJson(APIResponse,G3WOResponse.class);
 
 
-/*
-
-                     JSONArray myArray = jsonObj.getJSONArray(Title);
-                     for(how to iterate throught jason array)
-                         JSONObject element = <elemn in each iterantion>
-                        if (elemtn.get(KEy).equals(value)) {
-                            return element.get(KEy);
-                        }
-*/
     }
 }

@@ -2,6 +2,8 @@ package Services;
 
 import PageObj.WODetails;
 import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.Keys;
@@ -13,6 +15,9 @@ import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.asserts.SoftAssert;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.List;
 
 /**
@@ -25,11 +30,10 @@ public class General {
     private static WODetails woDetails;
 
 
-
     /* Static 'instance' method */
     public static General getInstance(AppEnv appEnv) {
         General.appEnv = appEnv;
-       // woDetails = WODetails.getInstance(appEnv);
+        // woDetails = WODetails.getInstance(appEnv);
         return general;
     }
 
@@ -50,14 +54,14 @@ public class General {
         return State;
     }
 
-  /*
-   This method will return given item text
-   */
-  public String GetText(WebElement WebItem){
+    /*
+     This method will return given item text
+     */
+    public String GetText(WebElement WebItem) {
         String ElementText = null;
         try {
-            ElementText= WebItem.getText();
-        }catch (Exception e) {
+            ElementText = WebItem.getText();
+        } catch (Exception e) {
             System.out.println("Unable to Retreive Object Text");
         }
         return ElementText;
@@ -65,10 +69,11 @@ public class General {
 
     /**
      * This is general method to wait for a moment in MS
+     *
      * @param TimeInMS In milli second
      */
 
-    public void StaticWait(long TimeInMS){
+    public void StaticWait(long TimeInMS) {
 
         try {
             Thread.sleep(TimeInMS);
@@ -79,18 +84,19 @@ public class General {
 
     /**
      * This method will wait for an element until wait timeout
-     * @param Obj: Input a Webelement
+     *
+     * @param Obj:       Input a Webelement
      * @param TimeInSec: Timeout
      * @return boolean
      */
-    public boolean Wait_For_Element(WebElement Obj, long TimeInSec){
+    public boolean Wait_For_Element(WebElement Obj, long TimeInSec) {
         boolean State = true;
         int Counter = 0;
-        while (State){
+        while (State) {
             State = IsObjExist(Obj);
             StaticWait(1000);
             Counter++;
-            if(Counter > TimeInSec){
+            if (Counter > TimeInSec) {
                 break;
             }
         }
@@ -120,12 +126,13 @@ public class General {
         }
         return State;
     }*/
+
     /**
      * This method will use to wait an element to display
      *
      * @param Obj: This parameter will use to verify object exist or not
      */
-    public boolean IsObjExist(WebElement Obj){
+    public boolean IsObjExist(WebElement Obj) {
         boolean State;
         try {
             State = Obj.isDisplayed();
@@ -179,10 +186,10 @@ public class General {
     }
 
 
-
     /**
      * This method will use to make assertion in test cases
-     * @param strActualResult: Provide actual result
+     *
+     * @param strActualResult:   Provide actual result
      * @param strExpectedResult: Provide expected result
      */
     public void VerifyResult(String strActualResult, String strExpectedResult) {
@@ -196,7 +203,6 @@ public class General {
     }
 
     /**
-     *
      * @param driver
      * @param weElement
      */
@@ -213,7 +219,8 @@ public class General {
 
     /**
      * This is overloading method of VerifyResult provide only boolean decision and reason to fail a test
-     * @param Msg: Reason why this test is failing
+     *
+     * @param Msg:       Reason why this test is failing
      * @param Condition: Test Pass/Fail decision
      */
     public void VerifyResult(String Msg, boolean Condition) {
@@ -224,12 +231,12 @@ public class General {
 
     /**
      * This Method will return file for reports file having time stamp in the given format
+     *
      * @return
      */
-    public String Get_TimeStamp()
-    {
+    public String Get_TimeStamp() {
         DateTime dt = new DateTime();
-        String filename = dt.toString("SSSSssmmww'_AutomationReport.html" );
+        String filename = dt.toString("SSSSssmmww'_AutomationReport.html");
         System.out.println(filename);
         return filename;
     }
@@ -245,27 +252,27 @@ public class General {
 
     //This methods locates table, counts number of rows and columsn and displays data of table
     public void Dislay_Row_Elements() {
-        List  rows =  appEnv.getDriver().findElements(By.xpath("//*[starts-with(@data-test-id,'gridBodyRow')]/*[@data-test-id=\"gridBodyCell\"][1]"));
-        int Row_count =  rows.size();
+        List rows = appEnv.getDriver().findElements(By.xpath("//*[starts-with(@data-test-id,'gridBodyRow')]/*[@data-test-id=\"gridBodyCell\"][1]"));
+        int Row_count = rows.size();
         List Columns = appEnv.getDriver().findElements(By.xpath("//*[@data-test-id=\"gridBodyRow\"][1]/*[@data-test-id=\"gridBodyCell\"]"));
         int Col_count = Columns.size();
-        System.out.println("Number of Rows are : "+ Row_count + "\nNumber of Columns are : " + Col_count);
+        System.out.println("Number of Rows are : " + Row_count + "\nNumber of Columns are : " + Col_count);
         String first_part = "//*[@data-test-id=";
-        String second_part ="'gridBodyRow'";
+        String second_part = "'gridBodyRow'";
         String third_part = "][";
         String four_part = "]/*[@data-test-id=";
         String five_part = "'gridBodyCell'";
         String six_part = "][";
         String seven_part = "]";
         //Used for loop for number of rows.
-        for (int i=1; i<=Row_count; i++){
+        for (int i = 1; i <= Row_count; i++) {
             //Used for loop for number of columns.
-            for(int j=1; j<=Col_count; j++){
+            for (int j = 1; j <= Col_count; j++) {
                 //Prepared final xpath of specific cell as per values of i and j.
-                String final_xpath = first_part+second_part+third_part+i+four_part+five_part+six_part+j+seven_part;
+                String final_xpath = first_part + second_part + third_part + i + four_part + five_part + six_part + j + seven_part;
                 //Will retrieve value from located cell and print It.
                 String Table_data = appEnv.getDriver().findElement(By.xpath(final_xpath)).getText();
-                System.out.print("[" + i + "]" + "[" + j + "]" + Table_data +"  ");
+                System.out.print("[" + i + "]" + "[" + j + "]" + Table_data + "  ");
             }
             System.out.println("");
             System.out.println("");
@@ -275,120 +282,55 @@ public class General {
     }
 
     //This function will return number of rows in given table
-    public int Count_Table_Rows(){
-        List  rows =  appEnv.getDriver().findElements(By.xpath("//*[starts-with(@data-test-id,'gridBodyRow')]/*[@data-test-id=\"gridBodyCell\"][1]"));
+    public int Count_Table_Rows() {
+        List rows = appEnv.getDriver().findElements(By.xpath("//*[starts-with(@data-test-id,'gridBodyRow')]/*[@data-test-id=\"gridBodyCell\"][1]"));
         return rows.size();
 
     }
 
-    //This function will return true if given element exit in the table otherwise false
-    public boolean Search_Table_with_String(String Search_Item){
+   //This function will print coordinates of given element.
+    public void Display_Element_Coordinates() {
 
-        List  rows =  appEnv.getDriver().findElements(By.xpath("//*[starts-with(@data-test-id,'gridBodyRow')]/*[@data-test-id=\"gridBodyCell\"][1]"));
-        int Row_count =  rows.size();
-        List Columns = appEnv.getDriver().findElements(By.xpath("//*[@data-test-id=\'gridBodyRow0\'][1]/*[@data-test-id=\'gridBodyCell\']"));
-        int Col_count = Columns.size();
-        String first_part = "//*[@data-test-id=";
-        String second_part ="'gridBodyRow0'";
-        String third_part = "][";
-        String four_part = "]/*[@data-test-id=";
-        String five_part = "'gridBodyCell'";
-        String six_part = "][";
-        String seven_part = "]";
-        //Used for loop for number of rows.
-        for (int i=1; i<=Row_count; i++) {
-            //Used for loop for number of columns.
-            for (int j = 1; j <= Col_count; j++) {
-                //Prepared final xpath of specific cell as per values of i and j.
-                String final_xpath = first_part + second_part + third_part + i + four_part + five_part + six_part + j + seven_part;
-                //Will retrieve value from located cell and print It.
-                String Table_data = appEnv.getDriver().findElement(By.xpath(final_xpath)).getText();
-                if (Table_data.equalsIgnoreCase(Search_Item)) {
-                    System.out.print("Item " + Search_Item + " Found at " + "[" + i + "]" + "[" + j + "] " + Table_data +"  ");
-                    return true;
-                }
-            }
-
-        }
-        return false;
-    }
-
-    //This function will print coordinates of given element.
-    public void Display_Element_Coordinates(){
-
-        List  rows =  appEnv.getDriver().findElements(By.xpath("//*[starts-with(@data-test-id,'gridBodyRow')]/*[@data-test-id=\"gridBodyCell\"][1]"));
-        int Row_count =  rows.size();
+        List rows = appEnv.getDriver().findElements(By.xpath("//*[starts-with(@data-test-id,'gridBodyRow')]/*[@data-test-id=\"gridBodyCell\"][1]"));
+        int Row_count = rows.size();
         List Columns = appEnv.getDriver().findElements(By.xpath("//*[@data-test-id=\"gridBodyRow0\"]/*[@data-test-id=\"gridBodyCell\"]"));
         int Col_count = Columns.size();
         String first_part = "//*[@data-test-id=";
-        String second_part ="'gridBodyRow0'";
+        String second_part = "'gridBodyRow0'";
         String third_part = "][";
         String four_part = "]/*[@data-test-id=";
         String five_part = "'gridBodyCell'";
         String six_part = "][";
         String seven_part = "]";
         //Used for loop for number of rows.
-        for (int i=1; i<=Row_count; i++) {
+        for (int i = 1; i <= Row_count; i++) {
             //Used for loop for number of columns.
             for (int j = 1; j <= Col_count; j++) {
                 //Prepared final xpath of specific cell as per values of i and j.
                 String final_xpath = first_part + second_part + third_part + i + four_part + five_part + six_part + j + seven_part;
                 //Will retrieve value from located cell and print It.
                 String Table_data = appEnv.getDriver().findElement(By.xpath(final_xpath)).getText();
-                                   System.out.print("Item found at following coordinates [" + i + "]" + "[" + j + "]" + Table_data + "  ");
-                }
-
-        }
-
-    }
-
-    public boolean Find_Customer(String Search_Item){
-        List rows =  appEnv.getDriver().findElements(By.xpath("//*[starts-with(@data-test-id,'gridBodyRow')]/*[@data-test-id=\"gridBodyCell\"][1]"));
-        int Row_count =  rows.size();
-        System.out.println("\n Number of rows loaded : " + Row_count);
-        if(Row_count > 0) {
-            String first_part = "//*[@data-test-id=";
-            String second_part = "'gridBodyRow0'";
-            String third_part = "][";
-            String four_part = "]/*[@data-test-id=";
-            String five_part = "'gridBodyCell'";
-            String six_part = "][";
-            String seven_part = "]";
-            for (int i = 1; i <= Row_count; i++) {
-                //Prepared final xpath of specific cell as per values of i and j.
-                String final_xpath = first_part + second_part + third_part + i + four_part + five_part + six_part + "6" + seven_part;
-                //Will retrieve value from located cell and print It.
-                System.out.println("\n Customer Column data : " + appEnv.getDriver().findElement(By.xpath(final_xpath)).getText());
-                String Table_data = appEnv.getDriver().findElement(By.xpath(final_xpath)).getText();
-                Table_data = Table_data.replaceAll("[\\[\\](){}]", "");
-                String[] strArray = Table_data.split(" ");
-                for (int j = 0; j < strArray.length; j++) {
-                    System.out.println("\nCustomer Column Data is : " + strArray[j]);
-                    if (strArray[j].equalsIgnoreCase(Search_Item)) {
-                        return true;
-                    }
-                }
-
+                System.out.print("Item found at following coordinates [" + i + "]" + "[" + j + "]" + Table_data + "  ");
             }
 
-
         }
-        return false;
+
     }
 
-    public boolean Find_First_Name(String Search_Item){
 
-        List Rows =  appEnv.getDriver().findElements(By.xpath("//*[starts-with(@data-test-id,'gridBodyRow')]/*[@data-test-id=\"gridBodyCell\"][1]"));
-        int Row_count =  Count_Table_Rows();
+    public boolean Find_First_Name(String Search_Item) {
+
+        List Rows = appEnv.getDriver().findElements(By.xpath("//*[starts-with(@data-test-id,'gridBodyRow')]/*[@data-test-id=\"gridBodyCell\"][1]"));
+        int Row_count = Count_Table_Rows();
         int Matching_Record_Found = 0;
         int Non_Matching_Record_Found = 0;
         System.out.println("\n Number of rows loaded : " + Row_count);
-        if(Row_count > 0) {
+        if (Row_count > 0) {
             String first_part = "//*[starts-with(@data-test-id,'gridBodyRow";
             String second_part = "')]/*[@data-test-id=\'gridBodyCell\'][6]";
             for (int i = 0; i < Row_count; i++) {
                 //Prepared final xpath of specific cell as per values of i and j.
-                String final_xpath = first_part  + i + second_part;
+                String final_xpath = first_part + i + second_part;
                 //Will retrieve value from located cell and print It.
                 System.out.println(final_xpath);
                 System.out.println("Customer Data Loaded  : " + appEnv.getDriver().findElement(By.xpath(final_xpath)).getText());
@@ -397,23 +339,24 @@ public class General {
                 String[] strArray = Table_data.split(" ");
                 System.out.println("\n First Name Found : " + strArray[0]);
                 if (strArray[0].equalsIgnoreCase(Search_Item))
-                        Matching_Record_Found++;
+                    Matching_Record_Found++;
                 else
-                        Non_Matching_Record_Found++;
+                    Non_Matching_Record_Found++;
             }
         }
-        if(Non_Matching_Record_Found == 0)
+        if (Non_Matching_Record_Found == 0)
             return true;
         else
             return false;
     }
-    public boolean Find_Last_Name(String Search_Item){
 
-        int Row_count =  Count_Table_Rows();
+    public boolean Find_Last_Name(String Search_Item) {
+
+        int Row_count = Count_Table_Rows();
         int Matching_Record_Found = 0;
         int Non_Matching_Record_Found = 0;
         System.out.println("\n Number of rows loaded : " + Row_count);
-        if(Row_count > 0) {
+        if (Row_count > 0) {
             String first_part = "//*[starts-with(@data-test-id,'gridBodyRow";
             String second_part = "')]/*[@data-test-id=\'gridBodyCell\'][6]";
             for (int i = 0; i < Row_count; i++) {
@@ -431,19 +374,20 @@ public class General {
                     Non_Matching_Record_Found++;
             }
         }
-        if(Non_Matching_Record_Found == 0)
+        if (Non_Matching_Record_Found == 0)
             return true;
         else
             return false;
     }
-    public boolean Find_Customer_Number(String Search_Item){
 
-        List Rows =  appEnv.getDriver().findElements(By.xpath("//*[starts-with(@data-test-id,'gridBodyRow')]/*[@data-test-id=\"gridBodyCell\"][1]"));
-        int Row_count =  Count_Table_Rows();
+    public boolean Find_Customer_Number(String Search_Item) {
+
+        List Rows = appEnv.getDriver().findElements(By.xpath("//*[starts-with(@data-test-id,'gridBodyRow')]/*[@data-test-id=\"gridBodyCell\"][1]"));
+        int Row_count = Count_Table_Rows();
         int Matching_Record_Found = 0;
         int Non_Matching_Record_Found = 0;
         System.out.println("\n Number of rows loaded : " + Row_count);
-        if(Row_count > 0) {
+        if (Row_count > 0) {
             String first_part = "//*[starts-with(@data-test-id,'gridBodyRow";
             String second_part = "')]/*[@data-test-id=\'gridBodyCell\'][6]";
             for (int i = 0; i < Row_count; i++) {
@@ -461,19 +405,19 @@ public class General {
                     Non_Matching_Record_Found++;
             }
         }
-        if(Non_Matching_Record_Found == 0)
+        if (Non_Matching_Record_Found == 0)
             return true;
         else
             return false;
     }
 
-    public boolean Find_Stock_Number(String Search_Item){
+    public boolean Find_Stock_Number(String Search_Item) {
 
-        int Row_count =  Count_Table_Rows();
+        int Row_count = Count_Table_Rows();
         int Matching_Record_Found = 0;
         int Non_Matching_Record_Found = 0;
         System.out.println("\n Number of rows loaded : " + Row_count);
-        if(Row_count > 0) {
+        if (Row_count > 0) {
             String first_part = "//*[starts-with(@data-test-id,'gridBodyRow";
             String second_part = "')]/*[@data-test-id=\'gridBodyCell\'][7]";
             for (int i = 0; i < Row_count; i++) {
@@ -488,20 +432,20 @@ public class General {
                     Non_Matching_Record_Found++;
             }
         }
-        if(Non_Matching_Record_Found == 0)
+        if (Non_Matching_Record_Found == 0)
             return true;
         else
             return false;
     }
 
-    public boolean Find_WO_Number(String Search_Item){
+    public boolean Find_WO_Number(String Search_Item) {
 
-        List Rows =  appEnv.getDriver().findElements(By.xpath("//*[starts-with(@data-test-id,'gridBodyRow')]/*[@data-test-id=\"gridBodyCell\"][1]"));
-        int Row_count =  Count_Table_Rows();
+        List Rows = appEnv.getDriver().findElements(By.xpath("//*[starts-with(@data-test-id,'gridBodyRow')]/*[@data-test-id=\"gridBodyCell\"][1]"));
+        int Row_count = Count_Table_Rows();
         int Matching_Record_Found = 0;
         int Non_Matching_Record_Found = 0;
         System.out.println("\n Number of rows loaded : " + Row_count);
-        if(Row_count > 0) {
+        if (Row_count > 0) {
             String first_part = "//*[starts-with(@data-test-id,'gridBodyRow";
             String second_part = "')]/*[@data-test-id=\'gridBodyCell\'][1]";
             for (int i = 0; i < Row_count; i++) {
@@ -516,13 +460,13 @@ public class General {
                     Non_Matching_Record_Found++;
             }
         }
-        if(Non_Matching_Record_Found == 0)
+        if (Non_Matching_Record_Found == 0)
             return true;
         else
             return false;
     }
 
-    public void Scroll_Down_To_Bottom(){
+    public void Scroll_Down_To_Bottom() {
         JavascriptExecutor js = (JavascriptExecutor) appEnv.getDriver();
         //This will scroll the web page till end.
         js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
@@ -532,6 +476,104 @@ public class General {
         // Scroll Down using Actions class
         actions.keyDown(Keys.CONTROL).sendKeys(Keys.END).perform();
     }
+
+    /**
+     * This method will login and and returns a boolen value
+     *
+     * @return
+     */
+    public void UpdateToken() {
+        String Path = "./src/main/resources/DataSecure/Token.csv";
+        System.out.println("Status Code Received : " + appEnv.getRestManager().GetStatusCode());
+        if (!(appEnv.getRestManager().GetStatusCode() == 200)) {
+            try {
+                System.out.println("New Token Generated and Saved");
+                File file = new File(Path);
+                if (!file.exists()) {
+                    file.createNewFile();
+                    System.out.println("New File Created");
+                }
+                FileWriter fileWriter = new FileWriter(file.getAbsoluteFile());
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                bufferedWriter.write(appEnv.getRestManager().GetAccessToken());
+                System.out.println("New Token Added to File");
+                bufferedWriter.close();
+            } catch (Exception e) {
+                System.out.println(e);
+            }
+            appEnv.setToken(appEnv.getRestManager().GetAccessToken());
+
+        }
+
+    }
+
+    public String FormateDateTime(String dateTime) {
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm");
+        // Parsing the date
+        DateTime jodatime = dtf.parseDateTime(dateTime);
+        // Parsing the date
+
+        DateTimeFormatter dtfOutDate = DateTimeFormat.forPattern("dd MMM yy");
+        DateTimeFormatter dtfOutTime = DateTimeFormat.forPattern("HH:mm");
+        String Date = (dtfOutDate.print(jodatime));
+        String Time = (dtfOutTime.print(jodatime));
+        System.out.println("API Time is : " + Time);
+        System.out.println("API Date is : " + Date);
+        if (Time.equalsIgnoreCase("00:00"))
+            return Date;
+        else {
+            DateTimeFormatter dtfOutDateTime = DateTimeFormat.forPattern("dd MMM yy hh:mma");
+            System.out.println("API Date Time is : " + (dtfOutDateTime.print(jodatime)));
+            return (dtfOutDateTime.print(jodatime));
+        }
+
+    }
+
+    public String FormateDate(String dateTime) {
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("yyyy-MM-dd");
+        // Parsing the date
+        DateTime jodatime = dtf.parseDateTime(dateTime);
+        // Parsing the date
+        DateTimeFormatter dtfOutDate = DateTimeFormat.forPattern("dd MMM yy");
+        String Date = (dtfOutDate.print(jodatime));
+        System.out.println("API Date is : " + Date);
+            return Date;
+    }
+
+    public String FormateTime(String dateTime) {
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("HH:mm:ss");
+        // Parsing the date
+        DateTime jodatime = dtf.parseDateTime(dateTime);
+        // Parsing the date
+        DateTimeFormatter dtfOutDate = DateTimeFormat.forPattern("hh:mma");
+        String Date = (dtfOutDate.print(jodatime));
+        System.out.println("API Time is : " + Date);
+        return Date;
+    }
+
+    public String FormateString(String APIResponse) {
+
+        if (APIResponse == null)
+            return "";
+        return APIResponse;
+    }
+    public Double FormateString(Double APIResponse) {
+
+        if (APIResponse == null)
+            return null;
+        return APIResponse;
+    }
+
+    public String GetNumfromString(String AlphNumeric){
+        String[] arrSplit = AlphNumeric.split(" ");
+        return arrSplit[0];
+    }
+    public String GetAlpafromString(String AlphNumeric){
+        String[] arrSplit = AlphNumeric.split(" ");
+        return arrSplit[1];
+    }
+
+
 
 
 

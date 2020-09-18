@@ -4,16 +4,17 @@ import Drivers.Fetch_Elements;
 import PageObj.LoginPage;
 import PageObj.RecentWO;
 import PageObj.WODetails;
-import Services.AppEnv;
-import Services.General;
-import Services.ReTry;
-import Services.RestManager;
+import Services.*;
 import TestManager.InputDataStream;
 import TestManager.SuiteListener;
 import UniverseDBValidation.U2WorkOrder;
 import UniverseDBValidation.response.WorkOrderResponse;
+import org.openqa.selenium.By;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
+
+import java.util.List;
 
 @Listeners(SuiteListener.class)
 public class DetailedWO {
@@ -27,6 +28,16 @@ public class DetailedWO {
     private Fetch_Elements fetch_elements;
     private RecentWO pgRecentWO;
     private WorkOrderResponse response;
+    private G3WOResponse g3WOResponse;
+
+
+    @BeforeClass
+    public void GetJobsDataFromAPI() {
+        U2WorkOrder u2WorkOrder = new U2WorkOrder(appEnv.getU2RestApiBaseUrl(), appEnv.getU2RestApiToken());
+        g3WOResponse = appEnv.getRestManager().GetWOInfoFromAPI();
+        response = u2WorkOrder.getWorkOrder(appEnv.getAccoutID(), appEnv.getLocation(), appEnv.getWorkOrderNumber());
+    }
+
 
     public DetailedWO() {
         appEnv = SuiteListener.appEnv;
@@ -37,316 +48,383 @@ public class DetailedWO {
         inputDataStream = InputDataStream.getInstance(appEnv);
         fetch_elements = Fetch_Elements.getInstance(appEnv);
 
-        String baseUrl = "https://mbdev.integrateddealersystems.com/IDSU2RestAPI/";
-        String authorization = "PD%!^;PkJ#F8]6YQ";
 
-        U2WorkOrder u2WorkOrder = new U2WorkOrder(baseUrl, authorization);
-        response = u2WorkOrder.getWorkOrder(486, "RVK", "10165");
     }
 
 
     @Test(priority = 500, retryAnalyzer = ReTry.class)
-    public void Load_Work_Order_Date(){
-        System.out.println("U2 Api Work Order Date is : "+response.WorkOrder.WorkOrderDate.toString());
+    public void Load_Work_Order_Date() {
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
         String GUIValue = woDetails.GetWODate();
-        String APIValue = appEnv.getRestManager().GetDateFromWOAPI("WorkOrder","WorkOrderDate");
-        System.out.println("Work Order Date is : " + GUIValue);
-
-        appEnv.setTestPass(APIValue.equalsIgnoreCase(GUIValue));
+        String U2APIValue = Utils.FormateDateTime(Utils.FormateString(response.WorkOrder.WorkOrderDate.toString()));
+        String G3APIValue = Utils.FormateDate(Utils.FormateString(g3WOResponse.WorkOrder.WorkOrderDate));
+        System.out.println("WO Date is   : " + GUIValue);
+        System.out.println("WO Date from G3 API is : " + G3APIValue );
+        System.out.println("WO Date from Universe DB is   : " + U2APIValue);
+        appEnv.setTestPass(GUIValue.equalsIgnoreCase(G3APIValue) && GUIValue.equalsIgnoreCase(U2APIValue));
         appEnv.getReportManager().LogStepInfo("WO Date is : " + GUIValue);
         Utils.VerifyResult("Can not Load Work Order Date ", appEnv.isTestPass());
     }
 
     @Test(priority = 501, retryAnalyzer = ReTry.class)
-    public void Load_Work_Order_Author(){
+    public void Load_Work_Order_Author() {
 
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
-        System.out.println("Work Order Author : " + woDetails.GetWOAuthor());
-        appEnv.setTestPass(appEnv.getRestManager().GetStringInfoFromWOAPI("WorkOrder","Author").equalsIgnoreCase(woDetails.GetWOAuthor()));
+        String GUIValue = woDetails.GetWOAuthor();
+        String U2APIValue = Utils.FormateString(response.WorkOrder.Author);
+        String G3APIValue = Utils.FormateString(g3WOResponse.WorkOrder.Author);
+        System.out.println("WO Author is   : " + GUIValue);
+        System.out.println("WO Author from G3 API is : " + G3APIValue );
+        System.out.println("WO Author from Universe DB is   : " + U2APIValue);
+        appEnv.setTestPass(GUIValue.equalsIgnoreCase(G3APIValue) && GUIValue.equalsIgnoreCase(U2APIValue));
         appEnv.getReportManager().LogStepInfo("WO Author is : " + woDetails.GetWOAuthor());
         Utils.VerifyResult("Can not Load Work Order Author ", appEnv.isTestPass());
     }
 
     @Test(priority = 502, retryAnalyzer = ReTry.class)
-    public void Load_Work_Order_Status(){
+    public void Load_Work_Order_Status() {
 
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
-        System.out.println("Work Order Status  : " + woDetails.GetWOStatus());
-        String Expected_Result = appEnv.getRestManager().GetStringInfoFromWOAPI("WorkOrder","StatusCode") + " - "+ appEnv.getRestManager().GetStringInfoFromWOAPI("WorkOrder","StatusDesc");
-        appEnv.setTestPass(Expected_Result.equalsIgnoreCase(woDetails.GetWOStatus()));
+        String GUIValue = woDetails.GetWOStatus();
+        String U2APIValue = Utils.FormateString(response.WorkOrder.StatusCode) + " - " + Utils.FormateString(response.WorkOrder.StatusDesc);
+        String G3APIValue = Utils.FormateString(g3WOResponse.WorkOrder.StatusCode) + " - " +Utils.FormateString(g3WOResponse.WorkOrder.StatusDesc);
+        System.out.println("WO Status is   : " + GUIValue);
+        System.out.println("WO Status from G3 API is : " + G3APIValue );
+        System.out.println("WO Status from Universe DB is   : " + U2APIValue);
+        appEnv.setTestPass(GUIValue.equalsIgnoreCase(G3APIValue) && GUIValue.equalsIgnoreCase(U2APIValue));
         appEnv.getReportManager().LogStepInfo("WO Status is : " + woDetails.GetWOStatus());
         Utils.VerifyResult("Can not Load Work Order Status ", appEnv.isTestPass());
     }
 
     @Test(priority = 503, retryAnalyzer = ReTry.class)
-    public void Load_Work_Order_Location(){
+    public void Load_Work_Order_Location() {
 
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
-        System.out.println("Work Order Location  : " + woDetails.GetWOLocation());
-        String Expected_Result = appEnv.getRestManager().GetStringInfoFromWOAPI("WorkOrder","WorkOrderLocation") + " - "+ appEnv.getRestManager().GetStringInfoFromWOAPI("WorkOrder","WorkOrderLocationDesc");
-        appEnv.setTestPass(Expected_Result.equalsIgnoreCase(woDetails.GetWOLocation()));
+        String GUIValue = woDetails.GetWOLocation();
+        String U2APIValue = Utils.FormateString(response.WorkOrder.WorkOrderLocation) + " - " + Utils.FormateString(response.WorkOrder.WorkOrderLocationDesc);
+        String G3APIValue = Utils.FormateString(g3WOResponse.WorkOrder.WorkOrderLocation) + " - " +Utils.FormateString(g3WOResponse.WorkOrder.WorkOrderLocationDesc);
+        System.out.println("WO Location is   : " + GUIValue);
+        System.out.println("WO Location from G3 API is : " + G3APIValue );
+        System.out.println("WO Location from Universe DB is   : " + U2APIValue);
+        appEnv.setTestPass(GUIValue.equalsIgnoreCase(G3APIValue) && GUIValue.equalsIgnoreCase(U2APIValue));
         appEnv.getReportManager().LogStepInfo("WO Location is : " + woDetails.GetWOLocation());
         Utils.VerifyResult("Can not Load Work Order Location ", appEnv.isTestPass());
     }
 
     @Test(priority = 504, retryAnalyzer = ReTry.class)
-    public void Load_Work_Order_SalesID(){
+    public void Load_Work_Order_SalesID() {
 
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
-        System.out.println("Work Order Sales ID   : " + woDetails.GetWOSalesID());
-        String Expected_Result = appEnv.getRestManager().GetStringInfoFromWOAPI("WorkOrder","SalesmanCode") + " - "+ appEnv.getRestManager().GetStringInfoFromWOAPI("WorkOrder","SalesmanDesc");
-        appEnv.setTestPass(Expected_Result.equalsIgnoreCase(woDetails.GetWOSalesID()));
+        String GUIValue = woDetails.GetWOSalesID();
+        String U2APIValue = Utils.FormateString(response.WorkOrder.SalesmanCode) + " - " + Utils.FormateString(response.WorkOrder.SalesmanDesc);
+        String G3APIValue = Utils.FormateString(g3WOResponse.WorkOrder.SalesmanCode) + " - " +Utils.FormateString(g3WOResponse.WorkOrder.SalesmanDesc);
+        System.out.println("WO Sales ID is   : " + GUIValue);
+        System.out.println("WO Sales ID from G3 API is : " + G3APIValue );
+        System.out.println("WO Sales ID from Universe DB is   : " + U2APIValue);
+        appEnv.setTestPass(GUIValue.equalsIgnoreCase(G3APIValue) && GUIValue.equalsIgnoreCase(U2APIValue));
         appEnv.getReportManager().LogStepInfo("WO Sales ID is : " + woDetails.GetWOSalesID());
         Utils.VerifyResult("Can not Load Work Order Sales ID ", appEnv.isTestPass());
     }
 
     @Test(priority = 505, retryAnalyzer = ReTry.class)
-    public void Load_Work_Order_Customer_Name(){
+    public void Load_Work_Order_Customer_Name() {
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
-        System.out.println("Work Order Customer Name and Number    : " + woDetails.GetCustomerNo());
-        String Expected_Result = appEnv.getRestManager().GetStringInfoFromWOAPI("Customer","CustomerNo") + " - " + appEnv.getRestManager().GetStringInfoFromWOAPI("Customer","Name");
-        appEnv.setTestPass(Expected_Result.equalsIgnoreCase(woDetails.GetCustomerNo()));
+        String GUIValue = woDetails.GetCustomerNo();
+        String U2APIValue = Utils.FormateString(response.Customer.CustomerNo) + " - " + Utils.FormateString(response.Customer.Name);
+        String G3APIValue = Utils.FormateString(g3WOResponse.Customer.CustomerNo) + " - " +Utils.FormateString(g3WOResponse.Customer.Name);
+        System.out.println("WO Customer is   : " + GUIValue);
+        System.out.println("WO Customer from G3 API is : " + G3APIValue );
+        System.out.println("WO Customer from Universe DB is   : " + U2APIValue);
+        appEnv.setTestPass(GUIValue.equalsIgnoreCase(G3APIValue) && GUIValue.equalsIgnoreCase(U2APIValue));
         appEnv.getReportManager().LogStepInfo("WO Customer Name and Number is : " + woDetails.GetCustomerNo());
         Utils.VerifyResult("Can not Load Work Order Name and Number ", appEnv.isTestPass());
     }
 
     @Test(priority = 506, retryAnalyzer = ReTry.class)
-    public void Load_Work_Order_Customer_Email(){
+    public void Load_Work_Order_Customer_Email() {
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
-        System.out.println("Work Order Customer Email   : " + woDetails.GetCustomerEmail());
-        String Expected_Result = appEnv.getRestManager().GetStringInfoFromWOAPI("Customer","Email");
-        appEnv.setTestPass(Expected_Result.equalsIgnoreCase(woDetails.GetCustomerEmail()));
-        appEnv.getReportManager().LogStepInfo("WO Customer Email is : " + woDetails.GetCustomerEmail());
+        String GUIValue = woDetails.GetCustomerEmail();
+        String U2APIValue = Utils.FormateString(response.Customer.Email);
+        String G3APIValue = Utils.FormateString(g3WOResponse.Customer.Email);
+        System.out.println("WO Customer Email is   : " + GUIValue);
+        System.out.println("WO Customer Email from G3 API is : " + G3APIValue );
+        System.out.println("WO Customer Email from Universe DB is   : " + U2APIValue);
+        appEnv.setTestPass(GUIValue.equalsIgnoreCase(G3APIValue) && GUIValue.equalsIgnoreCase(U2APIValue));
+        appEnv.getReportManager().LogStepInfo("WO Customer Email is : " + GUIValue);
         Utils.VerifyResult("Can not Load Work Order Email ", appEnv.isTestPass());
     }
 
     @Test(priority = 507, retryAnalyzer = ReTry.class)
-    public void Load_Work_Order_Customer_Home_Phone(){
+    public void Load_Work_Order_Customer_Home_Phone() {
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
-        System.out.println("Work Order Customer Home Phone   : " + woDetails.GetCustomerHomePhone());
-        String Expected_Result = appEnv.getRestManager().GetStringInfoFromWOAPI("Customer","HomePhone");
-        appEnv.setTestPass(Expected_Result.equalsIgnoreCase(woDetails.GetCustomerHomePhone()));
-        appEnv.getReportManager().LogStepInfo("WO Customer Home Phone is : " + woDetails.GetCustomerHomePhone());
+        String GUIValue = woDetails.GetCustomerHomePhone();
+        String U2APIValue = Utils.FormateString(response.Customer.HomePhone);
+        String G3APIValue = Utils.FormateString(g3WOResponse.Customer.HomePhone);
+        System.out.println("WO Customer Mobile Number is   : " + GUIValue);
+        System.out.println("WO Customer Mobile from G3 API is : " + G3APIValue );
+        System.out.println("WO Customer Mobile from Universe DB is   : " + U2APIValue);
+        appEnv.setTestPass(GUIValue.equalsIgnoreCase(G3APIValue) && GUIValue.equalsIgnoreCase(U2APIValue));
+        appEnv.getReportManager().LogStepInfo("WO Customer Home Phone is : " + GUIValue);
         Utils.VerifyResult("Can not Load Work Order Home Phone ", appEnv.isTestPass());
     }
 
     @Test(priority = 508, retryAnalyzer = ReTry.class)
-    public void Load_Work_Order_Customer_Mobile_Phone(){
+    public void Load_Work_Order_Customer_Mobile_Phone() {
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
-        System.out.println("Work Order Customer Mobile Phone   : " + woDetails.GetCustomerMobilePhone());
-        String Expected_Result = appEnv.getRestManager().GetStringInfoFromWOAPI("Customer","MobilePhone");
-        appEnv.setTestPass(Expected_Result.equalsIgnoreCase(woDetails.GetCustomerMobilePhone()));
-        appEnv.getReportManager().LogStepInfo("WO Customer Mobile Phone is : " + woDetails.GetCustomerMobilePhone());
+        String GUIValue = woDetails.GetCustomerMobilePhone();
+        String U2APIValue = Utils.FormateString(response.Customer.MobilePhone);
+        String G3APIValue = Utils.FormateString(g3WOResponse.Customer.MobilePhone);
+        System.out.println("WO Customer Mobile Number is   : " + GUIValue);
+        System.out.println("WO Customer Mobile from G3 API is : " + G3APIValue );
+        System.out.println("WO Customer Mobile from Universe DB is   : " + U2APIValue);
+        appEnv.setTestPass(GUIValue.equalsIgnoreCase(G3APIValue) && GUIValue.equalsIgnoreCase(U2APIValue));
+        appEnv.getReportManager().LogStepInfo("WO Customer Mobile Phone is : " + GUIValue);
         Utils.VerifyResult("Can not Load Work Order Mobile Phone ", appEnv.isTestPass());
     }
 
     @Test(priority = 509, retryAnalyzer = ReTry.class)
-    public void Load_Work_Order_Customer_Address(){
+    public void Load_Work_Order_Customer_Address() {
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
-        System.out.println("Work Order Customer Address : " + woDetails.GetCustomerAddress());
-        String Expected_Result = appEnv.getRestManager().GetStringInfoFromWOAPI("Customer","AddressLine1") +", "+ appEnv.getRestManager().GetStringInfoFromWOAPI("Customer","City") +", "+
-                appEnv.getRestManager().GetStringInfoFromWOAPI("Customer","State") +" "+ appEnv.getRestManager().GetStringInfoFromWOAPI("Customer","ZipCode") +", "+
-                appEnv.getRestManager().GetStringInfoFromWOAPI("Customer","Country");
-        appEnv.setTestPass(Expected_Result.equalsIgnoreCase(woDetails.GetCustomerAddress()));
-        appEnv.getReportManager().LogStepInfo("WO Customer Address is : " + woDetails.GetCustomerAddress());
+        String GUIValue = woDetails.GetCustomerAddress();
+        String U2APIValue = Utils.FormateString(response.Customer.AddressLine1) +  ", "+ Utils.FormateString(response.Customer.AddressLine2)
+                            + Utils.FormateString(response.Customer.City) + " "+  Utils.FormateString(response.Customer.ZipCode)
+                            + ", "+ Utils.FormateString(response.Customer.Country)   ;
+        String G3APIValue = Utils.FormateString(g3WOResponse.Customer.AddressLine1) + ", "+ Utils.FormateString(g3WOResponse.Customer.AddressLine2) +
+                ", "+ Utils.FormateString(g3WOResponse.Customer.City) + ", "+  Utils.FormateString(g3WOResponse.Customer.State) +" "+ Utils.FormateString(g3WOResponse.Customer.ZipCode)
+                + ", "+ Utils.FormateString(g3WOResponse.Customer.Country)   ;
+        System.out.println("WO Customer Address is   : " + GUIValue);
+        System.out.println("WO Customer Address from G3 API is : " + G3APIValue );
+        System.out.println("WO Customer Address from Universe DB is   : " + U2APIValue);
+        appEnv.setTestPass(GUIValue.equalsIgnoreCase(U2APIValue) && GUIValue.equalsIgnoreCase(G3APIValue));
+        appEnv.getReportManager().LogStepInfo("WO Customer Address is : " + GUIValue);
         Utils.VerifyResult("Can not Load Work Order Address ", appEnv.isTestPass());
     }
+
     @Test(priority = 510, retryAnalyzer = ReTry.class)
-    public void Load_Work_Order_Appointment_Date(){
+    public void Load_Work_Order_Appointment_Date() {
 
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
-        System.out.println("Work Order Appointment Date is : " + woDetails.GetWOAppointmentDate());
-        appEnv.setTestPass(appEnv.getRestManager().GetDateFromWOAPI("WorkOrder","AppointmentDateTime").equalsIgnoreCase(woDetails.GetWOAppointmentDate()));
+        String GUIValue = woDetails.GetWOAppointmentDate();
+        System.out.println(response.WorkOrder.AppointmentDateTime);
+        String U2APIValue = Utils.FormateDateTime(Utils.FormateString(response.WorkOrder.AppointmentDateTime.toString()));
+        String G3APIValue = Utils.FormateDate(Utils.FormateString(g3WOResponse.WorkOrder.AppointmentDate)) +" "+ Utils.FormateTime(Utils.FormateString(g3WOResponse.WorkOrder.AppointmentTime));
+        System.out.println("WO Appointment Date is   : " + GUIValue);
+        System.out.println("WO Appointment Date from G3 API is : " + G3APIValue );
+        System.out.println("WO Appointment Date from Universe DB is   : " + U2APIValue);
+        appEnv.setTestPass(GUIValue.equalsIgnoreCase(G3APIValue) && GUIValue.equalsIgnoreCase(U2APIValue));
         appEnv.getReportManager().LogStepInfo("WO Appointment Date is : " + woDetails.GetWOAppointmentDate());
         Utils.VerifyResult("Can not Load Work Order Appointment Date ", appEnv.isTestPass());
     }
 
     @Test(priority = 511, retryAnalyzer = ReTry.class)
-    public void Load_Work_Order_Expected_Promised_Date(){
+    public void Load_Work_Order_Expected_Promised_Date() {
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
-        System.out.println("Work Order Expected/Promised Date is : " + woDetails.GetWOExpectedDate());
-        appEnv.setTestPass(appEnv.getRestManager().GetDateFromWOAPI("WorkOrder","PromiseDateTime").equalsIgnoreCase(woDetails.GetWOExpectedDate()));
+        String GUIValue = woDetails.GetWOExpectedDate();
+        String U2APIValue = Utils.FormateDateTime(Utils.FormateString(response.WorkOrder.PromiseDateTime.toString()));
+        String G3APIValue = Utils.FormateDate(Utils.FormateString(g3WOResponse.WorkOrder.PromiseDate)) +" "+ Utils.FormateTime(Utils.FormateString(g3WOResponse.WorkOrder.PromiseTime));
+        System.out.println("WO Expected/Primised Date is   : " + GUIValue);
+        System.out.println("WO Expected/Primised Date from G3 API is : " + G3APIValue );
+        System.out.println("WO Expected/Primised Date from Universe DB is   : " + U2APIValue);
+        appEnv.setTestPass(GUIValue.equalsIgnoreCase(G3APIValue) && GUIValue.equalsIgnoreCase(U2APIValue));
         appEnv.getReportManager().LogStepInfo("WO Expected/Promised Date is : " + woDetails.GetWOExpectedDate());
         Utils.VerifyResult("Can not Load Work Order Expected/Promised Date ", appEnv.isTestPass());
     }
+
     @Test(priority = 512, retryAnalyzer = ReTry.class)
-    public void Load_Work_Order_In_Service_Date(){
+    public void Load_Work_Order_In_Service_Date() {
 
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
-        String GUIDate = woDetails.GetWOInServiceDate();
-        String APIDate = appEnv.getRestManager().GetDateFromWOAPI("WorkOrder","InServiceDate");
-        System.out.println("Work Order InService Date is : " + GUIDate);
-        System.out.println("InService Date from API : " + APIDate);
-        appEnv.setTestPass(GUIDate.equalsIgnoreCase(APIDate));
-        appEnv.getReportManager().LogStepInfo("WO InService Date is : " + GUIDate);
+        String GUIValue = woDetails.GetWOInServiceDate();
+        String U2APIValue = Utils.FormateDateTime(Utils.FormateString(response.WorkOrder.InServiceDate.toString()));
+        String G3APIValue = Utils.FormateDate(Utils.FormateString(g3WOResponse.WorkOrder.InServiceDate));
+        System.out.println("WO InService Date is   : " + GUIValue);
+        System.out.println("WO InService Date from G3 API is : " + G3APIValue );
+        System.out.println("WO InService Date from Universe DB is   : " + U2APIValue);
+        appEnv.setTestPass(GUIValue.equalsIgnoreCase(G3APIValue) && GUIValue.equalsIgnoreCase(U2APIValue));
+        appEnv.getReportManager().LogStepInfo("WO InService Date is : " + GUIValue);
         Utils.VerifyResult("Can not Load Work Order InService Date ", appEnv.isTestPass());
     }
+
     @Test(priority = 513, retryAnalyzer = ReTry.class)
-    public void Load_Work_Order_Schedule_Priority(){
+    public void Load_Work_Order_Schedule_Priority() {
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
-        System.out.println("Work Order Customer Schedule Priority   : " + woDetails.GetWOSchedulePriority());
-        String Expected_Result = appEnv.getRestManager().GetIntInfoFromWOAPI("WorkOrder","SchedulePriorityCode") + " - " + appEnv.getRestManager().GetStringInfoFromWOAPI("WorkOrder","SchedulePriorityDesc");
-        appEnv.setTestPass(Expected_Result.equalsIgnoreCase(woDetails.GetWOSchedulePriority()));
-        appEnv.getReportManager().LogStepInfo("WO Customer Schedule Priority is : " + woDetails.GetWOSchedulePriority());
+        String GUIValue = woDetails.GetWOSchedulePriority();
+        String U2APIValue = Utils.FormateString(response.WorkOrder.SchedulePriorityCode.toString()) + " - "+ Utils.FormateString(response.WorkOrder.SchedulePriorityDesc);
+        String G3APIValue = Utils.FormateString(g3WOResponse.WorkOrder.SchedulePriorityCode.toString()) + " - "+ Utils.FormateString(g3WOResponse.WorkOrder.SchedulePriorityDesc);
+        System.out.println("WO Schedule Priority is   : " + GUIValue);
+        System.out.println("WO Schedule Priority from G3 API is : " + G3APIValue );
+        System.out.println("WO Schedule Priority from Universe DB is   : " + U2APIValue);
+        appEnv.setTestPass(GUIValue.equalsIgnoreCase(G3APIValue) && GUIValue.equalsIgnoreCase(U2APIValue));
+        appEnv.getReportManager().LogStepInfo("WO Customer Schedule Priority is : " + GUIValue);
         Utils.VerifyResult("Can not Load Work Order Schedule Priority ", appEnv.isTestPass());
     }
+
     @Test(priority = 514, retryAnalyzer = ReTry.class)
-    public void Load_Work_Order_Warranty_Date(){
+    public void Load_Work_Order_Warranty_Date() {
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
         String GUIValue = woDetails.GetWOWarrantyDate();
-        String APIValue = appEnv.getRestManager().GetDateFromWOAPI("Inventory","WarrantyDate");
-        System.out.println("WO Stock Number Warranty Date is   : " + GUIValue);
-        appEnv.setTestPass(APIValue.equalsIgnoreCase(GUIValue));
+        String U2APIValue = Utils.FormateDateTime(Utils.FormateString(response.Inventory.WarrantyDate.toString()));
+        String G3APIValue = Utils.FormateDate(Utils.FormateString(g3WOResponse.Inventory.WarrantyDate));
+        System.out.println("WO Warranty Date is   : " + GUIValue);
+        System.out.println("WO Warranty Date from G3 API is : " + G3APIValue );
+        System.out.println("WO Warranty Date from Universe DB is   : " + U2APIValue);
+        appEnv.setTestPass(GUIValue.equalsIgnoreCase(G3APIValue) && GUIValue.equalsIgnoreCase(U2APIValue));
         appEnv.getReportManager().LogStepInfo("WO Stock Number Warranty Date is : " + GUIValue);
         Utils.VerifyResult("Can not Load WO Stock Number Warranty Date ", appEnv.isTestPass());
     }
+
     @Test(priority = 515, retryAnalyzer = ReTry.class)
-    public void Load_WO_Stock_Chasis_Number(){
+    public void Load_WO_Stock_Chasis_Number() {
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
         String GUIValue = woDetails.GetWOChasisNumber();
-        if(GUIValue.isEmpty())
-            appEnv.setTestPass(true);
-        else {
-            String APIValue = appEnv.getRestManager().GetStringInfoFromWOAPI("Inventory", "ChasisNo");
-            System.out.println("WO Stock Chasis Number is   : " + GUIValue);
-            appEnv.setTestPass(APIValue.equalsIgnoreCase(GUIValue));
-        }
-        appEnv.getReportManager().LogStepInfo("WO Stock Chasis Number is : " + GUIValue);
+        String U2APIValue = Utils.FormateString(response.Inventory.ChassisNo);
+        String G3APIValue = Utils.FormateString(g3WOResponse.Inventory.ChassisNo);
+        System.out.println("Stock Chassis Number is   : " + GUIValue);
+        System.out.println("Stock Chassis Number from G3 API is : " + G3APIValue );
+        System.out.println("Stock Chassis Number from Universe DB is   : " + U2APIValue);
+        appEnv.setTestPass(GUIValue.equalsIgnoreCase(G3APIValue) && GUIValue.equalsIgnoreCase(U2APIValue));
+        appEnv.getReportManager().LogStepInfo("WO Stock Chassis Number is : " + GUIValue);
         Utils.VerifyResult("Can not Load WO Stock Chasis Number ", appEnv.isTestPass());
     }
 
     @Test(priority = 516, retryAnalyzer = ReTry.class)
-    public void Load_Work_Order_Stock_Number(){
+    public void Load_Work_Order_Stock_Number() {
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
         String GUIValue = woDetails.GetWOStockNumber();
-        if(GUIValue.isEmpty())
-            appEnv.setTestPass(true);
-        else {
-            String APIValue = appEnv.getRestManager().GetStringInfoFromWOAPI("Inventory", "StockNo") +" - "+ appEnv.getRestManager().GetStringInfoFromWOAPI("Inventory", "Description");
-            System.out.println("Work Order Stock  Number is   : " + GUIValue);
-            appEnv.setTestPass(APIValue.equalsIgnoreCase(GUIValue));
-        }
+        String U2APIValue = Utils.FormateString(response.Inventory.StockNo) + " - " + Utils.FormateString(response.Inventory.Description);;
+        String G3APIValue = Utils.FormateString(g3WOResponse.Inventory.StockNo) + " - " + Utils.FormateString(g3WOResponse.Inventory.Description);
+        System.out.println("Stock  Number is   : " + GUIValue);
+        System.out.println("Stock Number from G3 API is : " + G3APIValue );
+        System.out.println("Stock Number from Universe DB is   : " + U2APIValue);
+        appEnv.getReportManager().LogStepInfo("WO Stock Number is : " + GUIValue);
+        appEnv.setTestPass(GUIValue.equalsIgnoreCase(G3APIValue) && GUIValue.equalsIgnoreCase(U2APIValue));
         appEnv.getReportManager().LogStepInfo("Work Order Stock  Number is : " + GUIValue);
         Utils.VerifyResult("Can not Load Work Order Stock Number ", appEnv.isTestPass());
     }
 
     @Test(priority = 517, retryAnalyzer = ReTry.class)
-    public void Load_WO_Stock_Serial_Number(){
+    public void Load_WO_Stock_Serial_Number() {
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
         String GUIValue = woDetails.GetWOSerialNumber();
-        if(GUIValue.isEmpty())
-            appEnv.setTestPass(true);
-        else {
-            String APIValue = appEnv.getRestManager().GetStringInfoFromWOAPI("Inventory", "SerialNo");
-            System.out.println("WO Stock Serial Number is   : " + GUIValue);
-            appEnv.setTestPass(APIValue.equalsIgnoreCase(GUIValue));
-        }
+        String U2APIValue = Utils.FormateString(response.Inventory.SerialNo);
+        String G3APIValue = Utils.FormateString(g3WOResponse.Inventory.SerialNo);
+        System.out.println("Stock Serial Number is   : " + GUIValue);
+        System.out.println("Stock API Serial Number is : " + G3APIValue + " " + G3APIValue);
+        System.out.println("Stock Serial Number from Universe DB is   : " + U2APIValue+ " " + U2APIValue);
         appEnv.getReportManager().LogStepInfo("WO Stock Serial Number is : " + GUIValue);
+        appEnv.setTestPass(GUIValue.equalsIgnoreCase(G3APIValue) && GUIValue.equalsIgnoreCase(U2APIValue));
         Utils.VerifyResult("Can not Load WO Stock Serial Number ", appEnv.isTestPass());
+
     }
 
     @Test(priority = 518, retryAnalyzer = ReTry.class)
-    public void Load_WO_Stock_Meter_In_Reading(){
+    public void Load_WO_Stock_Meter_In_Reading() {
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
+        String U2MileageUnitDesc = Utils.FormateString(response.WorkOrder.MileageUnitDesc);
+        String G3APIMilageDescription = Utils.FormateString(g3WOResponse.WorkOrder.MileageUnitDesc);
         String GUIValue = woDetails.GetStockMeterIn();
-        if(GUIValue.isEmpty())
-            appEnv.setTestPass(true);
-        else {
-            String  APIValue = String.valueOf(appEnv.getRestManager().GetIntInfoFromWOAPI("WorkOrder", "MileageIn"));
-            String ReadingUnit = appEnv.getRestManager().GetStringInfoFromWOAPI("WorkOrder","MileageUnitCode");
-            switch (ReadingUnit){
-                case "H":
-                    APIValue = APIValue + " " + "hrs";
-                    break;
-                case "K":
-                    APIValue = APIValue + " " + "km";
-                    break;
-                case "M":
-                    APIValue = APIValue + " " + "miles";
-                    break;
-
-            }
-            System.out.println("WO Stock Meter In Reading is  : " + GUIValue);
-            appEnv.setTestPass(GUIValue.equalsIgnoreCase(APIValue));
-        }
+        Double GUIInMileage = Double.parseDouble(Utils.GetNumfromString(GUIValue));
+        String GUIMileageUnitDesc = Utils.GetAlpafromString(GUIValue);
+        Double U2APIValue = Utils.FormateString(response.WorkOrder.MileageIn);
+        Double G3APIValue = Utils.FormateString(g3WOResponse.WorkOrder.MileageIn);
+        System.out.println("Stock Mileage In is   : " + GUIValue);
+        System.out.println("Stock Order API Mileage In is   : " + G3APIValue + " " + G3APIMilageDescription);
+        System.out.println("Stock Mileage In from Universe DB is   : " + U2APIValue+ " " + U2MileageUnitDesc);
         appEnv.getReportManager().LogStepInfo("WO Stock Meter In Reading is : " + GUIValue);
+        appEnv.setTestPass(U2APIValue.equals(GUIInMileage) && G3APIValue.equals(GUIInMileage) && woDetails.MatchMilageUnit(U2MileageUnitDesc,GUIMileageUnitDesc) &&
+                woDetails.MatchMilageUnit(G3APIMilageDescription,GUIMileageUnitDesc));
         Utils.VerifyResult("Can not Load WO Stock Meter In Reading ", appEnv.isTestPass());
+
     }
-
-
     @Test(priority = 519, retryAnalyzer = ReTry.class)
-    public void Load_WO_Stock_Meter_Out_Reading(){
+    public void Load_WO_Stock_Meter_Out_Reading() {
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
+        String U2MileageUnitDesc = Utils.FormateString(response.WorkOrder.MileageUnitDesc);
+        String G3APIMilageDesc = Utils.FormateString(g3WOResponse.WorkOrder.MileageUnitDesc);
         String GUIValue = woDetails.GetStockMeterOut();
-        if(GUIValue.isEmpty())
-            appEnv.setTestPass(true);
-        else {
-            String  APIValue = String.valueOf(appEnv.getRestManager().GetIntInfoFromWOAPI("WorkOrder", "MileageOut"));
-            String ReadingUnit = appEnv.getRestManager().GetStringInfoFromWOAPI("WorkOrder","MileageUnitCode");
-            switch (ReadingUnit){
-                case "H":
-                    APIValue = APIValue + " " + "hrs";
-                    break;
-                case "K":
-                    APIValue = APIValue + " " + "km";
-                    break;
-                case "M":
-                    APIValue = APIValue + " " + "miles";
-                    break;
-
-            }
-            System.out.println("API - WO Stock Meter Out Reading is  : " + APIValue);
-            appEnv.setTestPass(GUIValue.equalsIgnoreCase(APIValue));
-        }
+        Double GUIOutMileage = Double.parseDouble(Utils.GetNumfromString(GUIValue));
+        String GUIMileageUnitDesc = Utils.GetAlpafromString(GUIValue);
+        Double U2APIValue = Utils.FormateString(response.WorkOrder.MileageOut);
+        Double G3APIValue = Utils.FormateString(g3WOResponse.WorkOrder.MileageOut);
+        System.out.println("Stock Mileage Out  is   : " + GUIValue);
+        System.out.println("Stock API Mileage Out is   : " + G3APIValue + " " + G3APIMilageDesc);
+        System.out.println("Stock Mileage Out from Universe DB is   : " + U2APIValue+ " " + U2MileageUnitDesc);
         appEnv.getReportManager().LogStepInfo("WO Stock Meter Out Reading is : " + GUIValue);
+        appEnv.setTestPass(U2APIValue.equals(GUIOutMileage) && G3APIValue.equals(GUIOutMileage) && woDetails.MatchMilageUnit(U2MileageUnitDesc,GUIMileageUnitDesc) &&
+                woDetails.MatchMilageUnit(G3APIMilageDesc,GUIMileageUnitDesc));
         Utils.VerifyResult("Can not Load WO Stock Meter Out Reading ", appEnv.isTestPass());
     }
 
     @Test(priority = 520, retryAnalyzer = ReTry.class)
-    public void Load_Work_Order_Tag_Number(){
+    public void Load_Work_Order_Tag_Number() {
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
         String GUIValue = woDetails.GetWOTagNumber();
-        if(GUIValue.isEmpty())
-            appEnv.setTestPass(true);
-        else {
-            String APIValue = appEnv.getRestManager().GetStringInfoFromWOAPI("WorkOrder", "TagNo");
-            System.out.println("Work Order Tag Number is   : " + GUIValue);
-            appEnv.setTestPass(APIValue.equalsIgnoreCase(GUIValue));
-        }
+        String U2APIValue = Utils.FormateString(response.WorkOrder.TagNo);
+        String G3APIValue = Utils.FormateString(g3WOResponse.WorkOrder.TagNo);
+        System.out.println("Work Order Tag Number is   : " + GUIValue);
+        System.out.println("Work Order API Tag Number is   : " + G3APIValue);
+        System.out.println("Work Order Tag Number  from Universe DB is  : " + U2APIValue);
+        appEnv.setTestPass(U2APIValue.equalsIgnoreCase(GUIValue) && U2APIValue.equalsIgnoreCase(G3APIValue));
         appEnv.getReportManager().LogStepInfo("Work Order Tag Number is : " + GUIValue);
         Utils.VerifyResult("Can not Load Work Order Tag Number ", appEnv.isTestPass());
     }
 
     @Test(priority = 521, retryAnalyzer = ReTry.class)
-    public void Load_Work_Order_Category(){
+    public void Load_Work_Order_Category() {
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
         String GUIValue = woDetails.GetWoCategory();
-        if(GUIValue.isEmpty())
-            appEnv.setTestPass(true);
-        else {
-            String APIValue = appEnv.getRestManager().GetStringInfoFromWOAPI("WorkOrder", "CategoryCode") + " - " + appEnv.getRestManager().GetStringInfoFromWOAPI("WorkOrder", "CategoryDesc");
-            System.out.println("API - Work Order Category is   : " + APIValue);
-            appEnv.setTestPass(APIValue.equalsIgnoreCase(GUIValue));
-        }
+        String U2APIValue = Utils.FormateString(response.WorkOrder.CategoryCode) + " - " + Utils.FormateString(response.WorkOrder.CategoryDesc);
+        String G3APIValue = Utils.FormateString(g3WOResponse.WorkOrder.CategoryCode) + " - " + Utils.FormateString(g3WOResponse.WorkOrder.CategoryDesc);
+        System.out.println("Work Order Category is   : " + GUIValue);
+        System.out.println("Work Order API Category is   : " + G3APIValue);
+        System.out.println("Work Order Category from Universe DB is   : " + U2APIValue);
+        appEnv.setTestPass(U2APIValue.equalsIgnoreCase(GUIValue) && G3APIValue.equalsIgnoreCase(GUIValue));
         appEnv.getReportManager().LogStepInfo("Work Order Category is : " + GUIValue);
         Utils.VerifyResult("Can not Load Work Order Category ", appEnv.isTestPass());
     }
 
     @Test(priority = 521, retryAnalyzer = ReTry.class)
-    public void Load_Parts_Discount_Percentage(){
-
-        System.out.println(appEnv.getRestManager().GetWOCustomerInfoFromAPI("Customer"));
+    public void Load_Parts_Discount_Percentage() {
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
         String GUIValue = woDetails.GetWOPartsDiscountPercentage();
-        if(GUIValue.isEmpty())
-            appEnv.setTestPass(true);
-        else {
-            String APIValue = String.valueOf(appEnv.getRestManager().GetIntInfoFromWOAPI("WorkOrder", "PartsDiscount"));
-            System.out.println("API - Work Order Parts Discount Percentage is   : " + APIValue);
-            appEnv.setTestPass(APIValue.equalsIgnoreCase(GUIValue));
-        }
-        appEnv.getReportManager().LogStepInfo("Work Order Parts Discount Percentage is : " + GUIValue);
-        Utils.VerifyResult("Can not Load Work Order Parts Discount Percentage ", appEnv.isTestPass());
+        String U2APIValue = Utils.FormateString(response.WorkOrder.PartsDiscount.toString());
+        String G3APIValue = Utils.FormateString(g3WOResponse.WorkOrder.PartsDiscount.toString());
+        System.out.println("Work Order Parts Percentage is   : " + GUIValue);
+        System.out.println("Work Order API Parts Percentage is   : " + G3APIValue);
+        System.out.println("Work Order Parts Percentage from Universe DB is   : " + U2APIValue);
+        appEnv.setTestPass(U2APIValue.equalsIgnoreCase(GUIValue) && G3APIValue.equalsIgnoreCase(GUIValue));
+        appEnv.getReportManager().LogStepInfo("Work Order Category is : " + GUIValue);
+        Utils.VerifyResult("Can not Load Work Order Parts Percentage ", appEnv.isTestPass());
     }
+
+    @Test(priority = 550, retryAnalyzer = ReTry.class)
+    public void Load_Work_Orders_Job_List(){
+        woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
+
+        int GUIValue =  woDetails.GetNumberofRows("//div[@data-test-id='woJobListSummaryGrid']//*[starts-with(@data-test-id,'gridBodyRow')]");
+        int TotalColumns = woDetails.GetNumberofRows("//div[@data-test-id='woJobListSummaryGrid']//*[starts-with(@data-test-id,'gridBodyRow0')]//*[starts-with(@data-test-id,'gridBodyCell')]");
+        int U2APIValue = response.Jobs.size();
+        int G3APIValue = g3WOResponse.Jobs.size();
+        List U2APIJobList = response.Jobs;
+        List G3APIJobList = g3WOResponse.Jobs;
+        for(int i =0; i< GUIValue; i++) {
+            for (int j = 1; j <= U2APIJobList.size(); j++)
+                System.out.println(appEnv.getDriver().findElement(By.xpath("//div[@data-test-id='woJobListSummaryGrid']//*[starts-with(@data-test-id,'gridBodyRow0')]//*[starts-with(@data-test-id,'gridBodyCell')]" +"["+j+"]")).getText());
+        }
+
+
+        for(int k =0; k< U2APIJobList.size(); k++)
+            System.out.println(U2APIJobList.get(k));
+        for(int l =0; l< G3APIJobList.size(); l++)
+            System.out.println(G3APIJobList.get(l));
+
+        System.out.println("Work Order Parts Percentage is   : " + GUIValue);
+        System.out.println("Work Order API Parts Percentage is   : " + G3APIValue);
+        System.out.println("Work Order Parts Percentage from Universe DB is   : " + U2APIValue);
+        appEnv.setTestPass(U2APIValue == GUIValue && G3APIValue == GUIValue);
+        appEnv.getReportManager().LogStepInfo("Number of Job in Work Order Job List is : " + GUIValue);
+        Utils.VerifyResult("Correct WO Jobs Loaded  ", appEnv.isTestPass());
+    }
+
+
 }
