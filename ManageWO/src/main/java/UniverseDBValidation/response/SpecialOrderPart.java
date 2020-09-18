@@ -2,14 +2,13 @@ package UniverseDBValidation.response;
 
 import java.util.List;
 
-// TODO: This is remaining
 public class SpecialOrderPart {
-    public String PartNo;
-    public String VendorNo;
-    public String VendorPartNo;
-    public String Description;
-    public Double Quantity;
-    public Double Price;
-    public String Status;
-    public List<G2Comment> Comments;
+    public String partNo;
+    public String vendorNo;
+    public String vendorPartNo;
+    public String description;
+    public Double quantity;
+    public Double price;
+    public String status;
+    public List<G2Comment> comments;
 }

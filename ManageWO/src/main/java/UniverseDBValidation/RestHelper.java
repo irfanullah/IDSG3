@@ -1,9 +1,7 @@
 package UniverseDBValidation;
 
-import org.json.simple.JSONObject;
-
-import java.io.IOException;
+import java.util.HashMap;
 
 public interface RestHelper {
-    String post(String base, String url, JSONObject data) throws IOException;
+    String post(String base, String url, HashMap<String, Object> data);
 }

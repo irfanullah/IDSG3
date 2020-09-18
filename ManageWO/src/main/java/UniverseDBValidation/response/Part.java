@@ -1,16 +1,15 @@
 package UniverseDBValidation.response;
 
-// TODO: This is remaining
 public class Part {
-    public String PartNo;
-    public String Description​;
-    public Double DiscountPercentage​;
-    public String Type​;
-    public String TypeDesc​;
-    public String TaxCode​;
-    public String TaxDesc​;
-    public String SalesmanCode​;
-    public String SalesmanDesc​;
-    public PartPricing Actuals;
-    public PartPricing Required;
+    public String partNo;
+    public String description;
+    public Double discountPercentage;
+    public String type;
+    public String typeDesc;
+    public String taxCode;
+    public String taxDesc;
+    public String salesmanCode;
+    public String salesmanDesc;
+    public PartPricing actuals;
+    public PartPricing required;
 }

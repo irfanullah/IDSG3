@@ -2,9 +2,9 @@ package UniverseDBValidation;
 
 public class U2Delimiters {
 
-    public static String Field = ""+(char)251;
-    public static String Row = ""+(char)250;
-    public static String Table = ""+(char)249;
-    public static String VM = ""+(char)253; // 'ý'
-    public static String MV = ""+(char)254; // 'þ'
+    public static final String FIELD = ""+(char)251;
+    public static final String ROW = ""+(char)250;
+    public static final String TABLE = ""+(char)249;
+    public static final String VM = ""+(char)253; // 'ý'
+    public static final String MV = ""+(char)254; // 'þ'
 }

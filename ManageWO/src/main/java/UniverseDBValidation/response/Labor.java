@@ -2,26 +2,26 @@ package UniverseDBValidation.response;
 
 import java.time.LocalDateTime;
 
-// TODO: This is remaining
 public class Labor {
-    public String LaborCode;
-    public String Description;
-    public String Type;
-    public String TypeDesc;
-    public String MechanicCode;
-    public String MechanicDesc;
-    public String SkillSetCode;
-    public String SkillSetDesc;
-    public String StatusCode;
-    public String StatusDesc;
-    public LocalDateTime LaborDate;
-    public Double ChargeHours;
-    public String TaxCode;
-    public String TaxDesc;
-    public String FaultCode;
-    public String FaultDesc;
-    public String SalesmanCode;
-    public String SalesmanDesc;
-    public LaborPricing Actuals;
-    public LaborPricing Required;
+    public String laborCode;
+    public String description;
+    public String type;
+    public String typeDesc;
+    public String mechanicCode;
+    public String mechanicDesc;
+    public String skillSetCode;
+    public String skillSetDesc;
+    public String statusCode;
+    public String statusDesc;
+    public LocalDateTime laborDate;
+    public String laborDateStr;
+    public Double chargeHours;
+    public String taxCode;
+    public String taxDesc;
+    public String faultCode;
+    public String faultDesc;
+    public String salesmanCode;
+    public String salesmanDesc;
+    public LaborPricing actuals;
+    public LaborPricing required;
 }

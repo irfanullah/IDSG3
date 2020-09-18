@@ -1,12 +1,12 @@
 package UniverseDBValidation.response;
 
 public class Extras {
-    public String ExtraCode;
-    public String Description;
-    public String TaxCode;
-    public String TaxDesc;
-    public String SalesmanCode;
-    public String SalesmanDesc;
-    public ExtrasPricing Required;
-    public ExtrasPricing Actuals;
+    public String extraCode;
+    public String description;
+    public String taxCode;
+    public String taxDesc;
+    public String salesmanCode;
+    public String salesmanDesc;
+    public ExtrasPricing required;
+    public ExtrasPricing actuals;
 }

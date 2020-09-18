@@ -1,6 +1,6 @@
 package UniverseDBValidation.response;
 
 public class SubletPricing {
-    public Double Cost;
-    public Double ListPrice;
+    public Double cost;
+    public Double listPrice;
 }

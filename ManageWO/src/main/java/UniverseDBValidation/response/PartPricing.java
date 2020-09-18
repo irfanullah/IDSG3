@@ -1,9 +1,8 @@
 package UniverseDBValidation.response;
 
-// TODO: This is remaining
 public class PartPricing {
-    public Double Quantity;
-    public Double Cost;
-    public Double Price;
-    public Double Extension;
+    public Double quantity;
+    public Double cost;
+    public Double price;
+    public Double extension;
 }
