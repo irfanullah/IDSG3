@@ -186,10 +186,11 @@ public class DetailedWO {
     public void Load_Work_Order_Customer_Address() {
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
         String GUIValue = woDetails.GetCustomerAddress();
-        String U2APIValue = Utils.FormateString(response.customer.addressLine1) +  ", "+ Utils.FormateString(response.customer.addressLine2)
-                            + Utils.FormateString(response.customer.city) + " "+  Utils.FormateString(response.customer.zipCode)
+        String U2APIValue = Utils.FormateString(response.customer.addressLine1) +  ","+ Utils.FormateString(response.customer.addressLine2)+ ", "
+                            + Utils.FormateString(response.customer.city) + ","+ Utils.FormateString(response.customer.state)+ " " +Utils.FormateString(response.customer.zipCode)
                             + ", "+ Utils.FormateString(response.customer.country)   ;
-        String G3APIValue = Utils.FormateString(g3WOResponse.Customer.AddressLine1) + ", "+ Utils.FormateString(g3WOResponse.Customer.AddressLine2) +
+        String G3APIValue = Utils.FormateString(g3WOResponse.Customer.AddressLine1) +
+                ", " + Utils.FormateString(g3WOResponse.Customer.AddressLine2) +
                 ", "+ Utils.FormateString(g3WOResponse.Customer.City) + ", "+  Utils.FormateString(g3WOResponse.Customer.State) +" "+ Utils.FormateString(g3WOResponse.Customer.ZipCode)
                 + ", "+ Utils.FormateString(g3WOResponse.Customer.Country)   ;
         System.out.println("WO Customer Address is   : " + GUIValue);

@@ -453,10 +453,10 @@ public class U2WorkOrder {
         String delimiters = ((char)252) + "";
 
         for(int i=0;i<authors.length;i++){
-            String[] jobContents = contents[i].split(delimiters);
-            String[] jobEstimates = estimates[i].split(delimiters);
-            String[] jobCreatedDates = createdDates[i].split(delimiters);
-            String[] jobCreatedTimes = createdTimes[i].split(delimiters);
+            String[] jobContents = DataHelper.getArrayIndexSafeString(contents, i)==null? null : DataHelper.getArrayIndexSafeString(contents, i).split(delimiters);
+            String[] jobEstimates = DataHelper.getArrayIndexSafeString(estimates, i)==null? null : DataHelper.getArrayIndexSafeString(estimates, i).split(delimiters);
+            String[] jobCreatedDates = DataHelper.getArrayIndexSafeString(createdDates, i)==null? null : DataHelper.getArrayIndexSafeString(createdDates, i).split(delimiters);
+            String[] jobCreatedTimes = DataHelper.getArrayIndexSafeString(createdTimes, i)==null? null : DataHelper.getArrayIndexSafeString(createdTimes, i).split(delimiters);
             String[] jobAuthors = authors[i].split(delimiters);
 
             List<JobEstimateComment> jobEstimateComments = new ArrayList<>();
@@ -465,10 +465,10 @@ public class U2WorkOrder {
                 JobEstimateComment jobEstimateComment = new JobEstimateComment();
 
                 jobEstimateComment.author = jobAuthors[j];
-                jobEstimateComment.content = jobContents[j];
-                jobEstimateComment.createdDateTime = DataHelper.getLocalDateTimeFromU2(jobCreatedDates[j],
-                        jobCreatedTimes[j]);
-                jobEstimateComment.estimate = DataHelper.getDoubleFromU2(jobEstimates[j]);
+                jobEstimateComment.content = DataHelper.getArrayIndexSafeString(jobContents, j);
+                jobEstimateComment.createdDateTime = DataHelper.getLocalDateTimeFromU2(DataHelper.getArrayIndexSafeString(jobCreatedDates, j),
+                        DataHelper.getArrayIndexSafeString(jobCreatedTimes, j));
+                jobEstimateComment.estimate = DataHelper.getDoubleFromU2(DataHelper.getArrayIndexSafeString(jobEstimates, j));
                 if(j != 0) {
                     jobEstimateComment.difference = jobEstimateComment.estimate - jobEstimateComments.get(j-1).estimate;
                 }
@@ -1083,6 +1083,8 @@ public class U2WorkOrder {
         }
         customer.addressLine1 = DataHelper.getFirstLetterInUpperCase(customer.addressLine1);
         customer.addressLine2 = DataHelper.getFirstLetterInUpperCase(customer.addressLine2);
+        customer.city = DataHelper.getFirstLetterInUpperCase(customer.city);
+        customer.state = DataHelper.getFirstLetterInUpperCase(customer.state);
         return customer;
     }
 
