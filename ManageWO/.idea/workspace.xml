@@ -2,20 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a7463fb9-95ae-4a2d-a6c5-39af2b85de0b" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/ManageWO.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/PageObj/LoginPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/PageObj/LoginPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/PageObj/RecentWO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/PageObj/RecentWO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/PageObj/WODetails.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/PageObj/WODetails.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Services/AppEnv.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Services/AppEnv.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Services/General.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Services/General.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Services/RestManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Services/RestManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Services/SystemConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Services/SystemConfiguration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/DataSecure/Token.csv" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/DataSecure/Token.csv" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/SysConfig/DEVVM50.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/SysConfig/DEVVM50.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/SysConfig/QAVM94.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/SysConfig/QAVM94.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/TestManager/SuiteListener.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestManager/SuiteListener.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/TestManager/TestFiltration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestManager/TestFiltration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/TestSpecs/DetailedWO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestSpecs/DetailedWO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/TestSpecs/SearchWO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/TestSpecs/SearchWO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/resources/All_Tests.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/resources/All_Tests.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/classes/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -33,20 +27,29 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/TestManager/SuiteListener.java">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/test/java/TestSpecs/DetailedWO.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="184">
-              <caret line="53" column="23" selection-start-line="53" selection-start-column="23" selection-end-line="53" selection-end-column="23" />
+            <state relative-caret-position="986">
+              <caret line="497" column="12" selection-start-line="497" selection-start-column="12" selection-end-line="497" selection-end-column="12" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/test/java/TestSpecs/DetailedWO.java">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/resources/All_Tests.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="365">
-              <caret line="411" column="76" lean-forward="true" selection-start-line="411" selection-start-column="76" selection-end-line="411" selection-end-column="210" />
+            <state relative-caret-position="376">
+              <caret line="46" column="16" selection-start-line="46" selection-start-column="16" selection-end-line="46" selection-end-column="16" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/UniverseDBValidation/response/Job.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="427">
+              <caret line="29" column="22" lean-forward="true" selection-start-line="29" selection-start-column="22" selection-end-line="29" selection-end-column="22" />
             </state>
           </provider>
         </entry>
@@ -54,17 +57,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/PageObj/LoginPage.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="433">
-              <caret line="68" column="4" selection-start-line="68" selection-start-column="4" selection-end-line="68" selection-end-column="4" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/TestSpecs/SearchWO.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="181">
-              <caret line="1551" selection-start-line="1551" selection-end-line="1563" selection-end-column="5" />
+            <state relative-caret-position="263">
+              <caret line="70" lean-forward="true" selection-start-line="70" selection-end-line="80" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -72,8 +66,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/TestManager/TestFiltration.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="331">
-              <caret line="425" column="12" selection-start-line="425" selection-start-column="12" selection-end-line="425" selection-end-column="12" />
+            <state relative-caret-position="478">
+              <caret line="434" column="51" selection-start-line="434" selection-start-column="51" selection-end-line="434" selection-end-column="51" />
             </state>
           </provider>
         </entry>
@@ -81,17 +75,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/PageObj/WODetails.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="189" column="68" selection-start-line="189" selection-start-column="68" selection-end-line="189" selection-end-column="68" />
+            <state relative-caret-position="410">
+              <caret line="230" column="166" selection-start-line="230" selection-start-column="166" selection-end-line="230" selection-end-column="166" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Services/G3WOResponse.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/PageObj/RecentWO.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1964">
-              <caret line="20" column="32" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="32" />
+            <state relative-caret-position="510">
+              <caret line="126" column="210" selection-start-line="126" selection-start-column="210" selection-end-line="126" selection-end-column="210" />
             </state>
           </provider>
         </entry>
@@ -99,8 +93,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Services/General.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-357">
-              <caret line="341" column="44" lean-forward="true" selection-start-line="341" selection-start-column="44" selection-end-line="341" selection-end-column="44" />
+            <state relative-caret-position="291">
+              <caret line="572" selection-start-line="572" selection-end-line="572" />
             </state>
           </provider>
         </entry>
@@ -108,17 +102,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/resources/SysConfig/QAVM94.properties">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="119">
-              <caret line="7" column="50" lean-forward="true" selection-start-line="7" selection-start-column="50" selection-end-line="7" selection-end-column="50" />
+            <state relative-caret-position="136">
+              <caret line="8" column="22" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Services/RestManager.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/UniverseDBValidation/U2WorkOrder.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="433">
-              <caret line="238" selection-start-line="238" selection-end-line="238" />
+            <state relative-caret-position="187">
+              <caret line="678" selection-start-line="678" selection-end-line="678" />
             </state>
           </provider>
         </entry>
@@ -157,12 +151,14 @@
         <option value="$PROJECT_DIR$/src/main/java/Services/SystemConfiguration.java" />
         <option value="$PROJECT_DIR$/src/main/java/Services/G3WOResponse.java" />
         <option value="$PROJECT_DIR$/src/main/java/Services/RestManager.java" />
-        <option value="$PROJECT_DIR$/src/main/resources/SysConfig/QAVM94.properties" />
         <option value="$PROJECT_DIR$/src/main/java/Services/General.java" />
-        <option value="$PROJECT_DIR$/src/main/java/PageObj/WODetails.java" />
-        <option value="$PROJECT_DIR$/src/test/java/TestManager/TestFiltration.java" />
         <option value="$PROJECT_DIR$/src/test/java/TestSpecs/SearchWO.java" />
         <option value="$PROJECT_DIR$/src/main/java/PageObj/LoginPage.java" />
+        <option value="$PROJECT_DIR$/src/main/java/PageObj/RecentWO.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/SysConfig/QAVM94.properties" />
+        <option value="$PROJECT_DIR$/src/main/java/PageObj/WODetails.java" />
+        <option value="$PROJECT_DIR$/src/test/java/TestManager/TestFiltration.java" />
+        <option value="$PROJECT_DIR$/src/test/resources/All_Tests.xml" />
         <option value="$PROJECT_DIR$/src/test/java/TestSpecs/DetailedWO.java" />
       </list>
     </option>
@@ -306,8 +302,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="-243" />
-    <option name="y" value="101" />
+    <option name="x" value="-48" />
+    <option name="y" value="74" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
   </component>
@@ -376,6 +372,14 @@
               <item name="ManageWO" type="b2602c69:ProjectViewProjectNode" />
               <item name="ManageWO" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="SysConfig" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ManageWO" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ManageWO" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -415,6 +419,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
@@ -440,8 +445,18 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="TestNG.DetailedWO.Load_Work_Orders_Job_List">
-    <configuration name="DetailedWO.Load_Parts_Discount_Percentage" type="TestNG" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="TestNG.DetailedWO.Load_WO_Stock_Meter_In_Reading">
+    <configuration name="D:/JavaPrograms/G3 DB Validation Branch/IDSG3/ManageWO/src/test/resources/All_Tests.xml" type="TestNG" temporary="true" nameIsGenerated="true">
+      <module name="ManageWO" />
+      <option name="SUITE_NAME" value="$PROJECT_DIR$/src/test/resources/All_Tests.xml" />
+      <option name="TEST_OBJECT" value="SUITE" />
+      <properties />
+      <listeners />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DetailedWO.Load_WO_Stock_Meter_In_Reading" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="ManageWO" />
       <extension name="coverage">
         <pattern>
@@ -451,7 +466,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="TestSpecs" />
       <option name="MAIN_CLASS_NAME" value="TestSpecs.DetailedWO" />
-      <option name="METHOD_NAME" value="Load_Parts_Discount_Percentage" />
+      <option name="METHOD_NAME" value="Load_WO_Stock_Meter_In_Reading" />
       <option name="TEST_OBJECT" value="METHOD" />
       <properties />
       <listeners />
@@ -459,7 +474,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="DetailedWO.Load_Work_Order_Appointment_Date" type="TestNG" temporary="true" nameIsGenerated="true">
+    <configuration name="DetailedWO.Load_Work_Order_Customer_Address" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="ManageWO" />
       <extension name="coverage">
         <pattern>
@@ -469,7 +484,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="TestSpecs" />
       <option name="MAIN_CLASS_NAME" value="TestSpecs.DetailedWO" />
-      <option name="METHOD_NAME" value="Load_Work_Order_Appointment_Date" />
+      <option name="METHOD_NAME" value="Load_Work_Order_Customer_Address" />
       <option name="TEST_OBJECT" value="METHOD" />
       <properties />
       <listeners />
@@ -477,7 +492,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="DetailedWO.Load_Work_Order_Category" type="TestNG" temporary="true" nameIsGenerated="true">
+    <configuration name="DetailedWO.Load_Work_Orders_Job_List_Actuals" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="ManageWO" />
       <extension name="coverage">
         <pattern>
@@ -487,7 +502,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="TestSpecs" />
       <option name="MAIN_CLASS_NAME" value="TestSpecs.DetailedWO" />
-      <option name="METHOD_NAME" value="Load_Work_Order_Category" />
+      <option name="METHOD_NAME" value="Load_Work_Orders_Job_List_Actuals" />
       <option name="TEST_OBJECT" value="METHOD" />
       <properties />
       <listeners />
@@ -495,7 +510,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="DetailedWO.Load_Work_Order_Expected_Promised_Date" type="TestNG" temporary="true" nameIsGenerated="true">
+    <configuration name="DetailedWO.Load_Work_Orders_Job_List_Required" type="TestNG" temporary="true" nameIsGenerated="true">
       <module name="ManageWO" />
       <extension name="coverage">
         <pattern>
@@ -505,25 +520,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="TestSpecs" />
       <option name="MAIN_CLASS_NAME" value="TestSpecs.DetailedWO" />
-      <option name="METHOD_NAME" value="Load_Work_Order_Expected_Promised_Date" />
-      <option name="TEST_OBJECT" value="METHOD" />
-      <properties />
-      <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="DetailedWO.Load_Work_Orders_Job_List" type="TestNG" temporary="true" nameIsGenerated="true">
-      <module name="ManageWO" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="TestSpecs.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="TestSpecs" />
-      <option name="MAIN_CLASS_NAME" value="TestSpecs.DetailedWO" />
-      <option name="METHOD_NAME" value="Load_Work_Orders_Job_List" />
+      <option name="METHOD_NAME" value="Load_Work_Orders_Job_List_Required" />
       <option name="TEST_OBJECT" value="METHOD" />
       <properties />
       <listeners />
@@ -533,11 +530,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="TestNG.DetailedWO.Load_Work_Orders_Job_List" />
-        <item itemvalue="TestNG.DetailedWO.Load_Work_Order_Category" />
-        <item itemvalue="TestNG.DetailedWO.Load_Parts_Discount_Percentage" />
-        <item itemvalue="TestNG.DetailedWO.Load_Work_Order_Appointment_Date" />
-        <item itemvalue="TestNG.DetailedWO.Load_Work_Order_Expected_Promised_Date" />
+        <item itemvalue="TestNG.DetailedWO.Load_WO_Stock_Meter_In_Reading" />
+        <item itemvalue="TestNG.DetailedWO.Load_Work_Order_Customer_Address" />
+        <item itemvalue="TestNG.D:/JavaPrograms/G3 DB Validation Branch/IDSG3/ManageWO/src/test/resources/All_Tests.xml" />
+        <item itemvalue="TestNG.DetailedWO.Load_Work_Orders_Job_List_Actuals" />
+        <item itemvalue="TestNG.DetailedWO.Load_Work_Orders_Job_List_Required" />
       </list>
     </recent_temporary>
   </component>
@@ -555,35 +552,35 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="DetailedWO_Load_Work_Orders_Job_List - 2020.09.17 at 21h 25m 35s.xml">
-      <configuration name="DetailedWO.Load_Work_Orders_Job_List" configurationId="TestNG" />
+    <history-entry file="DetailedWO_Load_Work_Orders_Job_List_Required - 2020.09.21 at 10h 33m 52s.xml">
+      <configuration name="DetailedWO.Load_Work_Orders_Job_List_Required" configurationId="TestNG" />
     </history-entry>
-    <history-entry file="DetailedWO_Load_Work_Orders_Job_List - 2020.09.17 at 21h 26m 43s.xml">
-      <configuration name="DetailedWO.Load_Work_Orders_Job_List" configurationId="TestNG" />
+    <history-entry file="DetailedWO_Load_Work_Orders_Job_List_Required - 2020.09.21 at 10h 36m 19s.xml">
+      <configuration name="DetailedWO.Load_Work_Orders_Job_List_Required" configurationId="TestNG" />
     </history-entry>
-    <history-entry file="DetailedWO_Load_Work_Orders_Job_List - 2020.09.17 at 21h 32m 31s.xml">
-      <configuration name="DetailedWO.Load_Work_Orders_Job_List" configurationId="TestNG" />
+    <history-entry file="DetailedWO_Load_Work_Orders_Job_List_Actuals - 2020.09.21 at 10h 50m 01s.xml">
+      <configuration name="DetailedWO.Load_Work_Orders_Job_List_Actuals" configurationId="TestNG" />
     </history-entry>
-    <history-entry file="DetailedWO_Load_Work_Orders_Job_List - 2020.09.18 at 06h 38m 40s.xml">
-      <configuration name="DetailedWO.Load_Work_Orders_Job_List" configurationId="TestNG" />
+    <history-entry file="D__JavaPrograms_G3_DB_Validation_Branch_IDSG3_ManageWO_src_test_resources_All_Tests_xml - 2020.09.21 at 13h 57m 34s.xml">
+      <configuration name="D:/JavaPrograms/G3 DB Validation Branch/IDSG3/ManageWO/src/test/resources/All_Tests.xml" configurationId="TestNG" />
     </history-entry>
-    <history-entry file="DetailedWO_Load_Parts_Discount_Percentage - 2020.09.18 at 06h 40m 04s.xml">
-      <configuration name="DetailedWO.Load_Parts_Discount_Percentage" configurationId="TestNG" />
+    <history-entry file="D__JavaPrograms_G3_DB_Validation_Branch_IDSG3_ManageWO_src_test_resources_All_Tests_xml - 2020.09.21 at 14h 05m 22s.xml">
+      <configuration name="D:/JavaPrograms/G3 DB Validation Branch/IDSG3/ManageWO/src/test/resources/All_Tests.xml" configurationId="TestNG" />
     </history-entry>
-    <history-entry file="DetailedWO_Load_Work_Order_Category - 2020.09.18 at 06h 41m 16s.xml">
-      <configuration name="DetailedWO.Load_Work_Order_Category" configurationId="TestNG" />
+    <history-entry file="DetailedWO_Load_Work_Order_Customer_Address - 2020.09.21 at 14h 38m 13s.xml">
+      <configuration name="DetailedWO.Load_Work_Order_Customer_Address" configurationId="TestNG" />
     </history-entry>
-    <history-entry file="DetailedWO_Load_Parts_Discount_Percentage - 2020.09.18 at 06h 49m 03s.xml">
-      <configuration name="DetailedWO.Load_Parts_Discount_Percentage" configurationId="TestNG" />
+    <history-entry file="DetailedWO_Load_Work_Order_Customer_Address - 2020.09.21 at 14h 40m 13s.xml">
+      <configuration name="DetailedWO.Load_Work_Order_Customer_Address" configurationId="TestNG" />
     </history-entry>
-    <history-entry file="DetailedWO_Load_Work_Order_Category - 2020.09.18 at 06h 51m 06s.xml">
-      <configuration name="DetailedWO.Load_Work_Order_Category" configurationId="TestNG" />
+    <history-entry file="DetailedWO_Load_Work_Order_Customer_Address - 2020.09.21 at 14h 41m 40s.xml">
+      <configuration name="DetailedWO.Load_Work_Order_Customer_Address" configurationId="TestNG" />
     </history-entry>
-    <history-entry file="DetailedWO_Load_Work_Orders_Job_List - 2020.09.18 at 13h 33m 51s.xml">
-      <configuration name="DetailedWO.Load_Work_Orders_Job_List" configurationId="TestNG" />
+    <history-entry file="DetailedWO_Load_WO_Stock_Meter_In_Reading - 2020.09.21 at 15h 39m 01s.xml">
+      <configuration name="DetailedWO.Load_WO_Stock_Meter_In_Reading" configurationId="TestNG" />
     </history-entry>
-    <history-entry file="DetailedWO_Load_Work_Orders_Job_List - 2020.09.18 at 13h 35m 31s.xml">
-      <configuration name="DetailedWO.Load_Work_Orders_Job_List" configurationId="TestNG" />
+    <history-entry file="DetailedWO_Load_WO_Stock_Meter_In_Reading - 2020.09.21 at 16h 25m 15s.xml">
+      <configuration name="DetailedWO.Load_WO_Stock_Meter_In_Reading" configurationId="TestNG" />
     </history-entry>
   </component>
   <component name="TodoView" selected-index="1">
@@ -599,7 +596,7 @@
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="7" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" weight="0.17004265" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.17004265" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -608,7 +605,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.31777778" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -681,27 +678,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/SysConfig/QAVM94.properties">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="50" lean-forward="true" selection-start-line="7" selection-start-column="50" selection-end-line="7" selection-end-column="50" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/TestManager/TestFiltration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="331">
-          <caret line="425" column="12" selection-start-line="425" selection-start-column="12" selection-end-line="425" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/PageObj/WODetails.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="450">
-          <caret line="189" column="68" selection-start-line="189" selection-start-column="68" selection-end-line="189" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/TestSpecs/SearchWO.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="181">
@@ -711,29 +687,78 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Services/G3WOResponse.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1964">
-          <caret line="20" column="32" selection-start-line="20" selection-start-column="22" selection-end-line="20" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Services/General.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-357">
-          <caret line="341" column="44" lean-forward="true" selection-start-line="341" selection-start-column="44" selection-end-line="341" selection-end-column="44" />
+        <state relative-caret-position="-323">
+          <caret line="15" column="17" selection-start-line="15" selection-start-column="17" selection-end-line="15" selection-end-column="17" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/PageObj/LoginPage.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="433">
-          <caret line="68" column="4" selection-start-line="68" selection-start-column="4" selection-end-line="68" selection-end-column="4" />
+        <state relative-caret-position="263">
+          <caret line="70" lean-forward="true" selection-start-line="70" selection-end-line="80" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/PageObj/RecentWO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="510">
+          <caret line="126" column="210" selection-start-line="126" selection-start-column="210" selection-end-line="126" selection-end-column="210" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/UniverseDBValidation/U2WorkOrder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="678" selection-start-line="678" selection-end-line="678" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/UniverseDBValidation/response/Job.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="427">
+          <caret line="29" column="22" lean-forward="true" selection-start-line="29" selection-start-column="22" selection-end-line="29" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/SysConfig/QAVM94.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="22" selection-start-line="8" selection-start-column="22" selection-end-line="8" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/PageObj/WODetails.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="410">
+          <caret line="230" column="166" selection-start-line="230" selection-start-column="166" selection-end-line="230" selection-end-column="166" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/TestManager/TestFiltration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="478">
+          <caret line="434" column="51" selection-start-line="434" selection-start-column="51" selection-end-line="434" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/resources/All_Tests.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="376">
+          <caret line="46" column="16" selection-start-line="46" selection-start-column="16" selection-end-line="46" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Services/General.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="291">
+          <caret line="572" selection-start-line="572" selection-end-line="572" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/TestSpecs/DetailedWO.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="365">
-          <caret line="411" column="76" lean-forward="true" selection-start-line="411" selection-start-column="76" selection-end-line="411" selection-end-column="210" />
+        <state relative-caret-position="986">
+          <caret line="497" column="12" selection-start-line="497" selection-start-column="12" selection-end-line="497" selection-end-column="12" />
         </state>
       </provider>
     </entry>

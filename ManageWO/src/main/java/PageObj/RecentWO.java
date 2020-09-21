@@ -107,24 +107,24 @@ public class RecentWO {
     public void Select_First_Status_Filter(String status){
         try {
             appEnv.getReportManager().LogStepInfo("First  Status Filter is Selected : " + status);
-        Utils.waitTillXpathPresent("(//*[@id=\"root\"]//div[starts-with(@class,'StatusFilter_statusWrapper')])[1]",30);
-        Utils.ClickObj(fetch_elements.GetObj("xpath","(//*[@id=\"root\"]//div[starts-with(@class,'StatusFilter_statusWrapper')])[1]//button[starts-with(@class,'SelectField_input')]"));
-        Utils.waitTillXpathPresent("//*[@id=\"root\"]/div/div/div[2]/form/div[2]/div[3]/div/div[1]/div[2]/div/button[3]",30);
+            Utils.waitTillXpathPresent("//div[@data-test-id='statusFilter0']",30);
+            Utils.ClickObj(fetch_elements.GetObj("xpath","//div[@data-test-id='statusFilter0']//div[starts-with(@class,'SelectField_container')]"));
+            Utils.waitTillXpathPresent("//div[@data-test-id='statusFilter0']//div[starts-with(@class,'SelectField_container')]//button[starts-with(@class,'SelectField_dropdownItem')][1]",30);
         switch (status){
             case "Open":
-                Utils.ClickObj(fetch_elements.GetObj("xpath","//*[@id=\"root\"]/div/div/div[2]/form/div[2]/div[3]/div/div[1]/div[2]/div/button[2]"));
+                Utils.ClickObj(fetch_elements.GetObj("xpath","//div[@data-test-id='statusFilter0']//div[starts-with(@class,'SelectField_container')]//button[starts-with(@class,'SelectField_dropdownItem')][2]"));
                 break;
             case "Completed":
-                Utils.ClickObj(fetch_elements.GetObj("xpath","//*[@id=\"root\"]/div/div/div[2]/form/div[2]/div[3]/div/div[1]/div[2]/div/button[3]"));
+                Utils.ClickObj(fetch_elements.GetObj("xpath","//div[@data-test-id='statusFilter0']//div[starts-with(@class,'SelectField_container')]//button[starts-with(@class,'SelectField_dropdownItem')][3]"));
                 break;
             case "Cancelled":
-                Utils.ClickObj(appEnv.getDriver().findElementByXPath("//*[@id=\"root\"]/div/div/div[2]/form/div[2]/div[3]/div/div[1]/div[2]/div/button[4]"));
+                Utils.ClickObj(appEnv.getDriver().findElementByXPath("//div[@data-test-id='statusFilter0']//div[starts-with(@class,'SelectField_container')]//button[starts-with(@class,'SelectField_dropdownItem')][4]"));
                 break;
             case "None":
-                Utils.ClickObj(fetch_elements.GetObj("xpath","//*[@id=\"root\"]/div/div/div[2]/form/div[2]/div[3]/div/div[1]/div[2]/div/button[1]"));
+                Utils.ClickObj(fetch_elements.GetObj("xpath","//div[@data-test-id='statusFilter0']//div[starts-with(@class,'SelectField_container')]//button[starts-with(@class,'SelectField_dropdownItem')][1]"));
                 break;
                 default:
-                    Utils.ClickObj(fetch_elements.GetObj("xpath","//*[@id=\"root\"]/div/div/div[2]/form/div[2]/div[3]/div/div[1]/div[2]/div/button[2]"));
+                    Utils.ClickObj(fetch_elements.GetObj("xpath","//div[@data-test-id='statusFilter0']//div[starts-with(@class,'SelectField_container')]//button[starts-with(@class,'SelectField_dropdownItem')][2]"));
 
         }
         }catch (Exception e){

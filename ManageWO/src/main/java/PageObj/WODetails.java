@@ -35,6 +35,7 @@ public class WODetails {
         pgRecentWO.Click_Clear_Button();
         Utils.StaticWait(5000);
         pgRecentWO.Type_WO_Number(WONumber);
+        pgRecentWO.Select_First_Status_Filter("None");
         pgRecentWO.Click_Search_Button();
         Utils.StaticWait(5000);
         Utils.IsObjExist(fetch_elements.GetObj("xpath","//*[starts-with(@data-test-id,'gridBodyRow0')]/*[@data-test-id='gridBodyCell'][1]"));
@@ -67,6 +68,42 @@ public class WODetails {
                 MatchMilageUnit = false;
         }
         return MatchMilageUnit;
+    }
+
+    /**
+     * This method will Click Work Order Jobs List Details button.
+     */
+    public void click_Work_Order_Jobs_List_Detail() {
+
+        Utils.waitTillXpathPresent("//div[@data-test-id='woJobList']//button[starts-with(@class,'Button_button')][2]", 30);
+        if (Utils.IsObjExist(fetch_elements.GetObj("xpath", "//div[@data-test-id='woJobList']//button[starts-with(@class,'Button_button')][2]"))) {
+            Utils.ClickObj(fetch_elements.GetObj("xpath", "//div[@data-test-id='woJobList']//button[starts-with(@class,'Button_button')][2]"));
+            appEnv.getReportManager().LogStepInfo("Click Work Order Job List Detail Button");
+        }
+    }
+
+    /**
+     * This method will Click Work Order Jobs List Required button.
+     */
+    public void click_Work_Order_Jobs_List_Required() {
+
+        Utils.waitTillXpathPresent("//div[@data-test-id='woJobList']//button[contains(text(),'Required')]", 30);
+        if (Utils.IsObjExist(fetch_elements.GetObj("xpath", "//div[@data-test-id='woJobList']//button[contains(text(),'Required')]"))) {
+            Utils.ClickObj(fetch_elements.GetObj("xpath", "//div[@data-test-id='woJobList']//button[contains(text(),'Required')]"));
+            appEnv.getReportManager().LogStepInfo("Click Work Order Job List Required Button");
+        }
+    }
+
+    /**
+     * This method will Click Work Order Jobs List Actuals button.
+     */
+    public void click_Work_Order_Jobs_List_Actuals() {
+
+        Utils.waitTillXpathPresent("//div[@data-test-id='woJobList']//button[contains(text(),'Actuals')]", 30);
+        if (Utils.IsObjExist(fetch_elements.GetObj("xpath", "//div[@data-test-id='woJobList']//button[contains(text(),'Actuals')]"))) {
+            Utils.ClickObj(fetch_elements.GetObj("xpath", "//div[@data-test-id='woJobList']//button[contains(text(),'Actuals')]"));
+            appEnv.getReportManager().LogStepInfo("Click Work Order Job List Actuals Button");
+        }
     }
 
     public String GetWODate(){
@@ -186,9 +223,15 @@ public class WODetails {
         return  Utils.GetText(fetch_elements.GetObj("xpath","//div[@data-test-id='woHeaderMisc']/div[2]/div[5]/div[1]/div[2]"));
     }
 
-    public int GetNumberofRows(String xpath){
-        List rows = appEnv.getDriver().findElements(By.xpath(xpath));
+    public int getTableRows(String rootXpath){
+        List rows = appEnv.getDriver().findElements(By.xpath(rootXpath + "//*[starts-with(@data-test-id,'gridBodyRow')]"));
         return rows.size();
     }
+    public int getTableColumns(String rootXpath){
+        List rows = appEnv.getDriver().findElements(By.xpath(rootXpath + "//*[starts-with(@data-test-id,'gridBodyRow0')]//*[starts-with(@data-test-id,'gridBodyCell')]"));
+        return rows.size();
+    }
+
+
 
 }

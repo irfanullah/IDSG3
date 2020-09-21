@@ -8,12 +8,13 @@ import Services.*;
 import TestManager.InputDataStream;
 import TestManager.SuiteListener;
 import UniverseDBValidation.U2WorkOrder;
+import UniverseDBValidation.response.Job;
 import UniverseDBValidation.response.WorkOrderResponse;
-import org.openqa.selenium.By;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Listeners(SuiteListener.class)
@@ -186,14 +187,14 @@ public class DetailedWO {
     public void Load_Work_Order_Customer_Address() {
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
         String GUIValue = woDetails.GetCustomerAddress();
-        String U2APIValue = Utils.FormateString(response.customer.addressLine1) +  ", "+ Utils.FormateString(response.customer.addressLine2)
-                            + Utils.FormateString(response.customer.city) + " "+  Utils.FormateString(response.customer.zipCode)
+        String U2APIValue = Utils.FormateString(response.customer.addressLine1) +  ","+ Utils.FormateString(response.customer.addressLine2)+ ", "
+                            + Utils.FormateString(response.customer.city) + ", "+  Utils.FormateString(g3WOResponse.Customer.State) +" "+Utils.FormateString(response.customer.zipCode)
                             + ", "+ Utils.FormateString(response.customer.country)   ;
         String G3APIValue = Utils.FormateString(g3WOResponse.Customer.AddressLine1) + ", "+ Utils.FormateString(g3WOResponse.Customer.AddressLine2) +
                 ", "+ Utils.FormateString(g3WOResponse.Customer.City) + ", "+  Utils.FormateString(g3WOResponse.Customer.State) +" "+ Utils.FormateString(g3WOResponse.Customer.ZipCode)
                 + ", "+ Utils.FormateString(g3WOResponse.Customer.Country)   ;
-        System.out.println("WO Customer Address is   : " + GUIValue);
-        System.out.println("WO Customer Address from G3 API is : " + G3APIValue );
+        System.out.println("WO Customer Address is                    : " + GUIValue);
+        System.out.println("WO Customer Address from G3 API is        : " + G3APIValue );
         System.out.println("WO Customer Address from Universe DB is   : " + U2APIValue);
         appEnv.setTestPass(GUIValue.equalsIgnoreCase(U2APIValue) && GUIValue.equalsIgnoreCase(G3APIValue));
         appEnv.getReportManager().LogStepInfo("WO Customer Address is : " + GUIValue);
@@ -323,6 +324,7 @@ public class DetailedWO {
         String U2MileageUnitDesc = Utils.FormateString(response.workOrder.mileageUnitDesc);
         String G3APIMilageDescription = Utils.FormateString(g3WOResponse.WorkOrder.MileageUnitDesc);
         String GUIValue = woDetails.GetStockMeterIn();
+        System.out.println("Stock Mileage In is   : " + GUIValue);
         Double GUIInMileage = Double.parseDouble(Utils.GetNumfromString(GUIValue));
         String GUIMileageUnitDesc = Utils.GetAlpafromString(GUIValue);
         Double U2APIValue = Utils.FormateString(response.workOrder.mileageIn);
@@ -386,45 +388,387 @@ public class DetailedWO {
     @Test(priority = 521, retryAnalyzer = ReTry.class)
     public void Load_Parts_Discount_Percentage() {
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
-        String GUIValue = woDetails.GetWOPartsDiscountPercentage();
-        String U2APIValue = Utils.FormateString(response.workOrder.partsDiscount.toString());
-        String G3APIValue = Utils.FormateString(g3WOResponse.WorkOrder.PartsDiscount.toString());
+        Double GUIValue = Double.parseDouble(woDetails.GetWOPartsDiscountPercentage());
+        Double U2APIValue = Utils.FormateString(response.workOrder.partsDiscount);
+        Double G3APIValue =Utils.FormateString(g3WOResponse.WorkOrder.PartsDiscount);
         System.out.println("Work Order Parts Percentage is   : " + GUIValue);
         System.out.println("Work Order API Parts Percentage is   : " + G3APIValue);
         System.out.println("Work Order Parts Percentage from Universe DB is   : " + U2APIValue);
-        appEnv.setTestPass(U2APIValue.equalsIgnoreCase(GUIValue) && G3APIValue.equalsIgnoreCase(GUIValue));
+        appEnv.setTestPass(U2APIValue.equals(GUIValue) && G3APIValue.equals(GUIValue));
         appEnv.getReportManager().LogStepInfo("Work Order Category is : " + GUIValue);
         Utils.VerifyResult("Can not Load Work Order Parts Percentage ", appEnv.isTestPass());
     }
 
     @Test(priority = 550, retryAnalyzer = ReTry.class)
-    public void Load_Work_Orders_Job_List(){
+    public void Load_Work_Orders_Job_List_Summary()
+    {
         woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
+        String rootXpath = "//div[@data-test-id='woJobListSummaryGrid']";
+        int TotalJobs =  woDetails.getTableRows(rootXpath);
+        int TotalColumns = woDetails.getTableColumns(rootXpath);
+        System.out.println("Total Jobs : " + TotalJobs);
+        System.out.println("Total Columns in each Job : " + TotalColumns);
+        int U2ListSize   = response.jobs.size();
+        int G3ListSize = g3WOResponse.Jobs.size();
+        List<Job>  U2APIResponse = response.jobs;
+        List<G3WOResponse.G3APIJob>  G3APIRespone = g3WOResponse.Jobs;
+        List<String> GUIJobData   = new ArrayList<>();
+        List<String> G3APIJobData   = new ArrayList<>();
+        List<String> U2JobData   = new ArrayList<>();
+        int NonMatchingRecords = 0;
+        Double estimatedAmount=0.0;
+        Double requiredAmount=0.0;
+        Double actualAmount=0.0;
+        Double requiredHours=0.0;
+        Double actualHours=0.0;
+        Double chargedHours=0.0;
+        String GUIData = null;
+        if(TotalJobs == G3ListSize && TotalJobs == U2ListSize) {
+            for (int i = 0; i < TotalJobs; i++) {
+                U2JobData.add(U2APIResponse.get(i).jobNo);
+                U2JobData.add(U2APIResponse.get(i).complaint);
+                U2JobData.add(U2APIResponse.get(i).billTypeCode);
+                U2JobData.add(U2APIResponse.get(i).billTo);
+                U2JobData.add(U2APIResponse.get(i).statusDesc);
+                U2JobData.add(String.format("%.2f", U2APIResponse.get(i).estimatedAmount));
+                U2JobData.add(String.format("%.2f", U2APIResponse.get(i).required.total));
+                U2JobData.add(String.format("%.2f", U2APIResponse.get(i).actuals.total));
+                U2JobData.add(String.format("%.2f", U2APIResponse.get(i).requiredHours));
+                U2JobData.add(String.format("%.2f", U2APIResponse.get(i).actualHours));
+                U2JobData.add(String.format("%.2f", U2APIResponse.get(i).chargeHours));
 
-        int GUIValue =  woDetails.GetNumberofRows("//div[@data-test-id='woJobListSummaryGrid']//*[starts-with(@data-test-id,'gridBodyRow')]");
-        int TotalColumns = woDetails.GetNumberofRows("//div[@data-test-id='woJobListSummaryGrid']//*[starts-with(@data-test-id,'gridBodyRow0')]//*[starts-with(@data-test-id,'gridBodyCell')]");
-        int U2APIValue = response.jobs.size();
-        int G3APIValue = g3WOResponse.Jobs.size();
-        List U2APIJobList = response.jobs;
-        List G3APIJobList = g3WOResponse.Jobs;
-        for(int i =0; i< GUIValue; i++) {
-            for (int j = 1; j <= U2APIJobList.size(); j++)
-                System.out.println(appEnv.getDriver().findElement(By.xpath("//div[@data-test-id='woJobListSummaryGrid']//*[starts-with(@data-test-id,'gridBodyRow0')]//*[starts-with(@data-test-id,'gridBodyCell')]" +"["+j+"]")).getText());
-        }
+                G3APIJobData.add(G3APIRespone.get(i).JobNo);
+                G3APIJobData.add(G3APIRespone.get(i).Complaint);
+                G3APIJobData.add(G3APIRespone.get(i).BillTypeCode);
+                G3APIJobData.add(G3APIRespone.get(i).BillTo);
+                G3APIJobData.add(G3APIRespone.get(i).StatusDesc);
+                G3APIJobData.add(String.format("%.2f", G3APIRespone.get(i).EstimatedAmount));
+                G3APIJobData.add(String.format("%.2f", G3APIRespone.get(i).Required.Total));
+                G3APIJobData.add(String.format("%.2f", G3APIRespone.get(i).Actuals.Total));
+                G3APIJobData.add(String.format("%.2f", G3APIRespone.get(i).RequiredHours));
+                G3APIJobData.add(String.format("%.2f", G3APIRespone.get(i).ActualHours));
+                G3APIJobData.add(String.format("%.2f", G3APIRespone.get(i).ChargeHours));
 
+                for (int j = 1; j <= TotalColumns; j++) {
+                    GUIData = Utils.FormateString(Utils.GetText(fetch_elements.GetObj("xpath", rootXpath + "//*[starts-with(@data-test-id,'gridBodyRow')]" + "[" + (i + 1) + "]" + "//*[starts-with(@data-test-id,'gridBodyCell')]" + "[" + j + "]")));
+                    if (!(GUIData.isEmpty())) {
+                        GUIJobData.add(GUIData);
+                        switch (j) {
+                            case 6:
+                                estimatedAmount = estimatedAmount + Double.parseDouble(GUIData);
+                                break;
+                            case 7:
+                                requiredAmount = requiredHours + Double.parseDouble(GUIData);
+                                break;
+                            case 8:
+                                actualAmount = actualHours + Double.parseDouble(GUIData);
+                                break;
+                            case 9:
+                                requiredHours = requiredHours + Double.parseDouble(GUIData);
+                                break;
+                            case 10:
+                                actualHours = actualHours + Double.parseDouble(GUIData);
+                                break;
+                            case 11:
+                                chargedHours = chargedHours + Double.parseDouble(GUIData);
+                                break;
+                        }
+                    }
+                }
 
-        for(int k =0; k< U2APIJobList.size(); k++)
-            System.out.println(U2APIJobList.get(k));
-        for(int l =0; l< G3APIJobList.size(); l++)
-            System.out.println(G3APIJobList.get(l));
+                while (GUIJobData.remove(null)) {
+                }
+                while (G3APIJobData.remove(null)) {
+                }
+                while (U2JobData.remove(null)) {
+                }
+                while (G3APIJobData.remove("nu")) {
+                }
+                System.out.println("GUI Work Order Job List Summary      : " + GUIJobData);
+                System.out.println("G3API Work Order Job List Summary    : " + G3APIJobData);
+                System.out.println("Universe Work Order Job List Summary : " + U2JobData);
+                if (!(U2ListSize == TotalJobs && G3ListSize == TotalJobs && GUIJobData.equals(G3APIJobData)) && GUIJobData.equals(U2JobData))
+                    NonMatchingRecords++;
+                GUIJobData.clear();
+                G3APIJobData.clear();
+                U2JobData.clear();
+            }
 
-        System.out.println("Work Order Parts Percentage is   : " + GUIValue);
-        System.out.println("Work Order API Parts Percentage is   : " + G3APIValue);
-        System.out.println("Work Order Parts Percentage from Universe DB is   : " + U2APIValue);
-        appEnv.setTestPass(U2APIValue == GUIValue && G3APIValue == GUIValue);
-        appEnv.getReportManager().LogStepInfo("Number of Job in Work Order Job List is : " + GUIValue);
-        Utils.VerifyResult("Correct WO Jobs Loaded  ", appEnv.isTestPass());
+        } else
+            NonMatchingRecords++;
+        System.out.println(" Grid Data Matched : " + NonMatchingRecords);
+        if(     !((String.format("%.2f",estimatedAmount).equals(Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][6]")))) &&
+                (String.format("%.2f",requiredAmount).equals(Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][7]")))) &&
+                (String.format("%.2f",actualAmount).equals(Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][8]")))) &&
+                (String.format("%.2f",requiredHours).equals(Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][9]")))) &&
+                (String.format("%.2f",actualHours).equals(Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][10]")))) &&
+                (String.format("%.2f",chargedHours).equals(Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][11]")))))
+        )
+            NonMatchingRecords++;
+        System.out.println(" Grid Total Data Matched : " + NonMatchingRecords);
+
+        System.out.println(" Calculated estimatedAmount : " + String.format("%.2f",estimatedAmount) +" Calculated requiredAmount : " + String.format("%.2f",requiredAmount) +
+                " Calculated actualAmount : " + String.format("%.2f",actualAmount) +" Calculated requiredHours : " +String.format("%.2f",requiredHours) +
+                " Calculated actualHours : " +String.format("%.2f",actualHours) +" Calculated chargedHours : " + String.format("%.2f",chargedHours));
+        System.out.println(" GUI estimatedAmount : " + Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][6]"))
+                           +" GUI requiredAmount : " + Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][7]"))
+                           +" GUI actualAmount   : " + Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][8]"))
+                           +" GUI requiredHours  : " + Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][9]"))
+                           +" GUI actualHours    : " + Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][10]"))
+                           +" GUI chargedHours   : " + Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][11]")));
+
+        if(NonMatchingRecords > 0)
+            appEnv.setTestPass(false);
+        else
+            appEnv.setTestPass(true);
+        appEnv.getReportManager().LogStepInfo("Number of Job in Work Order Job List is : " + TotalJobs);
+        Utils.VerifyResult("Correct WO Jobs Not Loaded  ", appEnv.isTestPass());
     }
+
+
+    @Test(priority = 551, retryAnalyzer = ReTry.class)
+    public void Load_Work_Orders_Job_List_Required(){
+        woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
+        woDetails.click_Work_Order_Jobs_List_Detail();
+        woDetails.click_Work_Order_Jobs_List_Required();
+        String rootXpath = "//div[@data-test-id='woJobListDetailGrid']";
+        int TotalJobs =  woDetails.getTableRows(rootXpath);
+        int TotalColumns = woDetails.getTableColumns(rootXpath);
+        System.out.println("Total Jobs : " + TotalJobs);
+        System.out.println("Total Columns in each Job : " + TotalColumns);
+        int U2ListSize   = response.jobs.size();
+        int G3ListSize = g3WOResponse.Jobs.size();
+        List<Job>  U2APIResponse = response.jobs;
+        List<G3WOResponse.G3APIJob>  G3APIRespone = g3WOResponse.Jobs;
+        List<String> GUIJobData   = new ArrayList<>();
+        List<String> G3APIJobData   = new ArrayList<>();
+        List<String> U2JobData   = new ArrayList<>();
+        int NonMatchingRecords = 0;
+        Double requiredPartsTotal=0.0;
+        Double requiredLaborTotal=0.0;
+        Double requiredSubletTotal=0.0;
+        Double requiredExtrasTotal=0.0;
+        Double requiredTaxTotal=0.0;
+        Double requiredTotalsTotal=0.0;
+        String GUIData = null;
+        for(int i =0; i< TotalJobs; i++) {
+            U2JobData.add(U2APIResponse.get(i).jobNo);
+            U2JobData.add(U2APIResponse.get(i).complaint);
+            U2JobData.add(U2APIResponse.get(i).billTypeCode);
+            U2JobData.add(U2APIResponse.get(i).billTo);
+            U2JobData.add(U2APIResponse.get(i).billToDesc);
+            U2JobData.add(U2APIResponse.get(i).taxCode);
+            U2JobData.add(String.format("%.2f", U2APIResponse.get(i).required.parts));
+            U2JobData.add(String.format("%.2f", U2APIResponse.get(i).required.labor));
+            U2JobData.add(String.format("%.2f", U2APIResponse.get(i).required.sublet));
+            U2JobData.add(String.format("%.2f", U2APIResponse.get(i).required.extras));
+            U2JobData.add(String.format("%.2f", U2APIResponse.get(i).required.tax));
+            U2JobData.add(String.format("%.2f", U2APIResponse.get(i).required.total));
+
+            G3APIJobData.add(G3APIRespone.get(i).JobNo);
+            G3APIJobData.add(G3APIRespone.get(i).Complaint);
+            G3APIJobData.add(G3APIRespone.get(i).BillTypeCode);
+            G3APIJobData.add(G3APIRespone.get(i).BillTo);
+            G3APIJobData.add(G3APIRespone.get(i).BillToDesc);
+            G3APIJobData.add(G3APIRespone.get(i).TaxCode);
+            G3APIJobData.add(String.format("%.2f", G3APIRespone.get(i).Required.Parts));
+            G3APIJobData.add(String.format("%.2f", G3APIRespone.get(i).Required.Labor));
+            G3APIJobData.add(String.format("%.2f", G3APIRespone.get(i).Required.Sublet));
+            G3APIJobData.add(String.format("%.2f", G3APIRespone.get(i).Required.Extras));
+            G3APIJobData.add(String.format("%.2f", G3APIRespone.get(i).Required.Tax));
+            G3APIJobData.add(String.format("%.2f", G3APIRespone.get(i).Required.Total));
+
+            for (int j = 1; j <= TotalColumns; j++) {
+                GUIData = Utils.FormateString(Utils.GetText(fetch_elements.GetObj("xpath",rootXpath + "//*[starts-with(@data-test-id,'gridBodyRow')]" + "[" + (i + 1) + "]" + "//*[starts-with(@data-test-id,'gridBodyCell')]" + "[" + j + "]")));
+                if (!(GUIData.isEmpty())) {
+                    GUIJobData.add(GUIData);
+                    switch (j) {
+                        case 7:
+                            requiredPartsTotal = requiredPartsTotal + Double.parseDouble(GUIData);
+                            break;
+                        case 8:
+                            requiredLaborTotal = requiredLaborTotal + Double.parseDouble(GUIData);
+                            break;
+                        case 9:
+                            requiredSubletTotal = requiredSubletTotal + Double.parseDouble(GUIData);
+                            break;
+                        case 10:
+                            requiredExtrasTotal = requiredExtrasTotal + Double.parseDouble(GUIData);
+                            break;
+                        case 11:
+                            requiredTaxTotal = requiredTaxTotal + Double.parseDouble(GUIData);
+                            break;
+                        case 12:
+                            requiredTotalsTotal = requiredTotalsTotal + Double.parseDouble(GUIData);
+                            break;
+                    }
+                }
+            }
+
+            while (GUIJobData.remove(null)) {}
+            while (G3APIJobData.remove(null)) {}
+            while (U2JobData.remove(null)) {}
+            while (G3APIJobData.remove("nu")) {}
+            System.out.println("GUI Work Order Job List Required Data      : " + GUIJobData);
+            System.out.println("G3API Work Order Job List Required Data    : " + G3APIJobData);
+            System.out.println("Universe Work Order Job List Required Data : " + U2JobData);
+            if (!(U2ListSize == TotalJobs && G3ListSize == TotalJobs && GUIJobData.equals(G3APIJobData)) && GUIJobData.equals(U2JobData))
+                NonMatchingRecords++;
+            GUIJobData.clear();
+            G3APIJobData.clear();
+            U2JobData.clear();
+        }
+        System.out.println(" Grid Data Matched : " + NonMatchingRecords);
+        if(     !((String.format("%.2f",requiredPartsTotal).equals(Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][6]")))) &&
+                (String.format("%.2f",requiredLaborTotal).equals(Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][7]")))) &&
+                (String.format("%.2f",requiredSubletTotal).equals(Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][8]")))) &&
+                (String.format("%.2f",requiredExtrasTotal).equals(Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][9]")))) &&
+                (String.format("%.2f",requiredTaxTotal).equals(Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][10]")))) &&
+                (String.format("%.2f",requiredTotalsTotal).equals(Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][11]")))))
+        )
+            NonMatchingRecords++;
+        System.out.println(" Grid Total Data Matched : " + NonMatchingRecords);
+
+        System.out.println(" Calculated requiredPartsTotal : " + String.format("%.2f",requiredPartsTotal) +" Calculated requiredLaborTotal : " + String.format("%.2f",requiredLaborTotal) +
+                " Calculated requiredSubletTotal : " + String.format("%.2f",requiredSubletTotal) +" Calculated requiredExtrasTotal : " +String.format("%.2f",requiredExtrasTotal) +
+                " Calculated requiredTaxTotal : " +String.format("%.2f",requiredTaxTotal) +" Calculated requiredTotalsTotal : " + String.format("%.2f",requiredTotalsTotal));
+        System.out.println(" GUI requiredPartsTotal : " + Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][7]"))
+                +" GUI requiredLaborTotal : " + Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][8]"))
+                +" GUI requiredSubletTotal   : " + Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][9]"))
+                +" GUI requiredExtrasTotal  : " + Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][10]"))
+                +" GUI requiredTaxTotal    : " + Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][11]"))
+                +" GUI requiredTotalsTotal   : " + Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][12]")));
+
+        if(NonMatchingRecords > 0)
+            appEnv.setTestPass(false);
+        else
+            appEnv.setTestPass(true);
+        appEnv.getReportManager().LogStepInfo("Number of Job in Work Order Job List Required is : " + TotalJobs);
+        Utils.VerifyResult("Correct WO Jobs Required Data Required Not Loaded  ", appEnv.isTestPass());
+    }
+
+    @Test(priority = 551, retryAnalyzer = ReTry.class)
+    public void Load_Work_Orders_Job_List_Actuals(){
+        woDetails.Search_And_Click_WONumber(appEnv.getWorkOrderNumber());
+        woDetails.click_Work_Order_Jobs_List_Detail();
+        woDetails.click_Work_Order_Jobs_List_Actuals();
+        String rootXpath = "//div[@data-test-id='woJobListDetailGrid']";
+        int TotalJobs =  woDetails.getTableRows(rootXpath);
+        int TotalColumns = woDetails.getTableColumns(rootXpath);
+        System.out.println("Total Jobs : " + TotalJobs);
+        System.out.println("Total Columns in each Job : " + TotalColumns);
+        int U2ListSize   = response.jobs.size();
+        int G3ListSize = g3WOResponse.Jobs.size();
+        List<Job>  U2APIResponse = response.jobs;
+        List<G3WOResponse.G3APIJob>  G3APIRespone = g3WOResponse.Jobs;
+        List<String> GUIJobData   = new ArrayList<>();
+        List<String> G3APIJobData   = new ArrayList<>();
+        List<String> U2JobData   = new ArrayList<>();
+        int NonMatchingRecords = 0;
+        Double actualsPartsTotal=0.0;
+        Double actualsLaborTotal=0.0;
+        Double actualsSubletTotal=0.0;
+        Double actualsExtrasTotal=0.0;
+        Double actualsTaxTotal=0.0;
+        Double actualsTotalsTotal=0.0;
+        String GUIData = null;
+        for(int i =0; i< TotalJobs; i++) {
+            U2JobData.add(U2APIResponse.get(i).jobNo);
+            U2JobData.add(U2APIResponse.get(i).complaint);
+            U2JobData.add(U2APIResponse.get(i).billTypeCode);
+            U2JobData.add(U2APIResponse.get(i).billTo);
+            U2JobData.add(U2APIResponse.get(i).billToDesc);
+            U2JobData.add(U2APIResponse.get(i).taxCode);
+            U2JobData.add(String.format("%.2f", U2APIResponse.get(i).actuals.parts));
+            U2JobData.add(String.format("%.2f", U2APIResponse.get(i).actuals.labor));
+            U2JobData.add(String.format("%.2f", U2APIResponse.get(i).actuals.sublet));
+            U2JobData.add(String.format("%.2f", U2APIResponse.get(i).actuals.extras));
+            U2JobData.add(String.format("%.2f", U2APIResponse.get(i).actuals.tax));
+            U2JobData.add(String.format("%.2f", U2APIResponse.get(i).actuals.total));
+
+            G3APIJobData.add(G3APIRespone.get(i).JobNo);
+            G3APIJobData.add(G3APIRespone.get(i).Complaint);
+            G3APIJobData.add(G3APIRespone.get(i).BillTypeCode);
+            G3APIJobData.add(G3APIRespone.get(i).BillTo);
+            G3APIJobData.add(G3APIRespone.get(i).BillToDesc);
+            G3APIJobData.add(G3APIRespone.get(i).TaxCode);
+            G3APIJobData.add(String.format("%.2f", G3APIRespone.get(i).Actuals.Parts));
+            G3APIJobData.add(String.format("%.2f", G3APIRespone.get(i).Actuals.Labor));
+            G3APIJobData.add(String.format("%.2f", G3APIRespone.get(i).Actuals.Sublet));
+            G3APIJobData.add(String.format("%.2f", G3APIRespone.get(i).Actuals.Extras));
+            G3APIJobData.add(String.format("%.2f", G3APIRespone.get(i).Actuals.Tax));
+            G3APIJobData.add(String.format("%.2f", G3APIRespone.get(i).Actuals.Total));
+
+            for (int j = 1; j <= TotalColumns; j++) {
+                GUIData = Utils.FormateString(Utils.GetText(fetch_elements.GetObj("xpath",rootXpath + "//*[starts-with(@data-test-id,'gridBodyRow')]" + "[" + (i + 1) + "]" + "//*[starts-with(@data-test-id,'gridBodyCell')]" + "[" + j + "]")));
+                if (!(GUIData.isEmpty())) {
+                    GUIJobData.add(GUIData);
+                    switch (j) {
+                        case 7:
+                            actualsPartsTotal = actualsPartsTotal + Double.parseDouble(GUIData);
+                            break;
+                        case 8:
+                            actualsLaborTotal = actualsLaborTotal + Double.parseDouble(GUIData);
+                            break;
+                        case 9:
+                            actualsSubletTotal = actualsSubletTotal + Double.parseDouble(GUIData);
+                            break;
+                        case 10:
+                            actualsExtrasTotal = actualsExtrasTotal + Double.parseDouble(GUIData);
+                            break;
+                        case 11:
+                            actualsTaxTotal = actualsTaxTotal + Double.parseDouble(GUIData);
+                            break;
+                        case 12:
+                            actualsTotalsTotal = actualsTotalsTotal + Double.parseDouble(GUIData);
+                            break;
+                    }
+                }
+            }
+
+            while (GUIJobData.remove(null)) {}
+            while (G3APIJobData.remove(null)) {}
+            while (U2JobData.remove(null)) {}
+            while (G3APIJobData.remove("nu")) {}
+            System.out.println("GUI Work Order Job List Required Data      : " + GUIJobData);
+            System.out.println("G3API Work Order Job List Required Data    : " + G3APIJobData);
+            System.out.println("Universe Work Order Job List Required Data : " + U2JobData);
+            if (!(U2ListSize == TotalJobs && G3ListSize == TotalJobs && GUIJobData.equals(G3APIJobData)) && GUIJobData.equals(U2JobData))
+                NonMatchingRecords++;
+            GUIJobData.clear();
+            G3APIJobData.clear();
+            U2JobData.clear();
+        }
+        System.out.println(" Grid Data Matched : " + NonMatchingRecords);
+        if(     !((String.format("%.2f",actualsPartsTotal).equals(Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][6]")))) &&
+                (String.format("%.2f",actualsLaborTotal).equals(Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][7]")))) &&
+                (String.format("%.2f",actualsSubletTotal).equals(Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][8]")))) &&
+                (String.format("%.2f",actualsExtrasTotal).equals(Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][9]")))) &&
+                (String.format("%.2f",actualsTaxTotal).equals(Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][10]")))) &&
+                (String.format("%.2f",actualsTotalsTotal).equals(Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][11]")))))
+        )
+            NonMatchingRecords++;
+        System.out.println(" Grid Total Data Matched : " + NonMatchingRecords);
+
+        System.out.println(" Calculated requiredPartsTotal : " + String.format("%.2f",actualsPartsTotal) +" Calculated requiredLaborTotal : " + String.format("%.2f",actualsLaborTotal) +
+                " Calculated requiredSubletTotal : " + String.format("%.2f",actualsSubletTotal) +" Calculated requiredExtrasTotal : " +String.format("%.2f",actualsExtrasTotal) +
+                " Calculated requiredTaxTotal : " +String.format("%.2f",actualsTaxTotal) +" Calculated requiredTotalsTotal : " + String.format("%.2f",actualsTotalsTotal));
+        System.out.println(" GUI requiredPartsTotal : " + Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][7]"))
+                +" GUI requiredLaborTotal : " + Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][8]"))
+                +" GUI requiredSubletTotal   : " + Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][9]"))
+                +" GUI requiredExtrasTotal  : " + Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][10]"))
+                +" GUI requiredTaxTotal    : " + Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][11]"))
+                +" GUI requiredTotalsTotal   : " + Utils.GetText(fetch_elements.GetObj("xpath","//*[@data-test-id='gridFooterCell'][12]")));
+
+        if(NonMatchingRecords > 0)
+            appEnv.setTestPass(false);
+        else
+            appEnv.setTestPass(true);
+        appEnv.getReportManager().LogStepInfo("Number of Job in Work Order Job List Required is : " + TotalJobs);
+        Utils.VerifyResult("Correct WO Jobs Required Data Required Not Loaded  ", appEnv.isTestPass());
+    }
+
+
 
 
 }
