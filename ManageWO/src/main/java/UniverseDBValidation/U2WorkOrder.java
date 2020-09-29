@@ -70,63 +70,193 @@ public class U2WorkOrder {
 
         WorkOrderResponse workOrderResponse = new WorkOrderResponse();
 
-        List<Integer> workOrderFields = new ArrayList<>();
-        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.CUSTOMER_NUMBER); // 8
+        String[] workOrderRecord = getWorkOrderRecord(accountId, location, workOrderNumber);
 
-        String[] response = u2Api.readFields(
-                accountId,
-                location,
-                U2Tables.getWorkOrder(location),
-                workOrderNumber,
-                workOrderFields);
+        String customerNumber = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.CUSTOMER_NUMBER];
 
-        String customerNumber = response[0];
-
-        workOrderResponse.workOrder = getWorkOrder(accountId, location, workOrderNumber);
-        workOrderResponse.inventory = getInventory(accountId, location, workOrderNumber);
         workOrderResponse.customer = getCustomer(accountId, location, customerNumber);
-        workOrderResponse.jobs = getJobs(accountId, location, workOrderNumber);
-        workOrderResponse.specialOrder = getSpecialOrder(accountId, location, workOrderNumber);
-        workOrderResponse.purchaseOrders = getPurchaseOrders(accountId, location, workOrderNumber);
-        workOrderResponse.billingInfoSummaries = getBillingInfoSummaries(accountId, location, workOrderNumber);
+
+        workOrderResponse.workOrder = getWorkOrder(accountId, location, workOrderNumber, workOrderRecord);
+        workOrderResponse.inventory = getInventory(workOrderRecord);
+        workOrderResponse.jobs = getJobs(accountId, location, workOrderNumber, workOrderRecord);
+        workOrderResponse.specialOrder = getSpecialOrder(accountId, location, workOrderRecord);
+        workOrderResponse.purchaseOrders = getPurchaseOrders(accountId, location, workOrderRecord);
+        workOrderResponse.billingInfoSummaries = getBillingInfoSummaries(accountId, location, workOrderRecord);
 
         return workOrderResponse;
     }
 
-    private List<BillingInfoSummary> getBillingInfoSummaries(int accountId, String location, String workOrderNumber) {
+    private String[] getWorkOrderRecord(int accountId, String location, String workOrderNumber) {
+        List<Integer> workOrderFields = new ArrayList<>();
+
+        // Work Order
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.WORK_ORDER_DATE); // 0
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.AUTHOR); // 1
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.STATUS_CODE); // 2
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.WORK_ORDER_LOCATION); // 3
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.SALESMAN_CODE); // 4
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.PROMISE_DATE); // 5
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.PROMISE_TIME); // 6
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.SCHEDULE_PRIORITY_CODE); // 7
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.APPOINTMENT_DATE); // 8
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.APPOINTMENT_TIME); // 9
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.IN_SERVICE_DATE); // 10
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.PARTS_DISCOUNT); // 11
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.CATEGORY_CODE); // 12
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.TAG_NO); // 13
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.MILEAGE_IN); // 14
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.MILEAGE_OUT); // 15
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.MILEAGE_UNIT_CODE); // 16
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.COMPLETE_DATE); // 17
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.CANCEL_DATE); // 18
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.COMMENTS); // 19
+
+        // Inventory
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.InventoryColumns.STOCK_NO); // 20
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.InventoryColumns.WARRANTY_DATE); // 21
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.InventoryColumns.CHASSIS_NO); // 22
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.InventoryColumns.DESCRIPTION); // 23
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.InventoryColumns.SERIAL_NO); // 24
+
+        // Jobs
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.JOB_NO); // 25
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.DESCRIPTION); // 26
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.BILL_TYPE_CODE); // 27
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.BILL_TO); // 28
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SALESMAN_CODE); // 29
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.TAX_CODE); // 30
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.STATUS_CODE); // 31
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.QUOTED_AMOUNT); // 32
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ESTIMATED_AMOUNT); // 33
+
+        // Extras
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.EXTRA_CODE); // 34
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.DESCRIPTION); // 35
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.TAX_CODE); // 36
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.SALESMAN_CODE); // 37
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.EXTRA_JOB_NUMBER); // 38
+
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.RequiredExtrasPricingColumns.QUANTITY); // 39
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.RequiredExtrasPricingColumns.COST); // 40
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.RequiredExtrasPricingColumns.LIST_PRICE); // 41
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.RequiredExtrasPricingColumns.EXTENSION); // 42
+
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.ActualsJExtrasPricingColumns.QUANTITY); // 43
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.ActualsJExtrasPricingColumns.COST); // 44
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.ActualsJExtrasPricingColumns.LIST_PRICE); // 45
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.ActualsJExtrasPricingColumns.EXTENSION); // 46
+
+        // Sublets
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.DESCRIPTION); // 47
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.VENDOR_NO); // 48
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.PURCHASE_ORDER_NO); // 49
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.EXPECTED_DATE); // 50
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.COMPLETED_DATE); // 51
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.TAX_CODE); // 52
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.PURCHASE_ORDER_COMMENT); // 53
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.SALESMAN_CODE); // 54
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.INVOICE_NO); // 55
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.SUBLET_JOB_NUMBER); // 56
+
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.RequiredSubletPricingColumns.COST); // 57
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.RequiredSubletPricingColumns.LIST_PRICE); // 58
+
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.ActualsSubletPricingColumns.COST); // 59
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.ActualsSubletPricingColumns.LIST_PRICE); // 60
+
+        // Labor
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.LABOR_CODE); // 61
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.DESCRIPTION); // 62
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.TYPE); // 63
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.MECHANIC_CODE); // 64
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.SKILL_SET_CODE); // 65
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.STATUS_CODE); // 66
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.LABOR_DATE); // 67
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.CHARGE_HOURS); // 68
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.TAX_CODE); // 69
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.FAULT_CODE); // 70
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.SALESMAN_CODE); // 71
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.LABOR_JOB_NUMBER); // 72
+
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.ActualsLaborPricing.HOURS); // 73
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.ActualsLaborPricing.RATE); // 74
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.ActualsLaborPricing.EXTENSION); // 75
+
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.RequiredLaborPricing.HOURS); // 76
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.RequiredLaborPricing.RATE); // 77
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.RequiredLaborPricing.EXTENSION); // 78
+
+        // Parts
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.PART_NO); // 79
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.DESCRIPTION); // 80
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.DISCOUNT_PERCENTAGE); // 81
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.TYPE); // 82
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.TAX_CODE); // 83
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.SALESMAN_CODE); // 84
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.PART_JOB_NUMBER); // 85
+
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.ActualsPartPricing.QUANTITY); // 86
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.ActualsPartPricing.COST); // 87
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.ActualsPartPricing.PRICE); // 88
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.ActualsPartPricing.EXTENSION); // 89
+
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.RequiredPartPricing.QUANTITY); // 90
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.RequiredPartPricing.COST); // 91
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.RequiredPartPricing.PRICE); // 92
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.RequiredPartPricing.EXTENSION); // 93
+
+        // Job Estimate Comments
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.JobEstimateCommentColumns.CONTENT); // 94
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.JobEstimateCommentColumns.ESTIMATE); // 95
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.JobEstimateCommentColumns.CREATED_DATE); // 96
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.JobEstimateCommentColumns.CREATED_TIME); // 97
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.JobEstimateCommentColumns.AUTHOR); // 98
+
+        // Special Orders
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.SPECIAL_ORDER_NUMBER); // 99
+
+        // Purchase Orders
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.PurchaseOrderColumns.PARTS_PURCHASE_ORDER); // 100
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.PurchaseOrderColumns.SUBLET_PURCHASE_ORDER); // 101
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.PurchaseOrderColumns.ALL_SUBLET_PURCHASE_ORDER); // 102
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.PurchaseOrderColumns.SUBLET_JOB_NUMBER); // 103
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.PurchaseOrderColumns.SUBLET_DESCRIPTION); // 104
+
+        // Billing Info Summary
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.BillingInfoSummaryColumns.BILL_CODE); // 105
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.BillingInfoSummaryColumns.BILL_TYPE); // 106
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.BillingInfoSummaryColumns.BILL_ID); // 107
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.BillingInfoSummaryColumns.INVOICE_NO); // 108
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.BillingInfoSummaryColumns.PARTS_TOTAL); // 109
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.BillingInfoSummaryColumns.LABOR_TOTAL); // 110
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.BillingInfoSummaryColumns.SUBLET_TOTAL); // 111
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.BillingInfoSummaryColumns.EXTRA_TOTAL); // 112
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.BillingInfoSummaryColumns.TAX_TOTAL); // 113
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.BillingInfoSummaryColumns.TOTAL); // 114
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.BillingInfoSummaryColumns.PAID_AMOUNT); // 115
+
+        // Customer
+        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.CUSTOMER_NUMBER); // 116
+
+        String tableName = U2Tables.getWorkOrder(location);
+
+        return u2Api.readFields(accountId, location, tableName, workOrderNumber, workOrderFields);
+    }
+
+    private List<BillingInfoSummary> getBillingInfoSummaries(int accountId, String location, String[] workOrderRecord) {
         List<BillingInfoSummary> billingInfoSummaries = new ArrayList<>();
 
-        List<Integer> fields = new ArrayList<>();
-        fields.add(WorkOrderResponseColumns.WorkOrderColumns.BillingInfoSummaryColumns.BILL_CODE); // 0
-        fields.add(WorkOrderResponseColumns.WorkOrderColumns.BillingInfoSummaryColumns.BILL_TYPE); // 1
-        fields.add(WorkOrderResponseColumns.WorkOrderColumns.BillingInfoSummaryColumns.BILL_ID); // 2
-        fields.add(WorkOrderResponseColumns.WorkOrderColumns.BillingInfoSummaryColumns.INVOICE_NO); // 3
-        fields.add(WorkOrderResponseColumns.WorkOrderColumns.BillingInfoSummaryColumns.PARTS_TOTAL); // 4
-        fields.add(WorkOrderResponseColumns.WorkOrderColumns.BillingInfoSummaryColumns.LABOR_TOTAL); // 5
-        fields.add(WorkOrderResponseColumns.WorkOrderColumns.BillingInfoSummaryColumns.SUBLET_TOTAL); // 6
-        fields.add(WorkOrderResponseColumns.WorkOrderColumns.BillingInfoSummaryColumns.EXTRA_TOTAL); // 7
-        fields.add(WorkOrderResponseColumns.WorkOrderColumns.BillingInfoSummaryColumns.TAX_TOTAL); // 8
-        fields.add(WorkOrderResponseColumns.WorkOrderColumns.BillingInfoSummaryColumns.TOTAL); // 9
-        fields.add(WorkOrderResponseColumns.WorkOrderColumns.BillingInfoSummaryColumns.PAID_AMOUNT); // 10
-
-        String[] response = u2Api.readFields(
-                accountId,
-                location,
-                U2Tables.getWorkOrder(location),
-                workOrderNumber,
-                fields);
-
-        String[] billCode = response[0].split(U2Delimiters.VM);
-        String[] billType = response[1].split(U2Delimiters.VM);
-        String[] billId = response[2].split(U2Delimiters.VM);
-        String[] invoiceNo = response[3].split(U2Delimiters.VM);
-        String[] partsTotal = response[4].split(U2Delimiters.VM);
-        String[] laborTotal = response[5].split(U2Delimiters.VM);
-        String[] subletTotal = response[6].split(U2Delimiters.VM);
-        String[] extraTotal = response[7].split(U2Delimiters.VM);
-        String[] taxTotal = response[8].split(U2Delimiters.VM);
-        String[] total = response[9].split(U2Delimiters.VM);
-        String[] paidAmounts = response[10].split(U2Delimiters.VM);
+        String[] billCode = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.BillingInfoSummaryIndexes.BILL_CODE].split(U2Delimiters.VM);
+        String[] billType = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.BillingInfoSummaryIndexes.BILL_TYPE].split(U2Delimiters.VM);
+        String[] billId = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.BillingInfoSummaryIndexes.BILL_ID].split(U2Delimiters.VM);
+        String[] invoiceNo = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.BillingInfoSummaryIndexes.INVOICE_NO].split(U2Delimiters.VM);
+        String[] partsTotal = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.BillingInfoSummaryIndexes.PARTS_TOTAL].split(U2Delimiters.VM);
+        String[] laborTotal = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.BillingInfoSummaryIndexes.LABOR_TOTAL].split(U2Delimiters.VM);
+        String[] subletTotal = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.BillingInfoSummaryIndexes.SUBLET_TOTAL].split(U2Delimiters.VM);
+        String[] extraTotal = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.BillingInfoSummaryIndexes.EXTRA_TOTAL].split(U2Delimiters.VM);
+        String[] taxTotal = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.BillingInfoSummaryIndexes.TAX_TOTAL].split(U2Delimiters.VM);
+        String[] total = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.BillingInfoSummaryIndexes.TOTAL].split(U2Delimiters.VM);
+        String[] paidAmounts = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.BillingInfoSummaryIndexes.PAID_AMOUNT].split(U2Delimiters.VM);
 
         for(int i=0;i< billCode.length;i++){
             BillingInfoSummary infoSummary = new BillingInfoSummary();
@@ -140,7 +270,7 @@ public class U2WorkOrder {
                     infoSummary.billTo = getCustomerLastName(accountId , location, billTo);
                     String firstName = getCustomerFirstName(accountId, location, billTo);
                     if(firstName != null && !firstName.isEmpty())
-                        infoSummary.billTo = infoSummary.billTo+ ", " + firstName;
+                        infoSummary.billTo = infoSummary.billTo + ", " + firstName;
                     break;
                 case "I":
                     infoSummary.billTo = getWorkOrderBillCodeName(accountId, location, billTo);
@@ -159,9 +289,10 @@ public class U2WorkOrder {
             infoSummary.total = DataHelper.getArrayIndexSafeU2Double(total, i);
             infoSummary.paidAmount = DataHelper.getArrayIndexSafeU2Double(paidAmounts, i);
 
+            /*
             if(infoSummary.total == null || infoSummary.total == 0.0)
                 continue;
-
+            */
             billingInfoSummaries.add(infoSummary);
         }
 
@@ -183,25 +314,11 @@ public class U2WorkOrder {
         return DataHelper.getArrayIndexSafeString(response, 0);
     }
 
-    private List<PurchaseOrder> getPurchaseOrders(int accountId, String location, String workOrderNumber) {
-
-        List<Integer> fields = new ArrayList<>();
-        fields.add(WorkOrderResponseColumns.WorkOrderColumns.PurchaseOrderColumns.PARTS_PURCHASE_ORDER); // 0
-        fields.add(WorkOrderResponseColumns.WorkOrderColumns.PurchaseOrderColumns.SUBLET_PURCHASE_ORDER); // 1
-        fields.add(WorkOrderResponseColumns.WorkOrderColumns.PurchaseOrderColumns.ALL_SUBLET_PURCHASE_ORDER); // 2
-        fields.add(WorkOrderResponseColumns.WorkOrderColumns.PurchaseOrderColumns.SUBLET_JOB_NUMBER); // 3
-        fields.add(WorkOrderResponseColumns.WorkOrderColumns.PurchaseOrderColumns.SUBLET_DESCRIPTION); // 4
-
-        String[] response = u2Api.readFields(
-                accountId,
-                location,
-                U2Tables.getWorkOrder(location),
-                workOrderNumber,
-                fields);
+    private List<PurchaseOrder> getPurchaseOrders(int accountId, String location, String[] workOrderRecord) {
 
         List<PurchaseOrder> purchaseOrders = new ArrayList<>();
 
-        String[] partsNo = response[0].split(U2Delimiters.VM);
+        String[] partsNo = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.PurchaseOrderIndexes.PARTS_PURCHASE_ORDER].split(U2Delimiters.VM);
         for (String s : partsNo) {
             PurchaseOrder purchaseOrder = new PurchaseOrder();
             purchaseOrder.purchaseOrderNo = DataHelper.getEmptyStringAsNull(s);
@@ -216,9 +333,9 @@ public class U2WorkOrder {
             purchaseOrders.add(purchaseOrder);
         }
 
-        String[] subletsNo = response[1].split(U2Delimiters.VM);
-        String[] subletDescription = response[4].split(U2Delimiters.VM);
-        String[] subletJobNumber = response[3].split(U2Delimiters.VM);
+        String[] subletsNo = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.PurchaseOrderIndexes.SUBLET_PURCHASE_ORDER].split(U2Delimiters.VM);
+        String[] subletDescription = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.PurchaseOrderIndexes.SUBLET_DESCRIPTION].split(U2Delimiters.VM);
+        String[] subletJobNumber = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.PurchaseOrderIndexes.SUBLET_JOB_NUMBER].split(U2Delimiters.VM);
         for(int i=0;i< subletsNo.length;i++){
             PurchaseOrder purchaseOrder = new PurchaseOrder();
             purchaseOrder.purchaseOrderNo = DataHelper.getEmptyStringAsNull(subletsNo[i]);
@@ -235,7 +352,7 @@ public class U2WorkOrder {
             purchaseOrders.add(purchaseOrder);
         }
 
-        String[] allSubletsNo = response[2].split(U2Delimiters.VM);
+        String[] allSubletsNo = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.PurchaseOrderIndexes.ALL_SUBLET_PURCHASE_ORDER].split(U2Delimiters.VM);
         for (String s : allSubletsNo) {
             PurchaseOrder purchaseOrder = new PurchaseOrder();
             purchaseOrder.purchaseOrderNo = DataHelper.getEmptyStringAsNull(s);
@@ -305,17 +422,7 @@ public class U2WorkOrder {
         }
     }
 
-    private SpecialOrder getSpecialOrder(int accountId, String location, String workOrderNumber) {
-
-        SpecialOrder specialOrder = new SpecialOrder();
-        specialOrder.parts = new ArrayList<>();
-
-        String specialOrderNo = getSpecialOrderNo(accountId, location, workOrderNumber);
-        if(specialOrderNo == null || specialOrderNo.trim().isEmpty())
-            return specialOrder;
-
-        specialOrder.specialOrderNo = specialOrderNo.trim();
-
+    private String[] getSpecialOrderRecord(int accountId, String location, String specialOrderNumber) {
         List<Integer> specialOrderFields = new ArrayList<>();
         specialOrderFields.add(WorkOrderResponseColumns.SpecialOrderColumns.SpecialOrderPartColumns.PART_NO); // Parts No
         specialOrderFields.add(WorkOrderResponseColumns.SpecialOrderColumns.SpecialOrderPartColumns.VENDOR_NO); // Vendor
@@ -325,20 +432,32 @@ public class U2WorkOrder {
         specialOrderFields.add(WorkOrderResponseColumns.SpecialOrderColumns.SpecialOrderPartColumns.PRICE); // Price
         specialOrderFields.add(WorkOrderResponseColumns.SpecialOrderColumns.SpecialOrderPartColumns.STATUS); // Status
 
-        String[] response = u2Api.readFields(
-                accountId,
-                location,
-                U2Tables.getSpecialOrders(location),
-                specialOrderNo,
-                specialOrderFields);
+        String tableName = U2Tables.getSpecialOrders(location);
+        return u2Api.readFields(accountId, location, tableName, specialOrderNumber, specialOrderFields);
+    }
 
-        String[] partsNo = response[0].split(U2Delimiters.VM);
-        String[] vendor = response[1].split(U2Delimiters.VM);
-        String[] vendorPartNo = response[2].split(U2Delimiters.VM);
-        String[] partDescription = response[3].split(U2Delimiters.VM);
-        String[] quantity = response[4].split(U2Delimiters.VM);
-        String[] price = response[5].split(U2Delimiters.VM);
-        String[] status = response[6].split(U2Delimiters.VM);
+    private SpecialOrder getSpecialOrder(int accountId, String location, String[] workOrderRecord) {
+
+        SpecialOrder specialOrder = new SpecialOrder();
+        specialOrder.parts = new ArrayList<>();
+
+        String specialOrderNumber = DataHelper.getArrayIndexSafeString(workOrderRecord,
+                WorkOrderResponseIndexes.WorkOrderIndexes.SPECIAL_ORDER_NUMBER);
+
+        if(specialOrderNumber == null || specialOrderNumber.trim().isEmpty())
+            return specialOrder;
+
+        specialOrder.specialOrderNo = specialOrderNumber.trim();
+
+        String[] specialOrderRecord = getSpecialOrderRecord(accountId, location, specialOrderNumber);
+
+        String[] partsNo = specialOrderRecord[WorkOrderResponseIndexes.SpecialOrderIndexes.SpecialOrderPartIndexes.PART_NO].split(U2Delimiters.VM);
+        String[] vendor = specialOrderRecord[WorkOrderResponseIndexes.SpecialOrderIndexes.SpecialOrderPartIndexes.VENDOR_NO].split(U2Delimiters.VM);
+        String[] vendorPartNo = specialOrderRecord[WorkOrderResponseIndexes.SpecialOrderIndexes.SpecialOrderPartIndexes.VENDOR_PART_NO].split(U2Delimiters.VM);
+        String[] partDescription = specialOrderRecord[WorkOrderResponseIndexes.SpecialOrderIndexes.SpecialOrderPartIndexes.DESCRIPTION].split(U2Delimiters.VM);
+        String[] quantity = specialOrderRecord[WorkOrderResponseIndexes.SpecialOrderIndexes.SpecialOrderPartIndexes.QUANTITY].split(U2Delimiters.VM);
+        String[] price = specialOrderRecord[WorkOrderResponseIndexes.SpecialOrderIndexes.SpecialOrderPartIndexes.PRICE].split(U2Delimiters.VM);
+        String[] status = specialOrderRecord[WorkOrderResponseIndexes.SpecialOrderIndexes.SpecialOrderPartIndexes.STATUS].split(U2Delimiters.VM);
 
         for(int i=0;i< partsNo.length;i++){
             String pNo = partsNo[i].trim();
@@ -361,21 +480,6 @@ public class U2WorkOrder {
         }
 
         return specialOrder;
-    }
-
-    private String getSpecialOrderNo(int accountId, String location, String workOrderNumber) {
-
-        List<Integer> fields = new ArrayList<>();
-        fields.add(WorkOrderResponseColumns.WorkOrderColumns.SPECIAL_ORDER_NUMBER);
-
-        String[] response = u2Api.readFields(
-                accountId,
-                location,
-                U2Tables.getWorkOrder(location),
-                workOrderNumber,
-                fields);
-
-        return DataHelper.getArrayIndexSafeString(response, 0);
     }
 
     private List<G2Comment> getG2Comments(int accountId, String location, String tagId, String key){
@@ -432,22 +536,13 @@ public class U2WorkOrder {
         return ids.split(U2Delimiters.VM);
     }
 
-    private List<List<JobEstimateComment>> getJobEstimateComments(int accountId, String location ,String workOrderNumber){
-        List<Integer> jobEstimateCommentsFields = new ArrayList<>();
+    private List<List<JobEstimateComment>> getJobEstimateComments(String[] workOrderRecord){
 
-        jobEstimateCommentsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.JobEstimateCommentColumns.CONTENT); // 0
-        jobEstimateCommentsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.JobEstimateCommentColumns.ESTIMATE); // 1
-        jobEstimateCommentsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.JobEstimateCommentColumns.CREATED_DATE); // 2
-        jobEstimateCommentsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.JobEstimateCommentColumns.CREATED_TIME); // 3
-        jobEstimateCommentsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.JobEstimateCommentColumns.AUTHOR); // 4
-
-        String[] response = u2Api.readFields(accountId, location, U2Tables.getWorkOrder(location), workOrderNumber, jobEstimateCommentsFields);
-
-        String[] contents = response[0].split(U2Delimiters.VM);
-        String[] estimates = response[1].split(U2Delimiters.VM);
-        String[] createdDates = response[2].split(U2Delimiters.VM);
-        String[] createdTimes = response[3].split(U2Delimiters.VM);
-        String[] authors = response[4].split(U2Delimiters.VM);
+        String[] contents = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.JobEstimateCommentIndexes.CONTENT].split(U2Delimiters.VM);
+        String[] estimates = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.JobEstimateCommentIndexes.ESTIMATE].split(U2Delimiters.VM);
+        String[] createdDates = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.JobEstimateCommentIndexes.CREATED_DATE].split(U2Delimiters.VM);
+        String[] createdTimes = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.JobEstimateCommentIndexes.CREATED_TIME].split(U2Delimiters.VM);
+        String[] authors = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.JobEstimateCommentIndexes.AUTHOR].split(U2Delimiters.VM);
 
         List<List<JobEstimateComment>> estimateComments = new ArrayList<>();
         String delimiters = ((char)252) + "";
@@ -482,42 +577,23 @@ public class U2WorkOrder {
         return estimateComments;
     }
 
-    private List<Job> getJobs(int accountId, String location, String workOrderNo) {
+    private List<Job> getJobs(int accountId, String location, String workOrderNo, String[] workOrderRecord) {
 
-        List<Integer> jobsFields = new ArrayList<>();
+        String[] jobNumbers = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.JOB_NO].split(U2Delimiters.VM);
+        String[] jobDescriptions = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.DESCRIPTION].split(U2Delimiters.VM);
+        String[] jobBillType = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.BILL_TYPE_CODE].split(U2Delimiters.VM);
+        String[] jobBillID = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.BILL_TO].split(U2Delimiters.VM);
+        String[] jobSalesmanCode = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.SALESMAN_CODE].split(U2Delimiters.VM);
+        String[] jobTaxCode = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.TAX_CODE].split(U2Delimiters.VM);
+        String[] jobStatusCodes = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.STATUS_CODE].split(U2Delimiters.VM);
+        String[] jobQuotedAmounts = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.QUOTED_AMOUNT].split(U2Delimiters.VM);
+        String[] jobEstimatedAmounts = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.ESTIMATED_AMOUNT].split(U2Delimiters.VM);
 
-        jobsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.JOB_NO); // 0
-        jobsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.DESCRIPTION); // 1
-        jobsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.BILL_TYPE_CODE); // 2
-        jobsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.BILL_TO); // 3
-        jobsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SALESMAN_CODE); // 4
-        jobsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.TAX_CODE); // 5
-        jobsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.STATUS_CODE); // 6
-        jobsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.QUOTED_AMOUNT); // 7
-        jobsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ESTIMATED_AMOUNT); // 8
-
-        jobsFields.add(179); // 9 - Parts Tax
-        jobsFields.add(181); // 10 - Labor Tax
-        jobsFields.add(183); // 11 - Sublet Tax
-        jobsFields.add(185); // 12 - Extras Tax
-
-        String[] response = u2Api.readFields(accountId, location, U2Tables.getWorkOrder(location), workOrderNo, jobsFields);
-
-        String[] jobNumbers = response[0].split(U2Delimiters.VM);
-        String[] jobDescriptions = response[1].split(U2Delimiters.VM);
-        String[] jobBillType = response[2].split(U2Delimiters.VM);
-        String[] jobBillID = response[3].split(U2Delimiters.VM);
-        String[] jobSalesmanCode = response[4].split(U2Delimiters.VM);
-        String[] jobTaxCode = response[5].split(U2Delimiters.VM);
-        String[] jobStatusCodes = response[6].split(U2Delimiters.VM);
-        String[] jobQuotedAmounts = response[7].split(U2Delimiters.VM);
-        String[] jobEstimatedAmounts = response[8].split(U2Delimiters.VM);
-
-        HashMap<String, List<Extras>> extras = getExtras(accountId, location, workOrderNo);
-        HashMap<String, List<Sublet>> sublets = getSublets(accountId, location, workOrderNo);
-        HashMap<String, List<Labor>> labors = getLabors(accountId, location, workOrderNo);
-        HashMap<String, List<Part>> parts = getParts(accountId, location, workOrderNo);
-        List<List<JobEstimateComment>> jobEstimateComments = getJobEstimateComments(accountId, location, workOrderNo);
+        HashMap<String, List<Extras>> extras = getExtras(accountId, location, workOrderRecord);
+        HashMap<String, List<Sublet>> sublets = getSublets(accountId, location, workOrderRecord);
+        HashMap<String, List<Labor>> labors = getLabors(accountId, location, workOrderRecord);
+        HashMap<String, List<Part>> parts = getParts(accountId, location, workOrderRecord);
+        List<List<JobEstimateComment>> jobEstimateComments = getJobEstimateComments(workOrderRecord);
 
         int size = jobNumbers.length;
         Job[] jobs = new Job[size];
@@ -604,52 +680,28 @@ public class U2WorkOrder {
         return new ArrayList<>(Arrays.asList(jobs));
     }
 
-    private HashMap<String, List<Labor>> getLabors(int accountId, String location, String workOrderNumber){
-        List<Integer> laborsFields = new ArrayList<>();
+    private HashMap<String, List<Labor>> getLabors(int accountId, String location, String[] workOrderRecord){
 
-        laborsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.LABOR_CODE); // 0
-        laborsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.DESCRIPTION); // 1
-        laborsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.TYPE); // 2
-        laborsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.MECHANIC_CODE); // 3
-        laborsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.SKILL_SET_CODE); // 4
-        laborsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.STATUS_CODE); // 5
-        laborsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.LABOR_DATE); // 6
-        laborsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.CHARGE_HOURS); // 7
-        laborsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.TAX_CODE); // 8
-        laborsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.FAULT_CODE); // 9
-        laborsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.SALESMAN_CODE); // 10
-        laborsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.LABOR_JOB_NUMBER); // 11
+        String[] codes = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.LaborsIndexes.LABOR_CODE].split(U2Delimiters.VM);
+        String[] descriptions = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.LaborsIndexes.DESCRIPTION].split(U2Delimiters.VM);
+        String[] types = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.LaborsIndexes.TYPE].split(U2Delimiters.VM);
+        String[] mechanicCodes = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.LaborsIndexes.MECHANIC_CODE].split(U2Delimiters.VM);
+        String[] skillSetCodes = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.LaborsIndexes.SKILL_SET_CODE].split(U2Delimiters.VM);
+        String[] statusCodes = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.LaborsIndexes.STATUS_CODE].split(U2Delimiters.VM);
+        String[] laborDates = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.LaborsIndexes.LABOR_DATE].split(U2Delimiters.VM);
+        String[] chargeHours = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.LaborsIndexes.CHARGE_HOURS].split(U2Delimiters.VM);
+        String[] taxCodes = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.LaborsIndexes.TAX_CODE].split(U2Delimiters.VM);
+        String[] faultCodes = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.LaborsIndexes.FAULT_CODE].split(U2Delimiters.VM);
+        String[] salesmanCodes = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.LaborsIndexes.SALESMAN_CODE].split(U2Delimiters.VM);
+        String[] laborJobNumbers = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.LaborsIndexes.LABOR_JOB_NUMBER].split(U2Delimiters.VM);
 
-        laborsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.ActualsLaborPricing.HOURS); // 12
-        laborsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.ActualsLaborPricing.RATE); // 13
-        laborsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.ActualsLaborPricing.EXTENSION); // 14
+        String[] actualsHours = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.LaborsIndexes.ActualsLaborPricing.HOURS].split(U2Delimiters.VM);
+        String[] actualsRates = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.LaborsIndexes.ActualsLaborPricing.RATE].split(U2Delimiters.VM);
+        String[] actualsExtensions = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.LaborsIndexes.ActualsLaborPricing.EXTENSION].split(U2Delimiters.VM);
 
-        laborsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.RequiredLaborPricing.HOURS); // 15
-        laborsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.RequiredLaborPricing.RATE); // 16
-        laborsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.LaborsColumns.RequiredLaborPricing.EXTENSION); // 17
-
-        String[] response = u2Api.readFields(accountId, location, U2Tables.getWorkOrder(location), workOrderNumber, laborsFields);
-
-        String[] codes = response[0].split(U2Delimiters.VM);
-        String[] descriptions = response[1].split(U2Delimiters.VM);
-        String[] types = response[2].split(U2Delimiters.VM);
-        String[] mechanicCodes = response[3].split(U2Delimiters.VM);
-        String[] skillSetCodes = response[4].split(U2Delimiters.VM);
-        String[] statusCodes = response[5].split(U2Delimiters.VM);
-        String[] laborDates = response[6].split(U2Delimiters.VM);
-        String[] chargeHours = response[7].split(U2Delimiters.VM);
-        String[] taxCodes = response[8].split(U2Delimiters.VM);
-        String[] faultCodes = response[9].split(U2Delimiters.VM);
-        String[] salesmanCodes = response[10].split(U2Delimiters.VM);
-        String[] laborJobNumbers = response[11].split(U2Delimiters.VM);
-
-        String[] actualsHours = response[12].split(U2Delimiters.VM);
-        String[] actualsRates = response[13].split(U2Delimiters.VM);
-        String[] actualsExtensions = response[14].split(U2Delimiters.VM);
-
-        String[] requiredHours = response[15].split(U2Delimiters.VM);
-        String[] requiredRates = response[16].split(U2Delimiters.VM);
-        String[] requiredExtensions = response[17].split(U2Delimiters.VM);
+        String[] requiredHours = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.LaborsIndexes.RequiredLaborPricing.HOURS].split(U2Delimiters.VM);
+        String[] requiredRates = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.LaborsIndexes.RequiredLaborPricing.RATE].split(U2Delimiters.VM);
+        String[] requiredExtensions = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.LaborsIndexes.RequiredLaborPricing.EXTENSION].split(U2Delimiters.VM);
 
         int size = codes.length;
 
@@ -709,43 +761,23 @@ public class U2WorkOrder {
         return laborsMap;
     }
 
-    private HashMap<String, List<Extras>> getExtras(int accountId, String location, String workOrderNumber){
+    private HashMap<String, List<Extras>> getExtras(int accountId, String location, String[] workOrderRecord){
 
-        List<Integer> extrasFields = new ArrayList<>();
+        String[] codes =  workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.ExtrasIndexes.EXTRA_CODE].split(U2Delimiters.VM);
+        String[] descriptions = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.ExtrasIndexes.DESCRIPTION].split(U2Delimiters.VM);
+        String[] taxCodes = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.ExtrasIndexes.TAX_CODE].split(U2Delimiters.VM);
+        String[] salesman = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.ExtrasIndexes.SALESMAN_CODE].split(U2Delimiters.VM);
+        String[] jobNumbers = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.ExtrasIndexes.EXTRA_JOB_NUMBER].split(U2Delimiters.VM);
 
-        extrasFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.EXTRA_CODE); // 0
-        extrasFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.DESCRIPTION); // 1
-        extrasFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.TAX_CODE); // 2
-        extrasFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.SALESMAN_CODE); // 3
-        extrasFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.EXTRA_JOB_NUMBER); // 4
+        String[] requiredQtys = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.ExtrasIndexes.RequiredExtrasPricingIndexes.QUANTITY].split(U2Delimiters.VM);
+        String[] requiredCosts = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.ExtrasIndexes.RequiredExtrasPricingIndexes.COST].split(U2Delimiters.VM);
+        String[] requiredListPrices = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.ExtrasIndexes.RequiredExtrasPricingIndexes.LIST_PRICE].split(U2Delimiters.VM);
+        String[] requiredExtensions = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.ExtrasIndexes.RequiredExtrasPricingIndexes.EXTENSION].split(U2Delimiters.VM);
 
-        extrasFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.RequiredExtrasPricingColumns.QUANTITY); // 5
-        extrasFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.RequiredExtrasPricingColumns.COST); // 6
-        extrasFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.RequiredExtrasPricingColumns.LIST_PRICE); // 7
-        extrasFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.RequiredExtrasPricingColumns.EXTENSION); // 8
-
-        extrasFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.ActualsJExtrasPricingColumns.QUANTITY); // 9
-        extrasFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.ActualsJExtrasPricingColumns.COST); // 10
-        extrasFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.ActualsJExtrasPricingColumns.LIST_PRICE); // 11
-        extrasFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.ExtrasColumns.ActualsJExtrasPricingColumns.EXTENSION); // 12
-
-        String[] response = u2Api.readFields(accountId, location, U2Tables.getWorkOrder(location), workOrderNumber, extrasFields);
-
-        String[] codes =  response[0].split(U2Delimiters.VM);
-        String[] descriptions = response[1].split(U2Delimiters.VM);
-        String[] taxCodes = response[2].split(U2Delimiters.VM);
-        String[] salesman = response[3].split(U2Delimiters.VM);
-        String[] jobNumbers = response[4].split(U2Delimiters.VM);
-
-        String[] requiredQtys = response[5].split(U2Delimiters.VM);
-        String[] requiredCosts = response[6].split(U2Delimiters.VM);
-        String[] requiredListPrices = response[7].split(U2Delimiters.VM);
-        String[] requiredExtensions = response[8].split(U2Delimiters.VM);
-
-        String[] actualsQtys = response[9].split(U2Delimiters.VM);
-        String[] actualsCosts = response[10].split(U2Delimiters.VM);
-        String[] actualsListPrices = response[11].split(U2Delimiters.VM);
-        String[] actualsExtensions = response[12].split(U2Delimiters.VM);
+        String[] actualsQtys = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.ExtrasIndexes.ActualsJExtrasPricingIndexes.QUANTITY].split(U2Delimiters.VM);
+        String[] actualsCosts = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.ExtrasIndexes.ActualsJExtrasPricingIndexes.COST].split(U2Delimiters.VM);
+        String[] actualsListPrices = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.ExtrasIndexes.ActualsJExtrasPricingIndexes.LIST_PRICE].split(U2Delimiters.VM);
+        String[] actualsExtensions = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.ExtrasIndexes.ActualsJExtrasPricingIndexes.EXTENSION].split(U2Delimiters.VM);
 
         int size = codes.length;
 
@@ -791,44 +823,24 @@ public class U2WorkOrder {
         return extrasMap;
     }
 
-    private HashMap<String, List<Sublet>> getSublets(int accountId, String location, String workOrderNumber) {
-        List<Integer> subletsFields = new ArrayList<>();
+    private HashMap<String, List<Sublet>> getSublets(int accountId, String location,  String[] workOrderRecord) {
 
-        subletsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.DESCRIPTION); // 0
-        subletsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.VENDOR_NO); // 1
-        subletsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.PURCHASE_ORDER_NO); // 2
-        subletsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.EXPECTED_DATE); // 3
-        subletsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.COMPLETED_DATE); // 4
-        subletsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.TAX_CODE); // 5
-        subletsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.PURCHASE_ORDER_COMMENT); // 6
-        subletsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.SALESMAN_CODE); // 7
-        subletsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.INVOICE_NO); // 8
-        subletsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.SUBLET_JOB_NUMBER); // 9
+        String[] descriptions = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.SubletsIndexes.DESCRIPTION].split(U2Delimiters.VM);
+        String[] vendorCodes =  workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.SubletsIndexes.VENDOR_NO].split(U2Delimiters.VM);
+        String[] purchaseOrderNumbers = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.SubletsIndexes.PURCHASE_ORDER_NO].split(U2Delimiters.VM);
+        String[] expectedDate = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.SubletsIndexes.EXPECTED_DATE].split(U2Delimiters.VM);
+        String[] completeDate = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.SubletsIndexes.COMPLETED_DATE].split(U2Delimiters.VM);
+        String[] taxCodes = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.SubletsIndexes.TAX_CODE].split(U2Delimiters.VM);
+        String[] purchaseOrderComments = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.SubletsIndexes.PURCHASE_ORDER_COMMENT].split(U2Delimiters.VM);
+        String[] salesman = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.SubletsIndexes.SALESMAN_CODE].split(U2Delimiters.VM);
+        String[] invoiceNumbers = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.SubletsIndexes.INVOICE_NO].split(U2Delimiters.VM);
+        String[] jobNumbers = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.SubletsIndexes.SUBLET_JOB_NUMBER].split(U2Delimiters.VM);
 
-        subletsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.RequiredSubletPricingColumns.COST); // 10
-        subletsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.RequiredSubletPricingColumns.LIST_PRICE); // 11
+        String[] subletsRequiredCosts = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.SubletsIndexes.RequiredSubletPricingIndexes.COST].split(U2Delimiters.VM);
+        String[] subletsRequiredLists = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.SubletsIndexes.RequiredSubletPricingIndexes.LIST_PRICE].split(U2Delimiters.VM);
 
-        subletsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.ActualsSubletPricingColumns.COST); // 12
-        subletsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.SubletsColumns.ActualsSubletPricingColumns.LIST_PRICE); // 13
-
-        String[] response = u2Api.readFields(accountId, location, U2Tables.getWorkOrder(location), workOrderNumber, subletsFields);
-
-        String[] descriptions = response[0].split(U2Delimiters.VM);
-        String[] vendorCodes =  response[1].split(U2Delimiters.VM);
-        String[] purchaseOrderNumbers = response[2].split(U2Delimiters.VM);
-        String[] expectedDate = response[3].split(U2Delimiters.VM);
-        String[] completeDate = response[4].split(U2Delimiters.VM);
-        String[] taxCodes = response[5].split(U2Delimiters.VM);
-        String[] purchaseOrderComments = response[6].split(U2Delimiters.VM);
-        String[] salesman = response[7].split(U2Delimiters.VM);
-        String[] invoiceNumbers = response[8].split(U2Delimiters.VM);
-        String[] jobNumbers = response[9].split(U2Delimiters.VM);
-
-        String[] subletsRequiredCosts = response[10].split(U2Delimiters.VM);
-        String[] subletsRequiredLists = response[11].split(U2Delimiters.VM);
-
-        String[] subletsActualsCosts = response[12].split(U2Delimiters.VM);
-        String[] subletsActualsLists = response[13].split(U2Delimiters.VM);
+        String[] subletsActualsCosts = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.SubletsIndexes.ActualsSubletPricingIndexes.COST].split(U2Delimiters.VM);
+        String[] subletsActualsLists = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.SubletsIndexes.ActualsSubletPricingIndexes.LIST_PRICE].split(U2Delimiters.VM);
 
         int size = vendorCodes.length;
         HashMap<String, List<Sublet>> subletsMap = new HashMap<>();
@@ -877,46 +889,25 @@ public class U2WorkOrder {
         return subletsMap;
     }
 
-    private HashMap<String, List<Part>> getParts(int accountId, String location, String workOrderNumber) {
-        List<Integer> partsFields = new ArrayList<>();
+    private HashMap<String, List<Part>> getParts(int accountId, String location, String[] workOrderRecord) {
 
-        partsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.PART_NO); // 0
-        partsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.DESCRIPTION); // 1
-        partsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.DISCOUNT_PERCENTAGE); // 2
-        partsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.TYPE); // 3
-        partsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.TAX_CODE); // 4
-        partsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.SALESMAN_CODE); // 5
-        partsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.PART_JOB_NUMBER); // 6
+        String[] partNos = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.PartsIndexes.PART_NO].split(U2Delimiters.VM);
+        String[] descriptions =  workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.PartsIndexes.DESCRIPTION].split(U2Delimiters.VM);
+        String[] discountPercentages = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.PartsIndexes.DISCOUNT_PERCENTAGE].split(U2Delimiters.VM);
+        String[] types = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.PartsIndexes.TYPE].split(U2Delimiters.VM);
+        String[] taxCodes = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.PartsIndexes.TAX_CODE].split(U2Delimiters.VM);
+        String[] salesmanCodes = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.PartsIndexes.SALESMAN_CODE].split(U2Delimiters.VM);
+        String[] partJobNumbers = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.PartsIndexes.PART_JOB_NUMBER].split(U2Delimiters.VM);
 
-        partsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.ActualsPartPricing.QUANTITY); // 7
-        partsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.ActualsPartPricing.COST); // 8
-        partsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.ActualsPartPricing.PRICE); // 9
-        partsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.ActualsPartPricing.EXTENSION); // 10
+        String[] actualsQtys = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.PartsIndexes.ActualsPartPricing.QUANTITY].split(U2Delimiters.VM);
+        String[] actualsCosts = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.PartsIndexes.ActualsPartPricing.COST].split(U2Delimiters.VM);
+        String[] actualsPrices = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.PartsIndexes.ActualsPartPricing.PRICE].split(U2Delimiters.VM);
+        String[] actualsExtensions = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.PartsIndexes.ActualsPartPricing.EXTENSION].split(U2Delimiters.VM);
 
-        partsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.RequiredPartPricing.QUANTITY); // 11
-        partsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.RequiredPartPricing.COST); // 12
-        partsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.RequiredPartPricing.PRICE); // 13
-        partsFields.add(WorkOrderResponseColumns.WorkOrderColumns.JobColumns.PartsColumns.RequiredPartPricing.EXTENSION); // 14
-
-        String[] response = u2Api.readFields(accountId, location, U2Tables.getWorkOrder(location), workOrderNumber, partsFields);
-
-        String[] partNos = response[0].split(U2Delimiters.VM);
-        String[] descriptions =  response[1].split(U2Delimiters.VM);
-        String[] discountPercentages = response[2].split(U2Delimiters.VM);
-        String[] types = response[3].split(U2Delimiters.VM);
-        String[] taxCodes = response[4].split(U2Delimiters.VM);
-        String[] salesmanCodes = response[5].split(U2Delimiters.VM);
-        String[] partJobNumbers = response[6].split(U2Delimiters.VM);
-
-        String[] actualsQtys = response[7].split(U2Delimiters.VM);
-        String[] actualsCosts = response[8].split(U2Delimiters.VM);
-        String[] actualsPrices = response[9].split(U2Delimiters.VM);
-        String[] actualsExtensions = response[10].split(U2Delimiters.VM);
-
-        String[] requiredQtys = response[11].split(U2Delimiters.VM);
-        String[] requiredCosts = response[12].split(U2Delimiters.VM);
-        String[] requiredPrices = response[13].split(U2Delimiters.VM);
-        String[] requiredExtensions = response[14].split(U2Delimiters.VM);
+        String[] requiredQtys = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.PartsIndexes.RequiredPartPricing.QUANTITY].split(U2Delimiters.VM);
+        String[] requiredCosts = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.PartsIndexes.RequiredPartPricing.COST].split(U2Delimiters.VM);
+        String[] requiredPrices = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.PartsIndexes.RequiredPartPricing.PRICE].split(U2Delimiters.VM);
+        String[] requiredExtensions = workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.JobIndexes.PartsIndexes.RequiredPartPricing.EXTENSION].split(U2Delimiters.VM);
 
         int size = partNos.length;
         HashMap<String, List<Part>> partsMap = new HashMap<>();
@@ -964,72 +955,46 @@ public class U2WorkOrder {
         return partsMap;
     }
 
-    private WorkOrder getWorkOrder(int accountId, String location, String workOrderNumber){
+    private WorkOrder getWorkOrder(int accountId, String location, String workOrderNumber, String[] workOrderRecord){
         WorkOrder workOrder = new WorkOrder();
 
-        List<Integer> workOrderFields = new ArrayList<>();
-
-        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.WORK_ORDER_DATE); // 0
-        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.AUTHOR); // 1
-        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.STATUS_CODE); // 2
-        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.WORK_ORDER_LOCATION); // 3
-        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.SALESMAN_CODE); // 4
-        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.PROMISE_DATE); // 5
-        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.PROMISE_TIME); // 6
-        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.SCHEDULE_PRIORITY_CODE); // 7
-        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.APPOINTMENT_DATE); // 8
-        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.APPOINTMENT_TIME); // 9
-        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.IN_SERVICE_DATE); // 10
-        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.PARTS_DISCOUNT); // 11
-        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.CATEGORY_CODE); // 12
-        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.TAG_NO); // 13
-        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.MILEAGE_IN); // 14
-        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.MILEAGE_OUT); // 15
-        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.MILEAGE_UNIT_CODE); // 16
-        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.COMPLETE_DATE); // 17
-        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.CANCEL_DATE); // 18
-        workOrderFields.add(WorkOrderResponseColumns.WorkOrderColumns.COMMENTS); // 19
-
-        String[] response = u2Api.readFields(
-                accountId,
-                location,
-                U2Tables.getWorkOrder(location),
-                workOrderNumber,
-                workOrderFields);
-
         workOrder.workOrderNo = workOrderNumber;
-        workOrder.workOrderDate = DataHelper.getLocalDateFromU2(response[0]);
+        workOrder.workOrderDate = DataHelper.getLocalDateFromU2(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.WORK_ORDER_DATE]);
         workOrder.workOrderDateStr = DataHelper.formatDate(workOrder.workOrderDate);
-        workOrder.author = DataHelper.getEmptyStringAsNull(response[1]);
-        workOrder.statusCode = DataHelper.getEmptyStringAsNull(response[2]);
+        workOrder.author = DataHelper.getEmptyStringAsNull(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.AUTHOR]);
+        workOrder.statusCode = DataHelper.getEmptyStringAsNull(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.STATUS_CODE]);
         workOrder.statusDesc = getWorkOrderStatusDescription(accountId, location, workOrder.statusCode);
-        workOrder.workOrderLocation = DataHelper.getEmptyStringAsNull(response[3]);
+        workOrder.workOrderLocation = DataHelper.getEmptyStringAsNull(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.WORK_ORDER_LOCATION]);
         workOrder.workOrderLocationDesc = getWorkOrderLocationDescription(accountId, location, workOrder.workOrderLocation);
-        workOrder.salesmanCode = DataHelper.getEmptyStringAsNull(response[4]);
+        workOrder.salesmanCode = DataHelper.getEmptyStringAsNull(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.SALESMAN_CODE]);
         workOrder.salesmanDesc = getSalesmenName(accountId, location, workOrder.salesmanCode);
-        workOrder.promiseDateTime = DataHelper.getLocalDateTimeFromU2(response[5],response[6]);
+        workOrder.promiseDateTime = DataHelper.getLocalDateTimeFromU2(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.PROMISE_DATE],
+                workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.PROMISE_TIME]);
         workOrder.promiseDateStr = DataHelper.formatDate(workOrder.promiseDateTime);
         workOrder.promiseTimeStr = DataHelper.formatTime(workOrder.promiseDateTime);
-        workOrder.schedulePriorityCode = DataHelper.getNullableInteger(response[7]);
+        workOrder.schedulePriorityCode = DataHelper.getNullableInteger(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.SCHEDULE_PRIORITY_CODE]);
         workOrder.schedulePriorityDesc = schedulePriorityTypeMap.get(workOrder.schedulePriorityCode);
-        workOrder.appointmentDateTime = DataHelper.getLocalDateTimeFromU2(response[8],response[9]);
+        workOrder.appointmentDateTime = DataHelper.getLocalDateTimeFromU2(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.APPOINTMENT_DATE],
+                workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.APPOINTMENT_TIME]);
         workOrder.appointmentDateStr = DataHelper.formatDate(workOrder.appointmentDateTime);
         workOrder.appointmentTimeStr = DataHelper.formatTime(workOrder.appointmentDateTime);
-        workOrder.inServiceDate = DataHelper.getLocalDateFromU2(response[10]);
+        workOrder.inServiceDate = DataHelper.getLocalDateFromU2(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.IN_SERVICE_DATE]);
         workOrder.inServiceDateStr = DataHelper.formatDate(workOrder.inServiceDate);
-        workOrder.partsDiscount = DataHelper.getDoubleFromU2(response[11]);
-        workOrder.categoryCode = DataHelper.getEmptyStringAsNull(response[12]);
+        workOrder.partsDiscount = DataHelper.getDoubleFromU2(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.PARTS_DISCOUNT]);
+        workOrder.categoryCode = DataHelper.getEmptyStringAsNull(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.CATEGORY_CODE]);
         workOrder.categoryDesc = getWorkOrderCategoryDescription(accountId, location, workOrder.categoryCode);
-        workOrder.tagNo = DataHelper.getEmptyStringAsNull(response[13]);
-        workOrder.mileageIn = DataHelper.getNullableDouble(response[14]);
-        workOrder.mileageOut = DataHelper.getNullableDouble(response[15]);
-        workOrder.mileageUnitCode = DataHelper.getEmptyStringAsNull(response[16]);
+        workOrder.tagNo = DataHelper.getEmptyStringAsNull(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.TAG_NO]);
+        workOrder.mileageIn = DataHelper.getNullableDouble(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.MILEAGE_IN]);
+        workOrder.mileageOut = DataHelper.getNullableDouble(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.MILEAGE_OUT]);
+        workOrder.mileageUnitCode = DataHelper.getEmptyStringAsNull(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.MILEAGE_UNIT_CODE]);
         workOrder.mileageUnitDesc = mileageTypeMap.get(workOrder.mileageUnitCode);
-        workOrder.completeDate = DataHelper.getLocalDateFromU2(response[17]);
+        workOrder.completeDate = DataHelper.getLocalDateFromU2(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.COMPLETE_DATE]);
         workOrder.completeDateStr = DataHelper.formatDate(workOrder.completeDate);
-        workOrder.cancelDate = DataHelper.getLocalDateFromU2(response[18]);
+        workOrder.cancelDate = DataHelper.getLocalDateFromU2(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.CANCEL_DATE]);
         workOrder.cancelDateStr = DataHelper.formatDate(workOrder.cancelDate);
-        workOrder.comments = DataHelper.getEmptyStringAsNull(response[19].replace(U2Delimiters.VM, "\r\n"));
+        workOrder.comments = DataHelper.getEmptyStringAsNull(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.COMMENTS]
+                .replace(U2Delimiters.VM, "\r\n"));
+
         return workOrder;
     }
 
@@ -1056,16 +1021,17 @@ public class U2WorkOrder {
                 customerFields);
 
         customer.customerNo = customerNumber;
-        customer.name = response[0] + " " + response[1];
-        customer.email = DataHelper.getEmptyStringAsNull(response[2]);
-        customer.homePhone = DataHelper.getEmptyStringAsNull(response[3]);
-        customer.mobilePhone = DataHelper.getEmptyStringAsNull(response[7]);
-        customer.zipCode = response[4];
-        customer.country = response[5];
+        customer.name = response[WorkOrderResponseIndexes.CustomerIndexes.FIRST_NAME]
+                + " " + response[WorkOrderResponseIndexes.CustomerIndexes.LAST_NAME];
+        customer.email = DataHelper.getEmptyStringAsNull(response[WorkOrderResponseIndexes.CustomerIndexes.EMAIL_ADDRESS]);
+        customer.homePhone = DataHelper.getEmptyStringAsNull(response[WorkOrderResponseIndexes.CustomerIndexes.HOME_PHONE]);
+        customer.mobilePhone = DataHelper.getEmptyStringAsNull(response[WorkOrderResponseIndexes.CustomerIndexes.CELL_PHONE]);
+        customer.zipCode = DataHelper.getEmptyStringAsNull(response[WorkOrderResponseIndexes.CustomerIndexes.POSTAL_CODE]);
+        customer.country = DataHelper.getEmptyStringAsNull(response[WorkOrderResponseIndexes.CustomerIndexes.COUNTRY]);
 
         boolean splitStreet = systemConfigurations.get(13).equalsIgnoreCase("Y");
 
-        String[] addresses = DataHelper.getMultiValue(response[6] ,3, U2Delimiters.VM);
+        String[] addresses = DataHelper.getMultiValue(response[WorkOrderResponseIndexes.CustomerIndexes.ADDRESS] ,3, U2Delimiters.VM);
 
         if(splitStreet){
             customer.addressLine1 = DataHelper.getEmptyStringAsNull(addresses[0]);
@@ -1088,30 +1054,15 @@ public class U2WorkOrder {
         return customer;
     }
 
-    private Inventory getInventory(int accountId, String location, String workOrderNumber){
+    private Inventory getInventory(String[] workOrderRecord){
         Inventory inventory = new Inventory();
 
-        List<Integer> inventoryFields = new ArrayList<>();
-
-        inventoryFields.add(WorkOrderResponseColumns.WorkOrderColumns.InventoryColumns.STOCK_NO); // 0
-        inventoryFields.add(WorkOrderResponseColumns.WorkOrderColumns.InventoryColumns.WARRANTY_DATE); // 1
-        inventoryFields.add(WorkOrderResponseColumns.WorkOrderColumns.InventoryColumns.CHASSIS_NO); // 2
-        inventoryFields.add(WorkOrderResponseColumns.WorkOrderColumns.InventoryColumns.DESCRIPTION); // 3
-        inventoryFields.add(WorkOrderResponseColumns.WorkOrderColumns.InventoryColumns.SERIAL_NO); // 4
-
-        String[] response = u2Api.readFields(
-                accountId,
-                location,
-                U2Tables.getWorkOrder(location),
-                workOrderNumber,
-                inventoryFields);
-
-        inventory.stockNo = DataHelper.getEmptyStringAsNull(response[0]);
-        inventory.warrantyDate = DataHelper.getLocalDateFromU2(response[1]);
+        inventory.stockNo = DataHelper.getEmptyStringAsNull(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.InventoryIndexes.STOCK_NO]);
+        inventory.warrantyDate = DataHelper.getLocalDateFromU2(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.InventoryIndexes.WARRANTY_DATE]);
         inventory.warrantyDateStr = DataHelper.formatDate(inventory.warrantyDate);
-        inventory.chassisNo = DataHelper.getEmptyStringAsNull(response[2]);
-        inventory.description = DataHelper.getEmptyStringAsNull(response[3]);
-        inventory.serialNo = DataHelper.getEmptyStringAsNull(response[4]);
+        inventory.chassisNo = DataHelper.getEmptyStringAsNull(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.InventoryIndexes.CHASSIS_NO]);
+        inventory.description = DataHelper.getEmptyStringAsNull(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.InventoryIndexes.DESCRIPTION]);
+        inventory.serialNo = DataHelper.getEmptyStringAsNull(workOrderRecord[WorkOrderResponseIndexes.WorkOrderIndexes.InventoryIndexes.SERIAL_NO]);
 
         return inventory;
     }

@@ -10,8 +10,6 @@ import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpEntity;
 import org.apache.hc.core5.http.io.entity.StringEntity;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,22 +24,17 @@ public class RestHelperImpl implements RestHelper {
     private final HttpClient httpClient;
     private final Dictionary<String, String > headers;
     private final Gson gson;
-    private final Logger logger;
 
     public RestHelperImpl(Dictionary<String, String > headers){
         this.httpClient = HttpClients.createDefault();
         this.headers = headers;
         gson = new Gson();
-        logger = LoggerFactory.getLogger(RestHelperImpl.class);
     }
 
     @Override
     public String post(String base, String url, HashMap<String, Object> data) {
         HttpPost httpPost = new HttpPost(base+url);
         addHeaders(httpPost);
-
-        logger.info("Request URL : " + base + url);
-        logger.info("Request Payload : " + gson.toJson(data));
 
         HttpEntity entity = new StringEntity(gson.toJson(data), ContentType.APPLICATION_JSON);
         httpPost.setEntity(entity);
@@ -59,11 +52,8 @@ public class RestHelperImpl implements RestHelper {
 
             String response = bufferedReader.lines().collect(Collectors.joining());
 
-            logger.info("Request Response : " + response);
-
             return response;
         } catch (IOException e){
-            logger.error("Request retry: "+retry, e);
             if(retry <= 5)
                 return response(request, retry+1);
             return null;
